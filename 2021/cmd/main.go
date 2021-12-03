@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+
+	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 type config struct {
@@ -41,8 +43,16 @@ func main() {
 
 func runChallenge(day, part int, input_path string) (int, error) {
 	if day == 1 {
+		depths, err := utils.ReadDepthFile(input_path)
+		if err != nil {
+			return 0, err
+		}
+
 		if part == 1 {
-			return day1Part1(input_path)
+			return day1Part1(depths)
+		}
+		if part == 2 {
+			return day1Part2(depths)
 		}
 	}
 
