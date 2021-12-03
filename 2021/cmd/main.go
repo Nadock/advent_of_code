@@ -63,6 +63,9 @@ func runChallenge(day, part int, input_path string) (int, error) {
 		if part == 1 {
 			return day2Part1(commands)
 		}
+		if part == 2 {
+			return day2Part2(commands)
+		}
 	}
 
 	return 0, fmt.Errorf("could not find challenge day %d, part %d to run", day, part)
