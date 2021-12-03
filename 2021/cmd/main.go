@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	answer, err := day1()
+	answer, err := day1("./inputs/day1.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -17,8 +17,8 @@ func main() {
 	fmt.Printf("The answer is %d\n", answer)
 }
 
-func day1() (int, error) {
-	day1Input, err := ioutil.ReadFile("./inputs/day1.txt")
+func day1(path string) (int, error) {
+	day1Input, err := ioutil.ReadFile(path)
 	if err != nil {
 		return 0, err
 	}
