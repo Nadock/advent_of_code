@@ -54,6 +54,15 @@ func runChallenge(day, part int, input_path string) (int, error) {
 		if part == 2 {
 			return day1Part2(depths)
 		}
+	} else if day == 2 {
+		commands, err := utils.ReadCommandFile(input_path)
+		if err != nil {
+			return 0, err
+		}
+
+		if part == 1 {
+			return day2Part1(commands)
+		}
 	}
 
 	return 0, fmt.Errorf("could not find challenge day %d, part %d to run", day, part)
