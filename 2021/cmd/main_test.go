@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func TestDay1(t *testing.T) {
-	answer, err := day1("../inputs/day1.txt")
+	answer, err := day1("../inputs/day1/part1/test_input.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

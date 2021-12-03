@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	answer, err := day1("./inputs/day1.txt")
+	answer, err := day1("./inputs/day1/part1/test_input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
