@@ -19,15 +19,31 @@ func day3part1(lines []string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Printf("%d", gRate)
+	log.Printf("gammaRate: %d", gRate)
 
 	eRate, err := epsilonRate(lCommon)
 	if err != nil {
 		return 0, err
 	}
-	log.Printf("%d", eRate)
+	log.Printf("epsilonRate: %d", eRate)
 
 	return gRate * eRate, nil
+}
+
+func day3part2(lines []string) (int, error) {
+	oxyRate, err := oxygenRating(lines)
+	if err != nil {
+		return 0, err
+	}
+	log.Printf("oxygenRate: %d", oxyRate)
+
+	c02Rate, err := c02Rating(lines)
+	if err != nil {
+		return 0, err
+	}
+	log.Printf("oxygenRate: %d", c02Rate)
+
+	return oxyRate * c02Rate, nil
 }
 
 // Count the 0s and 1s in each column, the output a 2 element array for each column where the first element is the count
@@ -107,4 +123,71 @@ func epsilonRate(leastCommon []int) (int, error) {
 		return 0, err
 	}
 	return int(gRate), nil
+}
+
+func oxygenRating(lines []string) (int, error) {
+
+	retainedLines := lines
+	colCount := countColumns(retainedLines)
+	mCommon := mostCommon(colCount)
+
+	for i := 0; i < len(mCommon) && len(retainedLines) > 1; i++ {
+		common := mCommon[i]
+
+		retainedLines = filterLines(retainedLines, i, common)
+		log.Printf("after column %d, retaining %d, remaining lines are %+v", i, common, retainedLines)
+
+		colCount = countColumns(retainedLines)
+		mCommon = mostCommon(colCount)
+		log.Printf("next loop: colCount: %+v, mCommon: %+v", colCount, mCommon)
+		log.Println("")
+	}
+
+	oxyRate, err := strconv.ParseInt(retainedLines[0], 2, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(oxyRate), nil
+}
+
+func c02Rating(lines []string) (int, error) {
+	retainedLines := lines
+	colCount := countColumns(retainedLines)
+	lCommon := leastCommon(colCount)
+
+	for i := 0; i < len(lCommon) && len(retainedLines) > 1; i++ {
+		common := lCommon[i]
+
+		retainedLines = filterLines(retainedLines, i, common)
+		log.Printf("after column %d, retaining %d, remaining lines are %+v", i, common, retainedLines)
+
+		colCount = countColumns(retainedLines)
+		lCommon = leastCommon(colCount)
+		log.Printf("next loop: colCount: %+v, lCommon: %+v", colCount, lCommon)
+		log.Println("")
+	}
+
+	c02Rate, err := strconv.ParseInt(retainedLines[0], 2, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(c02Rate), nil
+}
+
+// For each line, check the bit in the specified column and filter it out if it does not match
+func filterLines(lines []string, column, bit int) []string {
+	bitString := fmt.Sprintf("%d", bit)
+
+	var matchingLines []string
+	for _, line := range lines {
+		if line != "" {
+			if string(line[column]) == bitString {
+				matchingLines = append(matchingLines, line)
+			}
+		}
+	}
+
+	return matchingLines
 }
