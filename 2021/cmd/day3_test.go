@@ -39,3 +39,37 @@ func TestDay3Part1Test(t *testing.T) {
 		t.Errorf("expected answer of %d, got %d", expected, answer)
 	}
 }
+
+func TestDay3Part2Example(t *testing.T) {
+	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/example.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := 230
+	answer, err := day3part2(lines)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if answer != expected {
+		t.Errorf("expected answer of %d, got %d", expected, answer)
+	}
+}
+
+func TestDay3Part2Test(t *testing.T) {
+	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/test.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := 6677951
+	answer, err := day3part2(lines)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if answer != expected {
+		t.Errorf("expected answer of %d, got %d", expected, answer)
+	}
+}
