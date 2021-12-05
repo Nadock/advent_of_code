@@ -1,13 +1,11 @@
-package main
+package day5
 
 import (
 	"log"
 	"math"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
-func day5part1(lines []*utils.Line) (int, error) {
+func day5part1(lines []*Line) (int, error) {
 	x, y := findGridSize(lines)
 	grid := NewGrid(x, y)
 
@@ -18,7 +16,7 @@ func day5part1(lines []*utils.Line) (int, error) {
 	return grid.countGridIntersections(), nil
 }
 
-func day5part2(lines []*utils.Line) (int, error) {
+func day5part2(lines []*Line) (int, error) {
 	x, y := findGridSize(lines)
 	grid := NewGrid(x, y)
 
@@ -29,7 +27,7 @@ func day5part2(lines []*utils.Line) (int, error) {
 	return grid.countGridIntersections(), nil
 }
 
-func findGridSize(lines []*utils.Line) (int, int) {
+func findGridSize(lines []*Line) (int, int) {
 	xMax := 0
 	yMax := 0
 	for _, line := range lines {
@@ -74,7 +72,7 @@ func (g *Grid) Mark(x, y int) {
 	g.Points[x][y]++
 }
 
-func (g *Grid) PlotLinePart1(line *utils.Line) {
+func (g *Grid) PlotLinePart1(line *Line) {
 	// Ignore diagonal lines
 	if line.Start.X != line.End.X && line.Start.Y != line.End.Y {
 		return
@@ -98,7 +96,7 @@ func (g *Grid) PlotLinePart1(line *utils.Line) {
 	}
 }
 
-func (g *Grid) PlotLinePart2(line *utils.Line) {
+func (g *Grid) PlotLinePart2(line *Line) {
 
 	log.Printf("plotting line from %d,%d to %d,%d", line.Start.X, line.Start.Y, line.End.X, line.End.Y)
 	if line.Start.X == line.End.X && line.Start.Y != line.End.Y {

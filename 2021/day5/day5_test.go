@@ -1,13 +1,11 @@
-package main
+package day5
 
 import (
 	"testing"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 func TestDay5Part1Example(t *testing.T) {
-	lines, err := utils.ReadHydrothermalVentsMapFile("../inputs/day5/example.txt")
+	lines, err := ReadHydrothermalVentsMapFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +22,7 @@ func TestDay5Part1Example(t *testing.T) {
 }
 
 func TestDay5Part1Test(t *testing.T) {
-	lines, err := utils.ReadHydrothermalVentsMapFile("../inputs/day5/test.txt")
+	lines, err := ReadHydrothermalVentsMapFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +39,7 @@ func TestDay5Part1Test(t *testing.T) {
 }
 
 func TestDay5Part2Example(t *testing.T) {
-	lines, err := utils.ReadHydrothermalVentsMapFile("../inputs/day5/example.txt")
+	lines, err := ReadHydrothermalVentsMapFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +56,7 @@ func TestDay5Part2Example(t *testing.T) {
 }
 
 func TestDay5Part2Test(t *testing.T) {
-	lines, err := utils.ReadHydrothermalVentsMapFile("../inputs/day5/test.txt")
+	lines, err := ReadHydrothermalVentsMapFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

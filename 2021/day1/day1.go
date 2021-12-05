@@ -1,4 +1,4 @@
-package main
+package day1
 
 func day1Part1(depths []int) (int, error) {
 	return countDepthIncreases(depths), nil

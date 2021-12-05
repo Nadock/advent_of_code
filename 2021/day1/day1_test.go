@@ -1,13 +1,11 @@
-package main
+package day1
 
 import (
 	"testing"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 func TestDay1Part1Example(t *testing.T) {
-	depths, err := utils.ReadDepthFile("../inputs/day1/example_input.txt")
+	depths, err := ReadDepthFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +21,7 @@ func TestDay1Part1Example(t *testing.T) {
 }
 
 func TestDay1Part1Test(t *testing.T) {
-	depths, err := utils.ReadDepthFile("../inputs/day1/test_input.txt")
+	depths, err := ReadDepthFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +37,7 @@ func TestDay1Part1Test(t *testing.T) {
 }
 
 func TestDay1Part2Example(t *testing.T) {
-	depths, err := utils.ReadDepthFile("../inputs/day1/example_input.txt")
+	depths, err := ReadDepthFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,7 +53,7 @@ func TestDay1Part2Example(t *testing.T) {
 }
 
 func TestDay1Part2Test(t *testing.T) {
-	depths, err := utils.ReadDepthFile("../inputs/day1/test_input.txt")
+	depths, err := ReadDepthFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

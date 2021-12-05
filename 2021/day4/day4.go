@@ -1,14 +1,12 @@
-package main
+package day4
 
 import (
 	"fmt"
 	"log"
 	"strconv"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
-func day4part1(drawnNumbers []string, boards []*utils.Board) (int, error) {
+func day4part1(drawnNumbers []string, boards []*Board) (int, error) {
 	// log.Printf("%v, %+v", drawnNumbers, boards)
 	// log.Printf("")
 
@@ -27,7 +25,7 @@ func day4part1(drawnNumbers []string, boards []*utils.Board) (int, error) {
 	return score * winNumber, nil
 }
 
-func day4part2(drawnNumbers []string, boards []*utils.Board) (int, error) {
+func day4part2(drawnNumbers []string, boards []*Board) (int, error) {
 
 	winNumber, winBoard, err := simulateWinLastBingoGame(drawnNumbers, boards)
 	if err != nil {
@@ -44,7 +42,7 @@ func day4part2(drawnNumbers []string, boards []*utils.Board) (int, error) {
 	return score * winNumber, nil
 }
 
-func simulateWinFirstBingoGame(drawnNumbers []string, boards []*utils.Board) (int, *utils.Board, error) {
+func simulateWinFirstBingoGame(drawnNumbers []string, boards []*Board) (int, *Board, error) {
 	for _, draw := range drawnNumbers {
 		// log.Printf("draw %s", draw)
 		for _, board := range boards {
@@ -63,7 +61,7 @@ func simulateWinFirstBingoGame(drawnNumbers []string, boards []*utils.Board) (in
 	return 0, nil, fmt.Errorf("no winner after drawing all numbers")
 }
 
-func simulateWinLastBingoGame(drawnNumbers []string, boards []*utils.Board) (int, *utils.Board, error) {
+func simulateWinLastBingoGame(drawnNumbers []string, boards []*Board) (int, *Board, error) {
 	boardsHaveWon := make([]bool, len(boards))
 
 	for _, draw := range drawnNumbers {

@@ -1,13 +1,11 @@
-package main
+package day2
 
 import (
 	"testing"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 func TestDay2Part1Example(t *testing.T) {
-	commands, err := utils.ReadCommandFile("../inputs/day2/example_input.txt")
+	commands, err := ReadCommandFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +22,7 @@ func TestDay2Part1Example(t *testing.T) {
 }
 
 func TestDay2Part1Test(t *testing.T) {
-	commands, err := utils.ReadCommandFile("../inputs/day2/test_input.txt")
+	commands, err := ReadCommandFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +39,7 @@ func TestDay2Part1Test(t *testing.T) {
 }
 
 func TestDay2Part2Example(t *testing.T) {
-	commands, err := utils.ReadCommandFile("../inputs/day2/example_input.txt")
+	commands, err := ReadCommandFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +56,7 @@ func TestDay2Part2Example(t *testing.T) {
 }
 
 func TestDay2Part2Test(t *testing.T) {
-	commands, err := utils.ReadCommandFile("../inputs/day2/test_input.txt")
+	commands, err := ReadCommandFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

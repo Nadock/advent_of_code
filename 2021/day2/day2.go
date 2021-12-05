@@ -1,10 +1,8 @@
-package main
+package day2
 
 import (
 	"fmt"
 	"log"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 type submarine struct {
@@ -37,7 +35,7 @@ func (s *submarine) Up(x int) {
 	}
 }
 
-func day2Part1(commands []utils.Command) (int, error) {
+func day2Part1(commands []Command) (int, error) {
 	sub := submarine{aimEnabled: false}
 
 	for _, command := range commands {
@@ -56,7 +54,7 @@ func day2Part1(commands []utils.Command) (int, error) {
 	return sub.depth * sub.horizontal, nil
 }
 
-func day2Part2(commands []utils.Command) (int, error) {
+func day2Part2(commands []Command) (int, error) {
 	sub := submarine{aimEnabled: true}
 
 	for _, command := range commands {

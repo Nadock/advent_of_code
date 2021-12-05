@@ -1,13 +1,11 @@
-package main
+package day4
 
 import (
 	"testing"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 func TestDay4Part1Example(t *testing.T) {
-	drawnNumbers, boards, err := utils.ReadBingoGameFile("../inputs/day4/example.txt")
+	drawnNumbers, boards, err := ReadBingoGameFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +22,7 @@ func TestDay4Part1Example(t *testing.T) {
 }
 
 func TestDay4Part1Test(t *testing.T) {
-	drawnNumbers, boards, err := utils.ReadBingoGameFile("../inputs/day4/test.txt")
+	drawnNumbers, boards, err := ReadBingoGameFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +39,7 @@ func TestDay4Part1Test(t *testing.T) {
 }
 
 func TestDay4Part2Example(t *testing.T) {
-	drawnNumbers, boards, err := utils.ReadBingoGameFile("../inputs/day4/example.txt")
+	drawnNumbers, boards, err := ReadBingoGameFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +56,7 @@ func TestDay4Part2Example(t *testing.T) {
 }
 
 func TestDay4Part2Test(t *testing.T) {
-	drawnNumbers, boards, err := utils.ReadBingoGameFile("../inputs/day4/test.txt")
+	drawnNumbers, boards, err := ReadBingoGameFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,13 +1,11 @@
-package main
+package day3
 
 import (
 	"testing"
-
-	"2021.advent-of-code.rileychase.net/internal/utils"
 )
 
 func TestDay3Part1Example(t *testing.T) {
-	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/example.txt")
+	lines, err := ReadBinaryDiagnosticFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +22,7 @@ func TestDay3Part1Example(t *testing.T) {
 }
 
 func TestDay3Part1Test(t *testing.T) {
-	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/test.txt")
+	lines, err := ReadBinaryDiagnosticFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +39,7 @@ func TestDay3Part1Test(t *testing.T) {
 }
 
 func TestDay3Part2Example(t *testing.T) {
-	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/example.txt")
+	lines, err := ReadBinaryDiagnosticFile("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,7 +56,7 @@ func TestDay3Part2Example(t *testing.T) {
 }
 
 func TestDay3Part2Test(t *testing.T) {
-	lines, err := utils.ReadBinaryDiagnosticFile("../inputs/day3/test.txt")
+	lines, err := ReadBinaryDiagnosticFile("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
