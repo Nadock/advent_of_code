@@ -27,8 +27,9 @@ func ReadLanternFishAgeFile(path string) ([]int, error) {
 	return ages, nil
 }
 
-func day6part1(ages []int) (int, error) {
-	log.Printf("initial state: %v", ages)
+func day6part1(ages []int) int {
+	// log.Printf("initial state: %v (%d)", ages, len(ages))
+	// log.Printf("day,ages")
 	for day := 0; day < 80; day++ {
 		var newFish []int
 
@@ -42,8 +43,9 @@ func day6part1(ages []int) (int, error) {
 		}
 
 		ages = append(ages, newFish...)
-		log.Printf("after %d days: %v", day, ages)
+		// log.Printf("after %d days: %v", day, ages)
+		// log.Printf("%d,%d", day+1, len(ages))
 	}
 
-	return len(ages), nil
+	return len(ages)
 }
