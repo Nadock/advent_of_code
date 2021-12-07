@@ -2,10 +2,12 @@ package day7
 
 import (
 	"testing"
+
+	"2021.advent-of-code.rileychase.net/internal"
 )
 
 func TestDay7Part1Example(t *testing.T) {
-	positions, err := ReadCrabPositionsFile("./example.txt")
+	positions, err := internal.ReadIntValues("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -19,7 +21,7 @@ func TestDay7Part1Example(t *testing.T) {
 }
 
 func TestDay7Part1Test(t *testing.T) {
-	positions, err := ReadCrabPositionsFile("./test.txt")
+	positions, err := internal.ReadIntValues("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +35,7 @@ func TestDay7Part1Test(t *testing.T) {
 }
 
 func TestDay7Part2Example(t *testing.T) {
-	positions, err := ReadCrabPositionsFile("./example.txt")
+	positions, err := internal.ReadIntValues("./example.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +49,7 @@ func TestDay7Part2Example(t *testing.T) {
 }
 
 func TestDay7Part2Test(t *testing.T) {
-	positions, err := ReadCrabPositionsFile("./test.txt")
+	positions, err := internal.ReadIntValues("./test.txt")
 	if err != nil {
 		t.Fatal(err)
 	}

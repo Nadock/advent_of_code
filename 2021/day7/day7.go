@@ -1,33 +1,9 @@
 package day7
 
 import (
-	"io/ioutil"
 	"log"
 	"math"
-	"strconv"
-	"strings"
 )
-
-func ReadCrabPositionsFile(path string) ([]int, error) {
-	input, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	values := strings.Split(strings.TrimSpace(string(input)), ",")
-	var positions []int
-	for _, value := range values {
-		if value != "" {
-			val, err := strconv.Atoi(value)
-			if err != nil {
-				return nil, err
-			}
-			positions = append(positions, val)
-		}
-	}
-
-	return positions, nil
-}
 
 func day7part1(positions []int) int {
 	min, max := listMinMax(positions)
