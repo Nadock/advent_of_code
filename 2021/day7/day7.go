@@ -33,13 +33,26 @@ func day7part1(positions []int) int {
 	min, max := listMinMax(positions)
 
 	minCost := -1
-	// minPos := 0
 	for i := min; i <= max; i++ {
-		cost := calcFuelCost(positions, i)
+		cost := calcFuelCostPart1(positions, i)
 		log.Printf("cost to move to position %d is %d", i, cost)
 		if minCost == -1 || cost < minCost {
 			minCost = cost
-			// minPos = i
+		}
+	}
+
+	return minCost
+}
+
+func day7part2(positions []int) int {
+	min, max := listMinMax(positions)
+
+	minCost := -1
+	for i := min; i <= max; i++ {
+		cost := calcFuelCostPart2(positions, i)
+		log.Printf("cost to move to position %d is %d", i, cost)
+		if minCost == -1 || cost < minCost {
+			minCost = cost
 		}
 	}
 
@@ -55,10 +68,22 @@ func listMinMax(l []int) (int, int) {
 	return min, max
 }
 
-func calcFuelCost(positions []int, moveTo int) int {
+func calcFuelCostPart1(positions []int, moveTo int) int {
 	total := 0
 	for _, p := range positions {
 		total += int(math.Abs(float64(p - moveTo)))
+	}
+	return total
+}
+
+func calcFuelCostPart2(positions []int, moveTo int) int {
+	total := 0
+	for _, p := range positions {
+		distance := math.Abs(float64(p - moveTo))
+		cost := (distance * (distance + 1)) / 2
+
+		log.Printf("distance from %d to %d is %f, costing %f", moveTo, p, distance, cost)
+		total += int(cost)
 	}
 	return total
 }
