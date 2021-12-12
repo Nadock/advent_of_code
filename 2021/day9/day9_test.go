@@ -26,26 +26,26 @@ func TestDay9Part1Test(t *testing.T) {
 	}
 }
 
-// func TestDay9Part2Example(t *testing.T) {
-// 	expected := 26
-// 	answer, err := day9part2("./example.txt")
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+func TestDay9Part2Example(t *testing.T) {
+	expected := 1134
+	answer, err := day9part2("./example.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	if answer != expected {
-// 		t.Errorf("expected answer of %d, got %d", expected, answer)
-// 	}
-// }
+	if answer != expected {
+		t.Errorf("expected answer of %d, got %d", expected, answer)
+	}
+}
 
-// func TestDay9Part2Test(t *testing.T) {
-// 	expected := 262
-// 	answer, err := day9part2("./test.txt")
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
+func TestDay9Part2Test(t *testing.T) {
+	expected := 1600104
+	answer, err := day9part2("./test.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-// 	if answer != expected {
-// 		t.Errorf("expected answer of %d, got %d", expected, answer)
-// 	}
-// }
+	if answer != expected {
+		t.Errorf("expected answer of %d, got %d", expected, answer)
+	}
+}
