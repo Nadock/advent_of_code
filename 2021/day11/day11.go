@@ -18,9 +18,22 @@ func day11part1(path string) (int, error) {
 		return 0, err
 	}
 
-	og.simulate(100)
+	og.simulatePart1(100)
 
 	return og.flashes, nil
+}
+
+func day11part2(path string) (int, error) {
+	lines, err := internal.ReadLines(path)
+	if err != nil {
+		return 0, err
+	}
+	og, err := newGrid(lines)
+	if err != nil {
+		return 0, err
+	}
+
+	return og.simulatePart2(1_000_000), nil // Just a limit to prevent unbounded searching
 }
 
 type octopusGrid struct {
@@ -47,7 +60,7 @@ func newGrid(lines []string) (*octopusGrid, error) {
 	return &g, nil
 }
 
-func (og *octopusGrid) simulate(steps int) {
+func (og *octopusGrid) simulatePart1(steps int) {
 	for i := 0; i < steps; i++ {
 		og.increaseEneryStep()
 		og.flashOctopusesStep()
@@ -121,4 +134,30 @@ func (og *octopusGrid) resetFlashedStep() {
 			}
 		}
 	}
+}
+
+func (og *octopusGrid) simulatePart2(steps int) int {
+	for i := 0; i < steps; i++ {
+		og.increaseEneryStep()
+		og.flashOctopusesStep()
+
+		if og.allFlashed() {
+			return i + 1
+		}
+
+		og.resetFlashedStep()
+		log.Printf("after %d steps, %d flashes", i+1, og.flashes)
+	}
+	return -1
+}
+
+func (og *octopusGrid) allFlashed() bool {
+	for x := 0; x < len(og.grid); x++ {
+		for y := 0; y < len(og.grid[x]); y++ {
+			if !og.flashed[x][y] {
+				return false
+			}
+		}
+	}
+	return true
 }
