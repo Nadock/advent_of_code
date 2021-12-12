@@ -1,7 +1,6 @@
 package day9
 
 import (
-	"log"
 	"strconv"
 	"strings"
 
@@ -18,21 +17,20 @@ func day9part1(path string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Printf("%v", hm)
-	log.Printf("%v", lowPoints(hm))
 
 	sum := 0
-	for _, point := range lowPoints(hm) {
-		log.Printf("risk at %v = %d", point, riskLevel(hm, point))
-		sum += riskLevel(hm, point)
+	for _, point := range hm.lowPoints() {
+		sum += hm.riskLevel(point[0], point[1])
 	}
 
 	return sum, nil
 }
 
+type heightmap [][]int
+
 // x,y grid where 0,0 is the top left corner
-func newHeightmap(gridRows []string) ([][]int, error) {
-	var hm [][]int
+func newHeightmap(gridRows []string) (*heightmap, error) {
+	var hm heightmap
 
 	for _, row := range gridRows {
 		var values []int
@@ -46,33 +44,41 @@ func newHeightmap(gridRows []string) ([][]int, error) {
 		hm = append(hm, values)
 	}
 
-	return hm, nil
+	return &hm, nil
 }
 
-func lowPoints(hm [][]int) [][]int {
+func (hm *heightmap) inHeightmap(x, y int) bool {
+	if x < 0 || x >= len(*hm) {
+		return false
+	}
+	if y < 0 || y >= len((*hm)[x]) {
+		return false
+	}
+	return true
+}
+
+func (hm *heightmap) lowPoints() [][]int {
 	var points [][]int
 
-	xMax := len(hm)
-	for x := 0; x < xMax; x++ {
-		yMax := len(hm[x])
-		for y := 0; y < yMax; y++ {
+	for x := 0; x < len(*hm); x++ {
+		for y := 0; y < len((*hm)[x]); y++ {
 			lower := true
 
 			// up := hm[x][y-1]
-			if y-1 >= 0 {
-				lower = lower && (hm[x][y] < hm[x][y-1])
+			if hm.inHeightmap(x, y-1) {
+				lower = lower && ((*hm)[x][y] < (*hm)[x][y-1])
 			}
 			// down := hm[x][y+1]
-			if y+1 < yMax {
-				lower = lower && (hm[x][y] < hm[x][y+1])
+			if hm.inHeightmap(x, y+1) {
+				lower = lower && ((*hm)[x][y] < (*hm)[x][y+1])
 			}
 			// left := hm[x-1][y]
-			if x-1 >= 0 {
-				lower = lower && (hm[x][y] < hm[x-1][y])
+			if hm.inHeightmap(x-1, y) {
+				lower = lower && ((*hm)[x][y] < (*hm)[x-1][y])
 			}
 			// right := hm[x+1][y]
-			if x+1 < xMax {
-				lower = lower && (hm[x][y] < hm[x+1][y])
+			if hm.inHeightmap(x+1, y) {
+				lower = lower && ((*hm)[x][y] < (*hm)[x+1][y])
 			}
 
 			if lower {
@@ -84,6 +90,6 @@ func lowPoints(hm [][]int) [][]int {
 	return points
 }
 
-func riskLevel(hm [][]int, point []int) int {
-	return hm[point[0]][point[1]] + 1
+func (hm *heightmap) riskLevel(x, y int) int {
+	return (*hm)[x][y] + 1
 }
