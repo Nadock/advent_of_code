@@ -1,6 +1,8 @@
 package day9
 
 import (
+	"log"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -92,4 +94,60 @@ func (hm *heightmap) lowPoints() [][]int {
 
 func (hm *heightmap) riskLevel(x, y int) int {
 	return (*hm)[x][y] + 1
+}
+
+func day9part2(path string) (int, error) {
+	lines, err := internal.ReadLines(path)
+	if err != nil {
+		return 0, err
+	}
+
+	hm, err := newHeightmap(lines)
+	if err != nil {
+		return 0, err
+	}
+
+	var basinSizes []int
+	for _, point := range hm.lowPoints() {
+		size := hm.basinSize(point[0], point[1])
+		basinSizes = append(basinSizes, size)
+		log.Printf("basin size at %v = %d", point, size)
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(basinSizes)))
+	mul := 1
+	for _, size := range basinSizes[:3] {
+		mul *= size
+	}
+
+	return mul, nil
+}
+
+func (hm *heightmap) basinSize(x, y int) int {
+	// Keep track of all points we've already seen
+	var seen [][]bool
+	for x := range *hm {
+		seen = append(seen, make([]bool, len((*hm)[x])))
+	}
+
+	return hm.search(&seen, x, y)
+}
+
+func (hm *heightmap) search(seen *[][]bool, x, y int) int {
+	if !hm.inHeightmap(x, y) || (*seen)[x][y] || (*hm)[x][y] == 9 {
+		return 0
+	}
+
+	// Mark current point as seen so we don't double count it
+	(*seen)[x][y] = true
+
+	count := 1
+
+	// Search up, down, left, and right of x,y
+	count += hm.search(seen, x-1, y)
+	count += hm.search(seen, x+1, y)
+	count += hm.search(seen, x, y-1)
+	count += hm.search(seen, x, y+1)
+
+	return count
 }
