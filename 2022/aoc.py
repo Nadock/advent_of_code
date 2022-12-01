@@ -41,7 +41,7 @@ def scaffold_day(day: str) -> pathlib.Path:
     except ValueError as ex:
         raise ValueError(f"Unknown AOC day '{day}'") from ex
 
-    folder = pathlib.Path(f"./day{day_i}").absolute()
+    folder = pathlib.Path(f"./src/day{day_i}").absolute()
     if folder.exists():
         raise OSError(f"Folder for day {day_i} already exists: {folder}")
 
@@ -84,15 +84,15 @@ def run(day: str, part: str, input: str):  # pylint: disable=redefined-builtin
         raise ValueError(f"Unknown AOC part '{part}'") from ex
 
     try:
-        input_i = int(part.lower().strip().replace("input", ""))
+        input_i = int(input.lower().strip().replace("input", ""))
     except (ValueError, AttributeError) as ex:
         raise ValueError(f"Unknown AOC puzzle input file '{input}'") from ex
 
-    path = pathlib.Path(f"./day{day_i}/input{input_i}.txt").absolute()
+    path = pathlib.Path(f"./src/day{day_i}/input{input_i}.txt").absolute()
     if not path.is_file():
         raise OSError(f"No AOC input file at path: {path}")
 
-    module = importlib.import_module(f"day{day_i}.day{day_i}", "2022")
+    module = importlib.import_module(f"src.day{day_i}.day{day_i}", ".")
     func = getattr(module, f"part{part_i}", None)
     if not func:
         raise ValueError(f"Unable to find function part{part_i} in day{day_i} module")
