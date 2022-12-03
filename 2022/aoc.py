@@ -82,10 +82,13 @@ def get_input_for_day(day: int) -> pathlib.Path:
         headers={"user-agent": "aoc@rileychase.net"},
     )
     input0_resp.raise_for_status()
-    code_tag = bs4.BeautifulSoup(input0_resp.text, features="html.parser").find("code")
-    if not isinstance(code_tag, bs4.Tag):
-        raise TypeError(f"could not parse HTML for day {day} puzzle")
-    input0.write_text(str(list(code_tag.children)[0]), "utf-8")
+    input0.write_text(
+        bs4.BeautifulSoup(input0_resp.text, features="html.parser")
+        .find("pre")
+        .find("code")
+        .text,
+        "utf-8",
+    )
 
     return input0.parent
 
