@@ -6,6 +6,38 @@ This repo contains my solution code for each puzzle. Each puzzle typically has t
 easier and the second an extension of the first. Our progress on the [Advent of Code](https://adventofcode.com) website
 is linked to our GitHub account.
 
+## 2022
+
+:star: [6 / 50](https://adventofcode.com/2021)
+
+| Day | Score         | Solved       | Solution                       |
+| --- | ------------- | ------------ | ------------------------------ |
+| 1   | :star: :star: | `2022-12-01` | [2022/src/day1](2022/src/day1) |
+| 2   | :star: :star: | `2022-12-02` | [2022/src/day2](2022/src/day2) |
+| 3   | :star: :star: | `2022-12-03` | [2022/src/day3](2022/src/day3) |
+| 4   |               |              |                                |
+| 5   |               |              |                                |
+| 6   |               |              |                                |
+| 7   |               |              |                                |
+| 8   |               |              |                                |
+| 9   |               |              |                                |
+| 10  |               |              |                                |
+| 11  |               |              |                                |
+| 12  |               |              |                                |
+| 13  |               |              |                                |
+| 14  |               |              |                                |
+| 15  |               |              |                                |
+| 16  |               |              |                                |
+| 17  |               |              |                                |
+| 18  |               |              |                                |
+| 19  |               |              |                                |
+| 20  |               |              |                                |
+| 21  |               |              |                                |
+| 22  |               |              |                                |
+| 23  |               |              |                                |
+| 24  |               |              |                                |
+| 25  |               |              |                                |
+
 ## 2021
 
 :star: [24 / 50](https://adventofcode.com/2021)
