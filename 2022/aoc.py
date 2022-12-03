@@ -4,6 +4,10 @@ import importlib
 import pathlib
 import sys
 
+import bs4
+import requests
+from requests import utils
+
 
 def _argparse() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run an Advent of Code 2022 challenge")
@@ -34,6 +38,58 @@ def _argparse() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def get_input_for_day(day: int) -> pathlib.Path:
+    """
+    Attempt to download the input details from the AOC site for a given day.
+
+    This function makes two HTTP requests, the first to the `/input` endpoint for that
+    day to retrieve the user-unique puzzle input. This requires a session token in the
+    `./session_cookie` file.
+    The second request to the the main puzzle page to attempt to extract the example
+    input. This is less stable so it is done second, and relies on the example being
+    the first `<code>` tag on the page.
+
+    The returned path is the directory containing the two input files.
+    """
+    input0 = pathlib.Path(f"./src/day{day}/input0.txt").absolute()
+    input1 = pathlib.Path(f"./src/day{day}/input1.txt").absolute()
+    if not input0.is_file() or not input1.is_file():
+        raise OSError(f"One or both input files are missing in {input0.parent}")
+
+    # Read session cookie from disk
+    session_cookie = pathlib.Path("./.session_cookie").absolute()
+    if not session_cookie.is_file():
+        session_cookie.write_text("", "utf-8")
+        raise OSError(
+            f"Please copy your session cookie from your web browser into {session_cookie}"
+        )
+    session = session_cookie.read_text("utf-8").strip()
+
+    # Get input 1 from the input endpoint
+    input1_resp = requests.get(
+        f"https://adventofcode.com/2022/day/{day}/input",
+        cookies=utils.cookiejar_from_dict({"session": session}),
+        timeout=10.0,
+        headers={"user-agent": "aoc@rileychase.net"},
+    )
+    input1_resp.raise_for_status()
+    input1.write_text(input1_resp.text, "utf-8")
+
+    # Get input 0 from the first code block on the puzzle page
+    input0_resp = requests.get(
+        f"https://adventofcode.com/2022/day/{day}",
+        timeout=10.0,
+        headers={"user-agent": "aoc@rileychase.net"},
+    )
+    input0_resp.raise_for_status()
+    code_tag = bs4.BeautifulSoup(input0_resp.text, features="html.parser").find("code")
+    if not isinstance(code_tag, bs4.Tag):
+        raise TypeError(f"could not parse HTML for day {day} puzzle")
+    input0.write_text(str(list(code_tag.children)[0]), "utf-8")
+
+    return input0.parent
+
+
 def scaffold_day(day: str) -> pathlib.Path:
     """Scaffold files for a single day's AOC challenge solution code."""
     try:
@@ -61,10 +117,10 @@ def scaffold_day(day: str) -> pathlib.Path:
     )
 
     folder.mkdir(parents=True, exist_ok=False)
-    (folder / "__init__.py").write_text("")
-    (folder / f"day{day_i}.py").write_text(initial_pycode)
-    (folder / "input0.txt").write_text("")
-    (folder / "input1.txt").write_text("")
+    (folder / "__init__.py").write_text("", "utf-8")
+    (folder / f"day{day_i}.py").write_text(initial_pycode, "utf-8")
+    (folder / "input0.txt").write_text("", "utf-8")
+    (folder / "input1.txt").write_text("", "utf-8")
 
     return folder
 
@@ -103,10 +159,22 @@ def run(day: str, part: str, input: str):  # pylint: disable=redefined-builtin
 if __name__ == "__main__":
     args = _argparse()
     if args.new_day is not None:
-        print("Scaffolded new day in", scaffold_day(args.new_day), file=sys.stderr)
+        p1 = scaffold_day(args.new_day)
+        print(f"Scaffolded day {args.new_day} files...", file=sys.stderr)
+
+        p2 = get_input_for_day(args.new_day)
+        print(f"Retrieved puzzle inputs for day {args.new_day}...", file=sys.stderr)
+
+        if p1 != p2:
+            raise OSError(
+                "Something fucking weird happened and the scaffolded files ended up in "
+                f"{p1} but the puzzle inputs ended up in {p2}"
+            )
+        print(f"Day {args.new_day} is ready to be solved in:", file=sys.stderr)
+        print(p1)
     else:
         print(
             f"Solution for day {args.day}, part {args.part}, input {args.input}:",
-            run(args.day, args.part, args.input),
             file=sys.stderr,
         )
+        print(run(args.day, args.part, args.input))
