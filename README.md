@@ -15,6 +15,7 @@ is linked to our GitHub account.
 | 1   | :star: :star: | `2022-12-01` | [2022/src/day1](2022/src/day1) |
 | 2   | :star: :star: | `2022-12-02` | [2022/src/day2](2022/src/day2) |
 | 3   | :star: :star: | `2022-12-03` | [2022/src/day3](2022/src/day3) |
+| 4   | :star: :star: | `2022-12-04` | [2022/src/day4](2022/src/day4) |
 
 ## 2021
 
