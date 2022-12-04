@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import argparse
+import datetime
 import importlib
 import pathlib
 import sys
+import zoneinfo
 
 import bs4
 import requests
@@ -104,8 +106,11 @@ def scaffold_day(day: str) -> pathlib.Path:
     if folder.exists():
         raise OSError(f"Folder for day {day_i} already exists: {folder}")
 
+    now = datetime.datetime.now(zoneinfo.ZoneInfo("Australia/Adelaide"))
     initial_pycode = "\n".join(
         [
+            f'"""AOC Day {day_i} started at {now.isoformat()}"""',
+            "",
             "import pathlib",
             "",
             "",
