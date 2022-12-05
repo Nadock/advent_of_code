@@ -1,12 +1,19 @@
 # Advent of Code
 
-[Advent of Code](https://adventofcode.com) is a is an advent calendar of small programming puzzles. A new calendar is release every December.
+[Advent of Code](https://adventofcode.com) is a is an advent calendar of small programming puzzles. A new calendar of
+puzzles is released day-by-day every December.
 
-This repo contains my solution code for each puzzle. Each puzzle typically has two parts, the first part usually being
-easier and the second an extension of the first. Our progress on the [Advent of Code](https://adventofcode.com) website
-is linked to our GitHub account.
+This repo contains my solution code for each puzzle and the my unique inputs for that puzzle. Each puzzle typically has
+two parts, the first part usually being easier and the second an extension of the first.
+
+My account on the [AoC](https://adventofcode.com) website is linked to this GitHub account.
+
+This code is all MIT licensed, so if you would like to borrow from it you are welcome to. However, the code is not
+production quality in any way so don't expect anything particularly performant, clean, beautify, etc.
 
 ## 2022
+
+The solutions for 2022 are written in Python, and generally I'm taking a more relaxed approach to this year's calendar.
 
 :star: [6 / 50](https://adventofcode.com/2022)
 
@@ -19,6 +26,9 @@ is linked to our GitHub account.
 | 5   | :star: :star: | `2022-12-05` | [2022/src/day5](2022/src/day5) |
 
 ## 2021
+
+2021 was the first year I participated and I was using it as practice for writing Golang, which I hadn't done in a long
+time.
 
 :star: [24 / 50](https://adventofcode.com/2021)
 
