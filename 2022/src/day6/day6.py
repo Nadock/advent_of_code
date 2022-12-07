@@ -1,11 +1,9 @@
 """AOC Day 6 started at 2022-12-06T16:08:27.841108+10:30"""
 
-import pathlib
 
-
-def part1(path: pathlib.Path):
+def part1(puzzle: str):
     """Calculates the solution to day 6's first part."""
-    buf = path.read_text("utf-8").strip()
+    buf = puzzle.strip()
 
     start = -1
     for idx in range(0, len(buf)):
@@ -17,9 +15,9 @@ def part1(path: pathlib.Path):
     return start
 
 
-def part2(path: pathlib.Path):
+def part2(puzzle: str):
     """Calculates the solution to day 6's second part."""
-    buf = path.read_text("utf-8").strip()
+    buf = puzzle.strip()
 
     start = -1
     for idx in range(0, len(buf)):

@@ -2,7 +2,7 @@ import pathlib
 from typing import Callable
 
 
-def read_list_of_lists(path: pathlib.Path) -> list[list]:
+def read_list_of_lists(puzzle: str) -> list[list]:
     """
     Read a text file and parse it as a list of lists.
 
@@ -20,7 +20,7 @@ def read_list_of_lists(path: pathlib.Path) -> list[list]:
     lists = []
     curr_list = []
 
-    for line in path.read_text("utf-8").split("\n"):
+    for line in puzzle.split("\n"):
         if not line:
             lists.append(curr_list)
             curr_list = []

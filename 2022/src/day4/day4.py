@@ -1,11 +1,8 @@
-import pathlib
-
-
-def part1(path: pathlib.Path):
+def part1(puzzle: str):
     """Calculates the solution to day 4's first part."""
     count = 0
 
-    for line in path.read_text("utf-8").strip().split("\n"):
+    for line in puzzle.strip().split("\n"):
         range1 = [int(i) for i in line.split(",")[0].split("-")]
         range2 = [int(i) for i in line.split(",")[1].split("-")]
 
@@ -21,11 +18,11 @@ def range_full_overlap(range1: list[int], range2: list[int]) -> bool:
     return False
 
 
-def part2(path: pathlib.Path):
+def part2(puzzle: str):
     """Calculates the solution to day 4's second part."""
     count = 0
 
-    for line in path.read_text("utf-8").strip().split("\n"):
+    for line in puzzle.strip().split("\n"):
         range1 = [int(i) for i in line.split(",")[0].split("-")]
         range2 = [int(i) for i in line.split(",")[1].split("-")]
 

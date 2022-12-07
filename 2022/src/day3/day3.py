@@ -1,4 +1,3 @@
-import pathlib
 import string
 
 _priorities = dict(zip(string.ascii_letters, range(1, 53)))
@@ -8,11 +7,11 @@ def item_priority(item: str) -> int:
     return _priorities[item]
 
 
-def part1(path: pathlib.Path):
+def part1(puzzle: str):
     """Calculates the solution to day 3's first part."""
     count = 0
 
-    for line in path.read_text("utf-8").split("\n"):
+    for line in puzzle.split("\n"):
         compartment1 = set(line[0 : len(line) // 2])
         compartment2 = set(line[len(line) // 2 :])
 
@@ -22,9 +21,9 @@ def part1(path: pathlib.Path):
     return count
 
 
-def part2(path: pathlib.Path):
+def part2(puzzle: str):
     """Calculates the solution to day 3's second part."""
-    lines = path.read_text("utf-8").strip().split("\n")
+    lines = puzzle.strip().split("\n")
     count = 0
 
     for idx in range(0, len(lines), 3):

@@ -1,7 +1,5 @@
 """AOC Day 5 started at 2022-12-05T15:30:00.934665+10:30"""
 
-import pathlib
-
 
 class Stack:
     def __init__(self) -> None:
@@ -23,13 +21,13 @@ class Stack:
         return self._contents[-1]
 
 
-def part1(path: pathlib.Path):
+def part1(puzzle: str):
     """Calculates the solution to day 5's first part."""
 
     crates: list[str] = []
     moves: list[str] = []
     switch = False
-    for line in path.read_text("utf-8").splitlines():
+    for line in puzzle.splitlines():
         if not line:
             switch = True
         elif not switch:
@@ -58,12 +56,12 @@ def part1(path: pathlib.Path):
     return "".join([s.peak() for s in stacks.values()])
 
 
-def part2(path: pathlib.Path):
+def part2(puzzle: str):
     """Calculates the solution to day 5's second part."""
     crates: list[str] = []
     moves: list[str] = []
     switch = False
-    for line in path.read_text("utf-8").splitlines():
+    for line in puzzle.splitlines():
         if not line:
             switch = True
         elif not switch:

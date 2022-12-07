@@ -1,4 +1,3 @@
-import pathlib
 from typing import Optional
 
 # Convert encoded instructions to RPS
@@ -63,10 +62,10 @@ def _win_rps(us: str, them: str) -> Optional[bool]:
     return None
 
 
-def part1(path: pathlib.Path):
+def part1(puzzle: str):
     """Calculates the solution to day 2's first part."""
     score = 0
-    for line in path.read_text("utf-8").split("\n"):
+    for line in puzzle.split("\n"):
         if line:
             them = _rps_syntax[line.split(" ")[0]]
             us = _rps_syntax[line.split(" ")[1]]
@@ -74,10 +73,10 @@ def part1(path: pathlib.Path):
     return score
 
 
-def part2(path: pathlib.Path):
+def part2(puzzle: str):
     """Calculates the solution to day 2's second part."""
     score = 0
-    for line in path.read_text("utf-8").split("\n"):
+    for line in puzzle.split("\n"):
         if line:
             them = _rps_syntax[line.split(" ")[0]]
 

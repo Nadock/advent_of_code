@@ -111,14 +111,12 @@ def scaffold_day(day: str) -> pathlib.Path:
         [
             f'"""AOC Day {day_i} started at {now.isoformat()}"""',
             "",
-            "import pathlib",
             "",
-            "",
-            "def part1(path: pathlib.Path):",
+            "def part1(puzzle: str):",
             f'    """Calculates the solution to day {day_i}\'s first part."""',
             "",
             "",
-            "def part2(path: pathlib.Path):",
+            "def part2(puzzle: str):",
             f'    """Calculates the solution to day {day_i}\'s second part."""',
             "",
         ]
@@ -155,13 +153,14 @@ def run(day: str, part: str, input: str):  # pylint: disable=redefined-builtin
     path = pathlib.Path(f"./src/day{day_i}/input{input_i}.txt").absolute()
     if not path.is_file():
         raise OSError(f"No AOC input file at path: {path}")
+    text = path.read_text("utf-8")
 
     module = importlib.import_module(f"src.day{day_i}.day{day_i}", ".")
     func = getattr(module, f"part{part_i}", None)
     if not func:
         raise ValueError(f"Unable to find function part{part_i} in day{day_i} module")
 
-    return func(path)
+    return func(text)
 
 
 if __name__ == "__main__":
