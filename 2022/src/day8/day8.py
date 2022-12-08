@@ -59,8 +59,6 @@ def part2(puzzle: str):
 
 
 def up(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
-    if row == 0:
-        return []
     l = []
     for r in range(row - 1, -1, -1):
         l.append(grid[r][col])
@@ -70,8 +68,6 @@ def up(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
 
 
 def down(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
-    if row + 1 == len(grid):
-        return []
     l = []
     for r in range(row + 1, len(grid)):
         l.append(grid[r][col])
@@ -81,8 +77,6 @@ def down(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
 
 
 def left(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
-    if col == 0:
-        return []
     l = []
     for c in range(col - 1, -1, -1):
         l.append(grid[row][c])
@@ -92,8 +86,6 @@ def left(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
 
 
 def right(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
-    if col + 1 == len(grid[row]):
-        return []
     l = []
     for c in range(col + 1, len(grid[row])):
         l.append(grid[row][c])
