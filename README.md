@@ -15,7 +15,7 @@ production quality in any way so don't expect anything particularly performant, 
 
 The solutions for 2022 are written in Python, and generally I'm taking a more relaxed approach to this year's calendar.
 
-:star: [6 / 50](https://adventofcode.com/2022)
+:star: [16 / 50](https://adventofcode.com/2022)
 
 | Day | Score         | Solved       | Solution                       |
 | --- | ------------- | ------------ | ------------------------------ |
@@ -24,6 +24,9 @@ The solutions for 2022 are written in Python, and generally I'm taking a more re
 | 3   | :star: :star: | `2022-12-03` | [2022/src/day3](2022/src/day3) |
 | 4   | :star: :star: | `2022-12-04` | [2022/src/day4](2022/src/day4) |
 | 5   | :star: :star: | `2022-12-05` | [2022/src/day5](2022/src/day5) |
+| 6   | :star: :star: | `2022-12-06` | [2022/src/day6](2022/src/day6) |
+| 7   | :star: :star: | `2022-12-07` | [2022/src/day7](2022/src/day7) |
+| 8   | :star: :star: | `2022-12-08` | [2022/src/day8](2022/src/day8) |
 
 ## 2021
 
