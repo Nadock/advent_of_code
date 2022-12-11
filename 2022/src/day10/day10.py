@@ -33,7 +33,7 @@ def part2(puzzle: str):
     """Calculates the solution to day 10's second part."""
     sprite_pos = 1  # AKA "register X"
     cycle = 1
-    pixels = [["." for _ in range(0, 40)] for _ in range(0, 6)]
+    pixels = [[" " for _ in range(0, 40)] for _ in range(0, 6)]
 
     def check_reg_x():
         row = cycle // 40
