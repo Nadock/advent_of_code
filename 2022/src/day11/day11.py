@@ -69,40 +69,21 @@ def part1(puzzle: str):
             if_false=lines[5].replace("    If false: ", ""),
         )
 
-    # print(monkeys[0])
-
-    for round in range(0, 20):
-        # print(f"{round=}")
-
-        for id, monkey in monkeys.items():
-            # print(f"  monkey {id}")
-
+    for _ in range(0, 20):
+        for monkey in monkeys.values():
             items = monkey.items.copy()
             monkey.items = []
 
             for item in items:
-                # print(f"    {item=}")
                 item = monkey.do_operation(item)
-                # print(f"    monkey {id} operation changed item to {item=}")
                 item //= 3
-                # print(f"    monkey {id} boredom changed item to {item=}")
                 if monkey.do_test(item):
-                    # print(
-                    #     f"    monkey {id} test was true, passed {item=} to {monkey.if_true_monkey()}"
-                    # )
                     monkeys[monkey.if_true_monkey()].items.append(item)
                 else:
-                    # print(
-                    #     f"    monkey {id} test was false, passed {item=} to {monkey.if_false_monkey()}"
-                    # )
                     monkeys[monkey.if_false_monkey()].items.append(item)
-        #         break
-        #     break
-        # break
 
     inspections = []
-    for id, monkey in monkeys.items():
-        # print(f"monkey {id} inspected {monkey.inspections} items")
+    for monkey in monkeys.values():
         inspections.append(monkey.inspections)
 
     inspections.sort(reverse=True)
@@ -125,11 +106,11 @@ def part2(puzzle: str):
         )
 
     mod_value = 1
-    for m in monkeys.values():
-        mod_value *= m.test_number()
+    for monkey in monkeys.values():
+        mod_value *= monkey.test_number()
 
-    for round in range(0, 10_000):
-        for id, monkey in monkeys.items():
+    for _ in range(0, 10_000):
+        for monkey in monkeys.values():
             items = monkey.items.copy()
             monkey.items = []
 
@@ -142,7 +123,7 @@ def part2(puzzle: str):
                     monkeys[monkey.if_false_monkey()].items.append(item)
 
     inspections = []
-    for _, monkey in monkeys.items():
+    for monkey in monkeys.values():
         inspections.append(monkey.inspections)
 
     inspections.sort(reverse=True)
