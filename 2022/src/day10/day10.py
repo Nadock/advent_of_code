@@ -33,15 +33,13 @@ def part2(puzzle: str):
     """Calculates the solution to day 10's second part."""
     sprite_pos = 1  # AKA "register X"
     cycle = 1
-
-    pixels = []
+    pixels = [["." for _ in range(0, 40)] for _ in range(0, 6)]
 
     def check_reg_x():
-        crt_pos = (cycle - 1) % 40
-        if crt_pos in [sprite_pos - 1, sprite_pos, sprite_pos + 1]:
-            pixels.append("#")
-        else:
-            pixels.append(".")
+        row = cycle // 40
+        col = (cycle - 1) % 40
+        if col in [sprite_pos - 1, sprite_pos, sprite_pos + 1]:
+            pixels[row][col] = "#"
 
     for line in puzzle.strip().splitlines():
         args = line.split(" ")
@@ -57,13 +55,4 @@ def part2(puzzle: str):
             sprite_pos += int(args[1])
             check_reg_x()
 
-    return "\n".join(
-        [
-            "".join(pixels[:40]),
-            "".join(pixels[40:80]),
-            "".join(pixels[80:120]),
-            "".join(pixels[120:160]),
-            "".join(pixels[160:200]),
-            "".join(pixels[200:240]),
-        ]
-    )
+    return "\n".join(["".join(row) for row in pixels])
