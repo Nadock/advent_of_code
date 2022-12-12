@@ -17,16 +17,20 @@ The solutions for 2022 are written in Python, and generally I'm taking a more re
 
 :star: [16 / 50](https://adventofcode.com/2022)
 
-| Day | Score         | Solved       | Solution                       |
-| --- | ------------- | ------------ | ------------------------------ |
-| 1   | :star: :star: | `2022-12-01` | [2022/src/day1](2022/src/day1) |
-| 2   | :star: :star: | `2022-12-02` | [2022/src/day2](2022/src/day2) |
-| 3   | :star: :star: | `2022-12-03` | [2022/src/day3](2022/src/day3) |
-| 4   | :star: :star: | `2022-12-04` | [2022/src/day4](2022/src/day4) |
-| 5   | :star: :star: | `2022-12-05` | [2022/src/day5](2022/src/day5) |
-| 6   | :star: :star: | `2022-12-06` | [2022/src/day6](2022/src/day6) |
-| 7   | :star: :star: | `2022-12-07` | [2022/src/day7](2022/src/day7) |
-| 8   | :star: :star: | `2022-12-08` | [2022/src/day8](2022/src/day8) |
+| Day | Score         | Solved       | Solution                         |
+| --- | ------------- | ------------ | -------------------------------- |
+| 1   | :star: :star: | `2022-12-01` | [2022/src/day1](2022/src/day1)   |
+| 2   | :star: :star: | `2022-12-02` | [2022/src/day2](2022/src/day2)   |
+| 3   | :star: :star: | `2022-12-03` | [2022/src/day3](2022/src/day3)   |
+| 4   | :star: :star: | `2022-12-04` | [2022/src/day4](2022/src/day4)   |
+| 5   | :star: :star: | `2022-12-05` | [2022/src/day5](2022/src/day5)   |
+| 6   | :star: :star: | `2022-12-06` | [2022/src/day6](2022/src/day6)   |
+| 7   | :star: :star: | `2022-12-07` | [2022/src/day7](2022/src/day7)   |
+| 8   | :star: :star: | `2022-12-08` | [2022/src/day8](2022/src/day8)   |
+| 9   | :star: :star: | `2022-12-09` | [2022/src/day9](2022/src/day9)   |
+| 10  | :star: :star: | `2022-12-10` | [2022/src/day10](2022/src/day10) |
+| 11  | :star: :star: | `2022-12-11` | [2022/src/day11](2022/src/day11) |
+| 12  | :star: :star: | `2022-12-12` | [2022/src/day12](2022/src/day12) |
 
 ## 2021
 
