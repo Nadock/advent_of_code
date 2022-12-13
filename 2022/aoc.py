@@ -1,14 +1,30 @@
 #!/usr/bin/env python
 import argparse
+import dataclasses
 import datetime
 import importlib
 import pathlib
 import sys
+import time
+import traceback
 import zoneinfo
+from typing import Any, Optional
 
 import bs4
 import requests
 from requests import utils
+
+
+@dataclasses.dataclass
+class Result:
+    value: Any
+    etime: int
+    error: Optional[Exception] = None
+
+    def humanise_etime(self) -> str:
+        if self.etime / 1_000_000_000 > 1:
+            return f"{self.etime / 1_000_000_000}s"
+        return f"{self.etime / 1_000_000}ms"
 
 
 def _argparse() -> argparse.Namespace:
@@ -131,7 +147,7 @@ def scaffold_day(day: str) -> pathlib.Path:
     return folder
 
 
-def run(day: str, part: str, input: str):  # pylint: disable=redefined-builtin
+def run(day: str, part: str, input: str) -> Result:  # pylint: disable=redefined-builtin
     """
     Load and run the AOC challenge solution code for a given `day`, `part`, & `input`.
     """
@@ -160,10 +176,43 @@ def run(day: str, part: str, input: str):  # pylint: disable=redefined-builtin
     if not func:
         raise ValueError(f"Unable to find function part{part_i} in day{day_i} module")
 
-    return func(text)
+    result = None
+    err = None
+
+    t_0 = time.time_ns()
+    try:
+        result = func(text)
+    except Exception as ex:  # pylint:disable=broad-except
+        err = ex
+    t_1 = time.time_ns()
+
+    return Result(value=result, etime=t_1 - t_0, error=err)
 
 
-if __name__ == "__main__":
+def _print_result(args: argparse.Namespace, result: Result) -> None:
+    if result.error is None:
+        print(
+            (
+                f"Day {args.day}, part {args.part}, input "
+                f"{args.input} completed in {result.humanise_etime()}:\n"
+            ),
+            file=sys.stderr,
+        )
+        print(result.value)
+    else:
+        print(
+            (
+                f"Solution for day {args.day}, part {args.part}, input "
+                f"{args.input} encountered an error after {result.humanise_etime()}:\n"
+            ),
+            file=sys.stderr,
+        )
+        traceback.print_exception(
+            type(result.error), result.error, result.error.__traceback__
+        )
+
+
+def main():
     args = _argparse()
     if args.new_day is not None:
         p1 = scaffold_day(args.new_day)
@@ -180,8 +229,8 @@ if __name__ == "__main__":
         print(f"Day {args.new_day} is ready to be solved in:", file=sys.stderr)
         print(p1)
     else:
-        print(
-            f"Solution for day {args.day}, part {args.part}, input {args.input}:",
-            file=sys.stderr,
-        )
-        print(run(args.day, args.part, args.input))
+        _print_result(args, run(args.day, args.part, args.input))
+
+
+if __name__ == "__main__":
+    main()
