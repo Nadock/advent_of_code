@@ -13,9 +13,11 @@ jobs:
         uses: actions/setup-python@v3
 
       - name: Install Dependecies
+        working-directory: ./2022
         run: |
           pip install pipenv
           pipenv install --dev
 
       - name: Test existing solutions
+        working-directory: ./2022
         run: pipenv run ./aoc.py -t
