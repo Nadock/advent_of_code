@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# pylint: disable=redefined-builtin
 import argparse
 import dataclasses
 import datetime
+import difflib
 import importlib
 import json
 import pathlib
@@ -58,6 +60,13 @@ def _argparse() -> argparse.Namespace:
         help="The path to the history file to record execution history in.",
         metavar="PATH",
         default=".aoc_history.json",
+    )
+    parser.add_argument(
+        "--test",
+        "-t",
+        help="Run pre-existing AOC puzzle solutions and check them against stored results.",
+        action="store_true",
+        default=False,
     )
 
     return parser.parse_args()
@@ -154,7 +163,7 @@ def scaffold_day(day: str) -> pathlib.Path:
     return folder
 
 
-def run(day: str, part: str, input: str) -> Result:  # pylint: disable=redefined-builtin
+def run(day: str, part: str, input: str) -> Result:
     """
     Load and run the AOC challenge solution code for a given `day`, `part`, & `input`.
     """
@@ -194,6 +203,57 @@ def run(day: str, part: str, input: str) -> Result:  # pylint: disable=redefined
     t_1 = time.time_ns()
 
     return Result(value=result, exec_time=t_1 - t_0, error=err)
+
+
+def _test_solutions(args: argparse.Namespace) -> int:
+    history = _load_history(args)
+
+    days: list[int] = []
+    if args.day:
+        days.append(args.day)
+    else:
+        for path in pathlib.Path("./src").absolute().iterdir():
+            if path.is_dir() and path.name.startswith("day"):
+                days.append(int(path.name.replace("day", "")))
+    days.sort()
+
+    parts: list[str] = [args.part] if args.part else ["1", "2"]
+    inputs: list[str] = [args.input] if args.input else ["0", "1"]
+
+    fails = 0
+
+    for day in days:
+        day = str(day)
+        for part in parts:
+            for input in inputs:
+                current = run(day, part, input)
+                historical = history["2022"][day][part][input]["last_run"]["result"]
+
+                if current.error is not None:
+                    _print_result(args, current)
+                elif current.value != historical:
+                    fails += 1
+                    print(
+                        f"Day {day}, part {part}, input {input} FAILED ❌ (-want/+got)",
+                        file=sys.stderr,
+                    )
+                    print(
+                        "\n".join(
+                            difflib.ndiff(
+                                str(historical).splitlines(),
+                                str(current.value).splitlines(),
+                            )
+                        ),
+                        file=sys.stderr,
+                    )
+                    print(file=sys.stderr)
+                else:
+                    print(
+                        f"Day {day}, part {part}, input {input} PASSED ✅",
+                        file=sys.stderr,
+                    )
+
+    return fails
 
 
 def _print_result(args: argparse.Namespace, result: Result) -> None:
@@ -263,6 +323,8 @@ def main():
             )
         print(f"Day {args.new_day} is ready to be solved in:", file=sys.stderr)
         print(p1)
+    if args.test:
+        sys.exit(_test_solutions(args))
     else:
         result = run(args.day, args.part, args.input)
         _print_result(args, result)
