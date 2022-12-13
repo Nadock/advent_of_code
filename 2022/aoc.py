@@ -333,7 +333,7 @@ def main():
             )
         print(f"Day {args.new_day} is ready to be solved in:", file=sys.stderr)
         print(p1)
-    if args.test:
+    elif args.test:
         sys.exit(_test_solutions(args))
     else:
         result = run(args.day, args.part, args.input)
