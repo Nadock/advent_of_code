@@ -220,18 +220,13 @@ def _print_result(args: argparse.Namespace, result: Result) -> None:
 
 
 def _store_result(args: argparse.Namespace, result: Result) -> None:
-    history_path = pathlib.Path(args.history).absolute()
-    if history_path.exists() and not history_path.is_file():
-        raise OSError(f"History file exists but is not a file: {history_path}")
-    if not history_path.exists():
-        history_path.write_text("{}", "utf-8")
-
-    history: dict = json.loads(history_path.read_text("utf-8"))
+    history = _load_history(args)
     history.setdefault("2022", {})
     history["2022"].setdefault(args.day, {})
     history["2022"][args.day].setdefault(args.part, {})
+    history["2022"][args.day][args.part].setdefault(args.input, {})
 
-    history["2022"][args.day][args.part]["last_run"] = {
+    history["2022"][args.day][args.part][args.input]["last_run"] = {
         "exec_time": result.exec_time,
         "timestamp": (
             datetime.datetime.now(zoneinfo.ZoneInfo("Australia/Adelaide")).isoformat()
@@ -240,7 +235,16 @@ def _store_result(args: argparse.Namespace, result: Result) -> None:
         "error": str(result.error) if result.error is not None else None,
     }
 
-    history_path.write_text(json.dumps(history, indent=2), "utf-8")
+    pathlib.Path(args.history).write_text(json.dumps(history, indent=2), "utf-8")
+
+
+def _load_history(args: argparse.Namespace) -> dict:
+    history_path = pathlib.Path(args.history).absolute()
+    if history_path.exists() and not history_path.is_file():
+        raise OSError(f"History file exists but is not a file: {history_path}")
+    if not history_path.exists():
+        history_path.write_text("{}", "utf-8")
+    return json.loads(history_path.read_text("utf-8"))
 
 
 def main():
