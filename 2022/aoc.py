@@ -3,6 +3,7 @@ import argparse
 import dataclasses
 import datetime
 import importlib
+import json
 import pathlib
 import sys
 import time
@@ -18,13 +19,13 @@ from requests import utils
 @dataclasses.dataclass
 class Result:
     value: Any
-    etime: int
+    exec_time: int
     error: Optional[Exception] = None
 
-    def humanise_etime(self) -> str:
-        if self.etime / 1_000_000_000 > 1:
-            return f"{self.etime / 1_000_000_000}s"
-        return f"{self.etime / 1_000_000}ms"
+    def humanise_exec_time(self) -> str:
+        if self.exec_time / 1_000_000_000 > 1:
+            return f"{self.exec_time / 1_000_000_000}s"
+        return f"{self.exec_time / 1_000_000}ms"
 
 
 def _argparse() -> argparse.Namespace:
@@ -51,6 +52,12 @@ def _argparse() -> argparse.Namespace:
         help="Scaffold files for a new day's challenge.",
         metavar="DAY",
         default=None,
+    )
+    parser.add_argument(
+        "--history",
+        help="The path to the history file to record execution history in.",
+        metavar="PATH",
+        default=".aoc_history.json",
     )
 
     return parser.parse_args()
@@ -186,7 +193,7 @@ def run(day: str, part: str, input: str) -> Result:  # pylint: disable=redefined
         err = ex
     t_1 = time.time_ns()
 
-    return Result(value=result, etime=t_1 - t_0, error=err)
+    return Result(value=result, exec_time=t_1 - t_0, error=err)
 
 
 def _print_result(args: argparse.Namespace, result: Result) -> None:
@@ -194,7 +201,7 @@ def _print_result(args: argparse.Namespace, result: Result) -> None:
         print(
             (
                 f"Day {args.day}, part {args.part}, input "
-                f"{args.input} completed in {result.humanise_etime()}:\n"
+                f"{args.input} completed in {result.humanise_exec_time()}:\n"
             ),
             file=sys.stderr,
         )
@@ -203,13 +210,37 @@ def _print_result(args: argparse.Namespace, result: Result) -> None:
         print(
             (
                 f"Solution for day {args.day}, part {args.part}, input "
-                f"{args.input} encountered an error after {result.humanise_etime()}:\n"
+                f"{args.input} encountered an error after {result.humanise_exec_time()}:\n"
             ),
             file=sys.stderr,
         )
         traceback.print_exception(
             type(result.error), result.error, result.error.__traceback__
         )
+
+
+def _store_result(args: argparse.Namespace, result: Result) -> None:
+    history_path = pathlib.Path(args.history).absolute()
+    if history_path.exists() and not history_path.is_file():
+        raise OSError(f"History file exists but is not a file: {history_path}")
+    if not history_path.exists():
+        history_path.write_text("{}", "utf-8")
+
+    history: dict = json.loads(history_path.read_text("utf-8"))
+    history.setdefault("2022", {})
+    history["2022"].setdefault(args.day, {})
+    history["2022"][args.day].setdefault(args.part, {})
+
+    history["2022"][args.day][args.part]["last_run"] = {
+        "exec_time": result.exec_time,
+        "timestamp": (
+            datetime.datetime.now(zoneinfo.ZoneInfo("Australia/Adelaide")).isoformat()
+        ),
+        "result": result.value,
+        "error": str(result.error) if result.error is not None else None,
+    }
+
+    history_path.write_text(json.dumps(history, indent=2), "utf-8")
 
 
 def main():
@@ -229,7 +260,9 @@ def main():
         print(f"Day {args.new_day} is ready to be solved in:", file=sys.stderr)
         print(p1)
     else:
-        _print_result(args, run(args.day, args.part, args.input))
+        result = run(args.day, args.part, args.input)
+        _print_result(args, result)
+        _store_result(args, result)
 
 
 if __name__ == "__main__":
