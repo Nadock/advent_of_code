@@ -226,8 +226,18 @@ def _test_solutions(args: argparse.Namespace) -> int:
         day = str(day)
         for part in parts:
             for input in inputs:
+                try:
+                    historical = history["2022"][day][part][input]["last_run"]["result"]
+                except KeyError as ex:
+                    print(
+                        f"Day {day}, part {part}, input {input} FAILED ❌ (no history)",
+                        file=sys.stderr,
+                    )
+                    traceback.print_exception(type(ex), ex, ex.__traceback__)
+                    fails += 1
+                    continue
+
                 current = run(day, part, input)
-                historical = history["2022"][day][part][input]["last_run"]["result"]
 
                 if current.error is not None:
                     _print_result(args, current)
