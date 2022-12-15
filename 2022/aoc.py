@@ -220,7 +220,9 @@ def _test_solutions(args: argparse.Namespace) -> int:
     parts: list[str] = [args.part] if args.part else ["1", "2"]
     inputs: list[str] = [args.input] if args.input else ["0", "1"]
 
-    fails = 0
+    passed = 0
+    failed = 0
+    skipped = 0
 
     for day in days:
         day = str(day)
@@ -230,11 +232,11 @@ def _test_solutions(args: argparse.Namespace) -> int:
                     historical = history["2022"][day][part][input]["last_run"]["result"]
                 except KeyError as ex:
                     print(
-                        f"Day {day}, part {part}, input {input} FAILED ❌ (no history)",
+                        f"Day {day}, part {part}, input {input} SKIPPED ⚠️  (no history)",
                         file=sys.stderr,
                     )
                     traceback.print_exception(type(ex), ex, ex.__traceback__)
-                    fails += 1
+                    skipped += 1
                     continue
 
                 current = run(day, part, input)
@@ -242,7 +244,7 @@ def _test_solutions(args: argparse.Namespace) -> int:
                 if current.error is not None:
                     _print_result(args, current)
                 elif current.value != historical:
-                    fails += 1
+                    failed += 1
                     print(
                         f"Day {day}, part {part}, input {input} FAILED ❌ (-want/+got)",
                         file=sys.stderr,
@@ -258,12 +260,19 @@ def _test_solutions(args: argparse.Namespace) -> int:
                     )
                     print(file=sys.stderr)
                 else:
+                    passed += 1
                     print(
                         f"Day {day}, part {part}, input {input} PASSED ✅",
                         file=sys.stderr,
                     )
 
-    return fails
+    print(file=sys.stderr)
+    print(
+        f"Testing previous solutions {'FAILED ❌' if failed>0 else 'PASSED ✅'}: "
+        f"{passed=}, {skipped=}, {failed=}",
+        file=sys.stderr,
+    )
+    return failed
 
 
 def _print_result(args: argparse.Namespace, result: Result) -> None:
