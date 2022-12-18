@@ -36,6 +36,7 @@ The solutions for 2022 are written in Python, and generally I'm taking a more re
 | 15  | :star: :star: | `2022-12-15` | [2022/src/day15](2022/src/day15) |
 | 16  | :star: :star: | `2022-12-16` | [2022/src/day16](2022/src/day16) |
 | 17  | :star: :star: | `2022-12-17` | [2022/src/day17](2022/src/day17) |
+| 18  | :star: :star: | `2022-12-18` | [2022/src/day18](2022/src/day18) |
 
 ## 2021
 
