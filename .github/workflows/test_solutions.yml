@@ -18,6 +18,10 @@ jobs:
           pip install pipenv
           pipenv install --dev
 
-      - name: Test existing solutions
-        working-directory: ./2022
-        run: pipenv run ./aoc.py -t
+      - name: Ruff
+        run: |
+          ruff check ./aoc.py
+          ruff format --check ./aoc.py
+
+      - name: Mypy
+        run: mypy ./aoc.py
