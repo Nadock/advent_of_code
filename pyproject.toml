@@ -35,8 +35,9 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "**/*_test.py" = [
-    "S101", # assert
-    "D103", # undocumented-public-function
+    "S101",   # assert
+    "D103",   # undocumented-public-function
+    "FBT001", # boolean-type-hint-positional-argument
 ]
 
 [tool.ruff.pydocstyle]

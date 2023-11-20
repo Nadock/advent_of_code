@@ -406,7 +406,7 @@ def format_aoc_id(
 
     if isinstance(year_or_aoc, AOC):
         parts.append(str(year_or_aoc.year))
-        day = year_or_aoc.day
+        day = day or year_or_aoc.day
     else:
         parts.append(str(year_or_aoc))
 
