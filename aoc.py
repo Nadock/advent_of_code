@@ -3,7 +3,9 @@ import argparse
 import datetime
 import importlib
 import math
+import os
 import pathlib
+import sys
 import time
 from typing import Any, Literal, assert_never
 
@@ -428,7 +430,7 @@ def init_command(
     do_day_download: bool = True,
     do_day_files: bool = True,
     wait_for_puzzle: bool = True,
-) -> None:
+) -> list[str]:
     """Initialise the solution files and inputs for the supplied AOC puzzle."""
     t = table.Table(
         "[bold cyan]Task[/bold cyan]",
@@ -437,12 +439,15 @@ def init_command(
             f"[bold italic cyan]Initialising {format_aoc_id(aoc)}[/bold italic cyan]"
         ),
     )
+    lines = []
 
     if do_day_files:
+        path = aoc.scaffold_puzzle_files()
         t.add_row(
             "[italic cyan]Scaffold puzzle files[/italic cyan]",
-            colour_by_type(aoc.scaffold_puzzle_files()),
+            colour_by_type(path),
         )
+        lines.append(str(path))
     else:
         t.add_row(
             "[italic cyan]Scaffold puzzle files[/italic cyan]",
@@ -450,14 +455,18 @@ def init_command(
         )
 
     if do_day_download:
+        path = aoc.scaffold_puzzle_input(wait=wait_for_puzzle)
         t.add_row(
             "[italic cyan]Scaffold puzzle input[/italic cyan]",
-            colour_by_type(aoc.scaffold_puzzle_input(wait=wait_for_puzzle)),
+            colour_by_type(path),
         )
+        lines.append(str(path))
+        path = aoc.scaffold_example_input(wait=wait_for_puzzle)
         t.add_row(
             "[italic cyan]Scaffold example input[/italic cyan]",
-            colour_by_type(aoc.scaffold_example_input(wait=wait_for_puzzle)),
+            colour_by_type(path),
         )
+        lines.append(str(path))
     else:
         t.add_row(
             "[italic cyan]Scaffold puzzle input[/italic cyan]",
@@ -469,9 +478,10 @@ def init_command(
         )
 
     aoc.console.print(t)
+    return lines
 
 
-def run_command(aoc: AOC, part: int | None, input: str | None) -> None:
+def run_command(aoc: AOC, part: int | None, input: str | None) -> list[str]:
     """Run the parts and inputs for the supplied AOC puzzle."""
     parts: list[Literal[1, 2]] = []
     if part is None:
@@ -501,13 +511,13 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> None:
         table.Column("[bold cyan]Result[/bold cyan]", justify="center"),
         title=(f"[italic bold cyan]{format_aoc_id(aoc)} Results[/italic bold cyan]"),
     )
+    lines = []
     for part in parts:
         for input in inputs:
             start = time.time_ns()
             result = aoc.run_part(part, input)
             end = time.time_ns()
 
-            # duration = datetime.timedelta(seconds=(end - start) / 1_000_000_000)
             duration = format_ns_time(end - start)
 
             if result is None:
@@ -520,36 +530,56 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> None:
                 duration,
                 _result,
             )
+
+            lines.append(str(result))
+
     aoc.console.print(t)
+    return lines
 
 
-def main() -> None:
+def main(console: console.Console) -> list[str]:
     """AOC CLI main function."""
     parser = init_argparse()
     args = parser.parse_args()
 
-    aoc = AOC(year=args.year, day=args.day, cookie=args.session)
+    aoc = AOC(
+        year=args.year,
+        day=args.day,
+        cookie=args.session,
+        console=console,
+    )
 
     if args.command == "init":
-        init_command(
+        return init_command(
             aoc,
             do_day_download=args.do_day_download,
             do_day_files=args.do_day_files,
             wait_for_puzzle=args.wait_for_puzzle,
         )
-    elif args.command == "run":
-        run_command(aoc, args.part, args.input)
-    else:
-        aoc.console.print(parser.format_usage())
-        aoc.console.print(
-            f'Unknown command "{args.command}", try "./aoc.py --help" for more info.',
-        )
+
+    if args.command == "run":
+        return run_command(aoc, args.part, args.input)
+
+    aoc.console.print(parser.format_usage())
+    aoc.console.print(
+        f'Unknown command "{args.command}", try "./aoc.py --help" for more info.',
+    )
+    return []
 
 
 if __name__ == "__main__":
+    file = None if sys.stdout.isatty() else open(os.devnull, "w")  # noqa: SIM115, PTH123
+    _console = console.Console(stderr=True, file=file)
+
     try:
-        main()
+        lines = main(_console)
+        if not sys.stdout.isatty():
+            for line in lines:
+                print(line, file=sys.stdout)
     except KeyboardInterrupt:
         pass
     except Exception:
-        rich.get_console().print_exception()
+        _console.print_exception()
+    finally:
+        if file:
+            file.close()
