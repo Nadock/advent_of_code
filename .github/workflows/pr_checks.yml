@@ -24,8 +24,8 @@ jobs:
 
       - name: Ruff
         run: |
-          ruff check ./aoc.py
-          ruff format --check ./aoc.py
+          pipenv run ruff check ./aoc.py
+          pipenv run ruff format --check ./aoc.py
 
       - name: Mypy
-        run: mypy ./aoc.py
+        run: pipenv run mypy ./aoc.py
