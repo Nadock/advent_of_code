@@ -26,6 +26,7 @@ ignore = [
     "A002",    # builtin-argument-shadowing
     "A003",    # builtin-attribute-shadowing
     "T201",    # print
+    "S603",    # subprocess-without-shell-equals-true
 
     # Meta
     "FIX002", # line-contains-todo
