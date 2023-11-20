@@ -1,10 +1,29 @@
-def part_1(puzzle: str) -> int | str | float | bool:
-    """Solution for AOC 2022, day 6, part 1."""
-    del puzzle
-    return "Part 1 TBD"
+"""AOC Day 6 started at 2022-12-06T16:08:27.841108+10:30"""
 
 
-def part_2(puzzle: str) -> int | str | float | bool:
-    """Solution for AOC 2022, day 6, part 2."""
-    del puzzle
-    return "Part 2 TBD"
+def part_1(puzzle: str):
+    """Calculates the solution to day 6's first part."""
+    buf = puzzle.strip()
+
+    start = -1
+    for idx in range(len(buf)):
+        window = buf[idx : idx + 4]
+        if len(set(window)) == 4:
+            start = idx + 4
+            break
+
+    return start
+
+
+def part_2(puzzle: str):
+    """Calculates the solution to day 6's second part."""
+    buf = puzzle.strip()
+
+    start = -1
+    for idx in range(len(buf)):
+        window = buf[idx : idx + 14]
+        if len(set(window)) == 14:
+            start = idx + 14
+            break
+
+    return start
