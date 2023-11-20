@@ -361,22 +361,22 @@ class AOC:
         """Create a new git branch and commit the generated files."""
         branch = f"aoc-{self.year}-day-{self.day}"
         subprocess.run(
-            ["git", "checkout", "-b", branch],
+            ["/usr/bin/git", "checkout", "-b", branch],  # noqa: S603
             text=True,
             check=True,
             capture_output=True,
         )
 
         subprocess.run(
-            ["git", "add", str(self.get_puzzle_folder().parent)],
+            ["/usr/bin/git", "add", str(self.get_puzzle_folder().parent)],  # noqa: S603
             text=True,
             check=True,
             capture_output=True,
         )
 
         subprocess.run(
-            [
-                "git",
+            [  # noqa: S603
+                "/usr/bin/git",
                 "commit",
                 "-m",
                 f"Adding scaffoled files for AOC {self.year} day {self.day}",
