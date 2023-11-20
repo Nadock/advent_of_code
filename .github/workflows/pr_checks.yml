@@ -17,15 +17,20 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install Dependecies
+      - name: Setup go-task/task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
         run: |
           pip install pipenv
-          pipenv install --dev
+          pipenv install --system --dev --deploy
 
-      - name: Ruff
+      - name: PR Checks
         run: |
-          pipenv run ruff check ./aoc.py
-          pipenv run ruff format --check ./aoc.py
-
-      - name: Mypy
-        run: pipenv run mypy ./aoc.py
+          task --output group \
+                --output-group-begin "::group::{{.TASK}}{{if .NAME}}:{{.NAME}}{{end}}" \
+                --output-group-end "::endgroup::" \
+                ci
