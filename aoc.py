@@ -5,6 +5,7 @@ import importlib
 import math
 import os
 import pathlib
+import subprocess
 import sys
 import time
 from typing import Any, Literal, assert_never
@@ -74,6 +75,13 @@ def init_argparse() -> argparse.ArgumentParser:
         default=True,
         action="store_false",
         help="Disable the automatic wait for the puzzle to become available.",
+    )
+    init.add_argument(
+        "--no-git",
+        dest="do_git_checkout",
+        default=True,
+        action="store_false",
+        help="Disable automatic git branch creation and commit of generated files.",
     )
 
     run = commands.add_parser("run", help="Run the puzzle solution for a day.")
@@ -349,6 +357,34 @@ class AOC:
             )
         return result
 
+    def add_to_git(self) -> None:
+        """Create a new git branch and commit the generated files."""
+        subprocess.run(
+            ["git", "checkout", "-b", f"aoc-{self.year}-day-{self.day}"],
+            text=True,
+            check=True,
+            capture_output=True,
+        )
+
+        subprocess.run(
+            ["git", "add", str(self.get_puzzle_folder().parent)],
+            text=True,
+            check=True,
+            capture_output=True,
+        )
+
+        subprocess.run(
+            [
+                "git",
+                "commit",
+                "-m",
+                f"Adding scaffoled files for AOC {self.year} day {self.day}",
+            ],
+            text=True,
+            check=True,
+            capture_output=True,
+        )
+
 
 def colour_by_type(value: Any) -> str:  # noqa: ANN401
     """Format a value with `rich` console colouring codes according to it's type."""
@@ -429,6 +465,7 @@ def init_command(
     do_day_download: bool = True,
     do_day_files: bool = True,
     wait_for_puzzle: bool = True,
+    do_git_checkout: bool = True,
 ) -> list[str]:
     """Initialise the solution files and inputs for the supplied AOC puzzle."""
     t = table.Table(
@@ -475,6 +512,9 @@ def init_command(
             "[italic cyan]Scaffold example input[/italic cyan]",
             "[italic white]Skipped[/italic white]",
         )
+
+    if do_git_checkout:
+        aoc.add_to_git()
 
     aoc.console.print(t)
     return lines
