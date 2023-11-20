@@ -1,4 +1,4 @@
-from src import utils
+from aoc_2022 import utils
 
 
 def part_1(puzzle: str):

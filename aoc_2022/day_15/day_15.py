@@ -1,7 +1,5 @@
 """AOC Day 15 started at 2022-12-15T15:30:03.100645+10:30"""
 
-import tqdm
-
 
 class Grid:
     def __init__(self) -> None:
@@ -74,7 +72,7 @@ def part_2(puzzle: str):
     sensors = []
     blocked = {}
 
-    for line in tqdm.tqdm(puzzle.strip().splitlines(), leave=False):
+    for line in puzzle.strip().splitlines():
         # 0      1  2    3     4       5      6  7  8     9
         # Sensor at x=2, y=18: closest beacon is at x=-2, y=15
         splits = line.split(" ")
@@ -104,7 +102,7 @@ def part_2(puzzle: str):
             blocked[sensor[1] + offset].append(r)
             blocked[sensor[1] - offset].append(r)
 
-    for y in tqdm.tqdm(range(4_000_001), leave=False):
+    for y in range(4_000_001):
         blocked[y] = sorted(blocked[y], key=lambda b: b[0])
 
         if blocked[y][0][0] != 0:

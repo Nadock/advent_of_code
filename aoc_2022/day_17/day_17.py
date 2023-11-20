@@ -2,8 +2,6 @@
 
 from typing import Optional
 
-import tqdm
-
 PIECES = [
     # Minus
     [["#", "#", "#", "#"]],
@@ -102,7 +100,7 @@ def part_1(puzzle: str):
     movements = list(puzzle.strip())
     movement_idx = 0
     board = []
-    for p in tqdm.tqdm(range(2022), leave=False, unit="pieces", disable=False):
+    for p in range(2022):
         piece = PIECES[p % len(PIECES)]
         size = (max(len(l) for l in piece), len(piece))
         position = (2, set_pieces_height(board) + 3)
@@ -140,7 +138,7 @@ def part_2(puzzle: str):
 
     last_p, last_idx, last_height, skip_height = 0, 0, 0, 0
 
-    for p in tqdm.tqdm(range(12073 + 1602), leave=False, unit="pieces", disable=True):
+    for p in range(12073 + 1602):
         piece = PIECES[p % len(PIECES)]
         size = (max(len(l) for l in piece), len(piece))
         position = (2, set_pieces_height(board) + 3)
