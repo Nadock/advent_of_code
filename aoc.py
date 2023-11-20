@@ -357,10 +357,11 @@ class AOC:
             )
         return result
 
-    def add_to_git(self) -> None:
+    def add_to_git(self) -> str:
         """Create a new git branch and commit the generated files."""
+        branch = f"aoc-{self.year}-day-{self.day}"
         subprocess.run(
-            ["git", "checkout", "-b", f"aoc-{self.year}-day-{self.day}"],
+            ["git", "checkout", "-b", branch],
             text=True,
             check=True,
             capture_output=True,
@@ -384,6 +385,8 @@ class AOC:
             check=True,
             capture_output=True,
         )
+
+        return branch
 
 
 def colour_by_type(value: Any) -> str:  # noqa: ANN401
@@ -514,7 +517,16 @@ def init_command(
         )
 
     if do_git_checkout:
-        aoc.add_to_git()
+        try:
+            t.add_row(
+                "[italic cyan]Add new files to git[/italic cyan]",
+                colour_by_type(aoc.add_to_git()),
+            )
+        except subprocess.SubprocessError as ex:
+            t.add_row(
+                "[italic cyan]Add new files to git[/italic cyan]",
+                f"[bold red]{ex}[/bold red]",
+            )
 
     aoc.console.print(t)
     return lines
