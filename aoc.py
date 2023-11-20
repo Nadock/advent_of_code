@@ -374,20 +374,21 @@ def format_ns_time(time: int) -> str:
     minute = 60
     hour = 60 * minute
 
+    hours, minutes = 0, 0
     # Format excess hours
-    if seconds > hour:
+    if seconds >= hour:
         hours = math.floor(seconds / hour)
         seconds -= hour * hours
-        parts.append(str(hours))
+    parts.append(f"{hours:02d}")
 
     # Format excess minutes
-    if seconds > minute:
+    if seconds >= minute:
         minutes = math.floor(seconds / minute)
         seconds -= minute * minutes
-        parts.append(str(minutes))
+    parts.append(f"{minutes:02d}")
 
     # Format remaining seconds
-    parts.append(f"{seconds:.6f}s")
+    parts.append(f"{seconds:06.3f}")
 
     return ":".join(parts)
 
