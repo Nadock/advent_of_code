@@ -1,9 +1,9 @@
-name: Test Solutions
+name: PR Checks
 
 on: push
 
 jobs:
-  test_solutions:
+  pr_checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -13,7 +13,6 @@ jobs:
         uses: actions/setup-python@v3
 
       - name: Install Dependecies
-        working-directory: ./2022
         run: |
           pip install pipenv
           pipenv install --dev
