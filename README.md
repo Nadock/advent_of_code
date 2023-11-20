@@ -1,15 +1,15 @@
 # Advent of Code
 
-[Advent of Code](https://adventofcode.com) is a is an advent calendar of small programming puzzles. A new calendar of
+[Advent of Code](https://adventofcode.com/2023/about) is a is an advent calendar of small programming puzzles. A new calendar of
 puzzles is released day-by-day every December.
 
 This repo contains my solution code for each puzzle and the my unique inputs for that puzzle. Each puzzle typically has
 two parts, the first part usually being easier and the second an extension of the first.
 
-My account on the [AoC](https://adventofcode.com) website is linked to this GitHub account.
+My account on the [AOC](https://adventofcode.com) website is linked to this GitHub account.
 
 This code is all MIT licensed, so if you would like to borrow from it you are welcome to. However, the code is not
-production quality in any way so don't expect anything particularly performant, clean, beautify, etc.
+production quality in any way so don't expect anything particularly performant, clean, beautiful, etc.
 
 ## `aoc.py`
 
@@ -38,7 +38,7 @@ Keep this value a secret, with the `session` cookie someone could impersonate yo
         └── puzzle.txt
 ```
 
-`puzzle.txt` contains your individaul puzzle input for tht particular puzzle and `example.txt` contains the example input pulled from the puzzle's HTML page.
+`puzzle.txt` contains your individual puzzle input for tht particular puzzle and `example.txt` contains the example input pulled from the puzzle's HTML page.
 
 `day_N.py` contains two predefined functions `part_1` and `part_2` for each of the two parts to an AOC puzzle.
 
