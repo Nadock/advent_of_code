@@ -1,5 +1,7 @@
+import datetime
 import pathlib
 
+import freezegun
 import pytest
 
 import aoc
@@ -74,3 +76,25 @@ def test_format_aoc_id(
 ) -> None:
     result = aoc.format_aoc_id(year_or_aoc, day, part, input, clean=True)
     assert result == formatted
+
+
+@freezegun.freeze_time("2023-12-03 05:0:00", tz_offset=0)
+@pytest.mark.parametrize(
+    ("year", "day", "delta"),
+    [
+        (2023, 1, None),  # Puzzle before now
+        (2023, 3, None),  # Puzzle exactly now
+        (2023, 4, datetime.timedelta(days=1)),  # Puzzle +1 day
+        (2024, 3, datetime.timedelta(days=366)),  # Puzzle +1 year
+    ],
+)
+def test_aoc__timedelta_to_puzzle(
+    year: int,
+    day: int,
+    delta: datetime.timedelta | None,
+) -> None:
+    _aoc = aoc.AOC(year=year, day=day, cookie=pathlib.Path())
+
+    result = _aoc.timedelta_to_puzzle()
+
+    assert result == delta

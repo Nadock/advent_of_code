@@ -177,14 +177,12 @@ class AOC:
         Returns `None` if the puzzle is already available.
         """
         # Puzzle's are related at Midnight EST (UTC-5) each day in December
-        puzzle_tz = datetime.timezone(-datetime.timedelta(hours=5))
-        puzzle = datetime.datetime(self.year, 12, self.day, 0, 0, 0, 0, puzzle_tz)
+        puzzle = datetime.datetime(self.year, 12, self.day, 5, 0, 0, 0, datetime.UTC)
+        now = datetime.datetime.now(datetime.UTC)
 
-        local = datetime.datetime.now().astimezone()
-
-        if local >= puzzle:
+        if now >= puzzle:
             return None
-        return puzzle - local
+        return puzzle - now
 
     def wait_for_puzzle(self) -> None:
         """Wait until the current puzzle becomes available."""

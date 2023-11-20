@@ -4,18 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
-pytz = "*"
 beautifulsoup4 = "*"
+pytz = "*"
+requests = "*"
 rich = "*"
 
 [dev-packages]
-ruff = "*"
-pytest = "*"
 mypy = "*"
+pytest = "*"
+pytest-freezer = "*"
 rope = "*"
-types-requests = "*"
+ruff = "*"
 types-beautifulsoup4 = "*"
+types-requests = "*"
 
 [requires]
 python_version = "3.12"
