@@ -1,0 +1,555 @@
+#!/usr/bin/env python  # noqa: EXE001
+import argparse
+import datetime
+import importlib
+import math
+import pathlib
+import time
+from typing import Any, Literal, assert_never
+
+import bs4
+import requests
+import rich
+from requests import utils
+from rich import console, table, traceback
+
+
+def init_argparse() -> argparse.ArgumentParser:
+    """Create an argument parser for `aoc.py` CLI usage."""
+    today = datetime.datetime.now().astimezone()
+
+    parser = argparse.ArgumentParser(prog="aoc.py")
+    parser.add_argument(
+        "--session",
+        type=pathlib.Path,
+        default=pathlib.Path("./cookie.txt"),
+        help=(
+            "The path to a file containing your AOC session cookie, to authenticate "
+            "when automatically downloading puzzle inputs. (default: ./cookie.txt)"
+        ),
+    )
+
+    commands = parser.add_subparsers(dest="command", required=True)
+
+    init = commands.add_parser("init", help="Initialise a day's files.")
+    init.add_argument(
+        "-y",
+        "--year",
+        type=int,
+        default=today.year,
+        help=(
+            "The year of the puzzle to initialise. (default: the current "
+            f'year, eg: "{today.year}")'
+        ),
+    )
+    init.add_argument(
+        "-d",
+        "--day",
+        type=int,
+        default=today.day,
+        help=(
+            "The day of the puzzle to initialise. (default: the current "
+            f'day, eg: "{today.day}")'
+        ),
+    )
+    init.add_argument(
+        "--no-download",
+        dest="do_day_download",
+        default=True,
+        action="store_false",
+        help="Disable the automated download of the day's puzzle inputs.",
+    )
+    init.add_argument(
+        "--no-files",
+        dest="do_day_files",
+        default=True,
+        action="store_false",
+        help="Disable to automated creation of solution code files.",
+    )
+    init.add_argument(
+        "--no-wait",
+        dest="wait_for_puzzle",
+        default=True,
+        action="store_false",
+        help="Disable the automatic wait for the puzzle to become available.",
+    )
+
+    run = commands.add_parser("run", help="Run the puzzle solution for a day.")
+    run.add_argument(
+        "-y",
+        "--year",
+        type=int,
+        default=today.year,
+        help=(
+            "The year of the puzzle to run. (default: the current "
+            f'year, eg: "{today.year}")'
+        ),
+    )
+    run.add_argument(
+        "-d",
+        "--day",
+        type=int,
+        default=today.day,
+        help=(
+            "The day of the puzzle to run. (default: the current "
+            f'day, eg: "{today.day}")'
+        ),
+    )
+    run.add_argument(
+        "-p",
+        "--part",
+        type=int,
+        default=None,
+        choices=[1, 2],
+        help="The part of the day's puzzle to run. (default: run both parts)",
+    )
+    run.add_argument(
+        "-i",
+        "--input",
+        default=None,
+        choices=["example", "puzzle"],
+        help=(
+            "Which input to supply to the puzzle. (default: run both inputs, "
+            "example first)"
+        ),
+    )
+
+    return parser
+
+
+class AOC:
+    """Common data a logic for a single AOC puzzle."""
+
+    def __init__(
+        self,
+        *,
+        year: int,
+        day: int,
+        cookie: pathlib.Path,
+        console: console.Console | None = None,
+    ) -> None:
+        self.year = year
+        self.day = day
+        self.cookie = cookie
+        self._cookie: str | None = None
+        self.console = console or rich.get_console()
+
+    def __str__(self) -> str:
+        return f"AOC<{format_aoc_id(self)}>"
+
+    def get_session_cookie(self) -> str:
+        """Read the session cookie file, or raise a `ValueError`."""
+        if self._cookie is not None:
+            return self._cookie
+
+        try:
+            return self.cookie.read_text("utf-8").strip()
+        except Exception as ex:
+            self.cookie.write_text("", encoding="utf-8")
+            raise ValueError(
+                "Please copy the AOC session cookie from your browser into "
+                f"{self.cookie} and then try again.",
+            ) from ex
+
+    def aoc_http_get(self, path: str) -> requests.Response:
+        """Make a HTTP GET call to the supplied AOC path."""
+        path = path if not path.startswith("/") else path[1:]
+        url = f"https://adventofcode.com/{path}"
+        with self.console.status(f'HTTP GET "{url}"'):
+            response = requests.get(
+                url,
+                cookies=utils.cookiejar_from_dict(
+                    {"session": self.get_session_cookie()},
+                ),
+                timeout=10.0,
+                headers={"user-agent": "aoc@rileychase.net"},
+            )
+        response.raise_for_status()
+        return response
+
+    def timedelta_to_puzzle(self) -> datetime.timedelta | None:
+        """
+        Calculate the timedelta between now and when a the current puzzle will be
+        available.
+
+        Returns `None` if the puzzle is already available.
+        """
+        # Puzzle's are related at Midnight EST (UTC-5) each day in December
+        puzzle_tz = datetime.timezone(-datetime.timedelta(hours=5))
+        puzzle = datetime.datetime(self.year, 12, self.day, 0, 0, 0, 0, puzzle_tz)
+
+        local = datetime.datetime.now().astimezone()
+
+        if local >= puzzle:
+            return None
+        return puzzle - local
+
+    def wait_for_puzzle(self) -> None:
+        """Wait until the current puzzle becomes available."""
+        msg = (
+            "Waiting for an additional {} until the "
+            f"{format_aoc_id(self)} puzzle is available."
+        )
+
+        delta = self.timedelta_to_puzzle()
+        with self.console.status(msg.format(delta)) as spin:
+            while delta is not None:
+                time.sleep(1)
+                delta = self.timedelta_to_puzzle()
+                spin.update(msg.format(delta))
+
+    def get_example_input(self, *, wait: bool = True) -> str:
+        """Attempt to parse the puzzle HTML page for the example input."""
+        if wait:
+            self.wait_for_puzzle()
+        response = self.aoc_http_get(f"{self.year}/day/{self.day}")
+        soup = bs4.BeautifulSoup(response.text, features="html.parser")
+        return soup.find("pre").find("code").text  # type: ignore[union-attr]
+
+    def get_puzzle_input(self, *, wait: bool = True) -> str:
+        """Retrieve the test input for the current puzzle."""
+        if wait:
+            self.wait_for_puzzle()
+        return self.aoc_http_get(f"{self.year}/day/{self.day}/input").text
+
+    def get_puzzle_folder(self) -> pathlib.Path:
+        """Get the path of the root folder for the current puzzle's files."""
+        return pathlib.Path() / f"aoc_{self.year}" / f"day_{self.day}"
+
+    def scaffold_puzzle_files(self) -> pathlib.Path:
+        """Create the Python solution files for the current puzzle."""
+        folder = self.get_puzzle_folder()
+        folder.mkdir(parents=True, exist_ok=True)
+
+        root_init = folder.parent / "__init__.py"
+        if not root_init.is_file():
+            root_init.write_text("", encoding="utf-8")
+
+        # Create __init__.py
+        init_py = folder / "__init__.py"
+        if not init_py.is_file():
+            init_py.write_text(
+                "\n".join(
+                    [
+                        f"from .day_{self.day} import part_1, part_2",
+                        "",
+                        '__all__ = ["part_1", "part_2"]',
+                        "",
+                    ],
+                ),
+                encoding="utf-8",
+            )
+
+        # Create daily solution file
+        day_py = folder / f"day_{self.day}.py"
+        if not day_py.is_file():
+            day_py.write_text(
+                "\n".join(
+                    [
+                        "def part_1(puzzle: str) -> int | str | float | bool:",
+                        f'    """Solution for AOC {self.year}, day {self.day}, part 1."""',  # noqa: E501
+                        "    del puzzle",
+                        '    return "Part 1 TBD"',
+                        "",
+                        "",
+                        "def part_2(puzzle: str) -> int | str | float | bool:",
+                        f'    """Solution for AOC {self.year}, day {self.day}, part 2."""',  # noqa: E501
+                        "    del puzzle",
+                        '    return "Part 2 TBD"',
+                        "",
+                    ],
+                ),
+                encoding="utf-8",
+            )
+        return day_py
+
+    def scaffold_example_input(self, *, wait: bool = True) -> pathlib.Path:
+        """
+        Download the current puzzle's example input and write it to the example input
+        file.
+        """
+        example = self.get_example_input(wait=wait)
+        path = self.get_puzzle_folder() / "example.txt"
+
+        folder = self.get_puzzle_folder()
+        folder.mkdir(parents=True, exist_ok=True)
+
+        path.write_text(example, encoding="utf-8")
+        return path
+
+    def scaffold_puzzle_input(self, *, wait: bool = True) -> pathlib.Path:
+        """
+        Download the current puzzle's test input and write it to the test input file.
+        """
+        puzzle = self.get_puzzle_input(wait=wait)
+        path = self.get_puzzle_folder() / "puzzle.txt"
+
+        folder = self.get_puzzle_folder()
+        folder.mkdir(parents=True, exist_ok=True)
+
+        path.write_text(puzzle, encoding="utf-8")
+        return path
+
+    def run_part(
+        self,
+        part: Literal[1, 2],
+        input: Literal["example", "puzzle"],
+    ) -> str | int | float | bool | None:
+        """Run one part of a puzzle with the specified input file."""
+        module = importlib.import_module(
+            str(self.get_puzzle_folder()).replace("/", "."),
+            f"day_{self.day}",
+        )
+        solution = getattr(module, f"part_{part}")
+
+        puzzle = self.get_puzzle_folder()
+        if input == "example":
+            puzzle /= "example.txt"
+        elif input == "puzzle":
+            puzzle /= "puzzle.txt"
+        else:
+            assert_never(input)
+
+        puzzle_input = puzzle.read_text("utf-8")
+        result = None
+
+        try:
+            with self.console.status(
+                f"Running {format_aoc_id(self, part=part, input=input)}...",
+            ):
+                result = solution(puzzle_input)
+
+        except KeyboardInterrupt:
+            self.console.print(
+                "[bold red]KeyboardInterrupt: Stopping "
+                + format_aoc_id(self, part=part, input=input, clean=True)
+                + ".[/bold red]\n",
+            )
+            return None
+
+        except Exception:
+            # Suppress frames from aoc.py manually
+            tb = traceback.Traceback(show_locals=True)
+            for stack in tb.trace.stacks:
+                stack.frames = [
+                    f for f in stack.frames if not f.filename.endswith("aoc.py")
+                ]
+            self.console.print(
+                "Error while running solution for AOC "
+                f"{format_aoc_id(self, part=part, input=input)}.",
+            )
+            self.console.print(tb)
+            self.console.print()
+            return None
+
+        if not isinstance(result, int | str | float | bool):
+            raise TypeError(
+                "Expected puzzle solution to a string or integer, "
+                f"not {type(result)}",
+            )
+        return result
+
+
+def colour_by_type(value: Any) -> str:  # noqa: ANN401
+    """Format a value with `rich` console colouring codes according to it's type."""
+    if isinstance(value, str):
+        return f'[green]"{value}"[/green]'
+    if isinstance(value, (int | float)):
+        return f"[blue]{value}[/blue]"
+    if isinstance(value, bool):
+        return f"[yellow]{value}[/yellow]"
+    if isinstance(value, pathlib.Path):
+        return f"[purple]{value}[/purple]"
+    return str(value)
+
+
+def format_ns_time(time: int) -> str:
+    """Human readable format a `time.time_ns` amount of time."""
+    seconds = time / 1_000_000_000
+    parts = []
+
+    # Breakpoints in seconds
+    minute = 60
+    hour = 60 * minute
+
+    # Format excess hours
+    if seconds > hour:
+        hours = math.floor(seconds / hour)
+        seconds -= hour * hours
+        parts.append(str(hours))
+
+    # Format excess minutes
+    if seconds > minute:
+        minutes = math.floor(seconds / minute)
+        seconds -= minute * minutes
+        parts.append(str(minutes))
+
+    # Format remaining seconds
+    parts.append(f"{seconds:.6f}s")
+
+    return ":".join(parts)
+
+
+def format_aoc_id(
+    year_or_aoc: int | AOC,
+    day: int | None = None,
+    part: int | None = None,
+    input: str | None = None,
+    *,
+    clean: bool = False,
+) -> str:
+    """Format an AOC identifier with `rich` console colouring codes."""
+    parts = ["AOC"]
+
+    if isinstance(year_or_aoc, AOC):
+        parts.append(str(year_or_aoc.year))
+        day = year_or_aoc.day
+    else:
+        parts.append(str(year_or_aoc))
+
+    if day is not None:
+        parts.append(str(day))
+
+        if part is not None:
+            parts.append(str(part))
+
+            if input is not None:
+                parts.append(input.upper())
+
+    puzzle_id = ".".join(parts)
+    if clean:
+        return puzzle_id
+    return f"[bold italic cyan]{puzzle_id}[/bold italic cyan]"
+
+
+def init_command(
+    aoc: AOC,
+    *,
+    do_day_download: bool = True,
+    do_day_files: bool = True,
+    wait_for_puzzle: bool = True,
+) -> None:
+    """Initialise the solution files and inputs for the supplied AOC puzzle."""
+    t = table.Table(
+        "[bold cyan]Task[/bold cyan]",
+        "[bold cyan]Path[/bold cyan]",
+        title=(
+            f"[bold italic cyan]Initialising {format_aoc_id(aoc)}[/bold italic cyan]"
+        ),
+    )
+
+    if do_day_files:
+        t.add_row(
+            "[italic cyan]Scaffold puzzle files[/italic cyan]",
+            colour_by_type(aoc.scaffold_puzzle_files()),
+        )
+    else:
+        t.add_row(
+            "[italic cyan]Scaffold puzzle files[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
+
+    if do_day_download:
+        t.add_row(
+            "[italic cyan]Scaffold puzzle input[/italic cyan]",
+            colour_by_type(aoc.scaffold_puzzle_input(wait=wait_for_puzzle)),
+        )
+        t.add_row(
+            "[italic cyan]Scaffold example input[/italic cyan]",
+            colour_by_type(aoc.scaffold_example_input(wait=wait_for_puzzle)),
+        )
+    else:
+        t.add_row(
+            "[italic cyan]Scaffold puzzle input[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
+        t.add_row(
+            "[italic cyan]Scaffold example input[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
+
+    aoc.console.print(t)
+
+
+def run_command(aoc: AOC, part: int | None, input: str | None) -> None:
+    """Run the parts and inputs for the supplied AOC puzzle."""
+    parts: list[Literal[1, 2]] = []
+    if part is None:
+        parts = [1, 2]
+    elif part == 1:
+        parts = [1]
+    elif part == 2:  # noqa: PLR2004
+        parts = [2]
+    else:
+        raise ValueError(f'Unknown value for part "{part}", expected "1" or "2"')
+
+    inputs: list[Literal["example", "puzzle"]] = []
+    if input is None:
+        inputs = ["example", "puzzle"]
+    elif input == "example":
+        inputs = ["example"]
+    elif input == "puzzle":
+        inputs = ["puzzle"]
+    else:
+        raise ValueError(
+            f'Unknown value for input "{input}", expected "example" or "puzzle"',
+        )
+
+    t = table.Table(
+        "[bold cyan]ID[/bold cyan]",
+        "[bold cyan]Duration[/bold cyan]",
+        table.Column("[bold cyan]Result[/bold cyan]", justify="center"),
+        title=(f"[italic bold cyan]{format_aoc_id(aoc)} Results[/italic bold cyan]"),
+    )
+    for part in parts:
+        for input in inputs:
+            start = time.time_ns()
+            result = aoc.run_part(part, input)
+            end = time.time_ns()
+
+            # duration = datetime.timedelta(seconds=(end - start) / 1_000_000_000)
+            duration = format_ns_time(end - start)
+
+            if result is None:
+                _result = "[bold red]Error, see traceback above.[/bold red]"
+            else:
+                _result = colour_by_type(result)
+
+            t.add_row(
+                format_aoc_id(aoc, part=part, input=input),
+                duration,
+                _result,
+            )
+    aoc.console.print(t)
+
+
+def main() -> None:
+    """AOC CLI main function."""
+    parser = init_argparse()
+    args = parser.parse_args()
+
+    aoc = AOC(year=args.year, day=args.day, cookie=args.session)
+
+    if args.command == "init":
+        init_command(
+            aoc,
+            do_day_download=args.do_day_download,
+            do_day_files=args.do_day_files,
+            wait_for_puzzle=args.wait_for_puzzle,
+        )
+    elif args.command == "run":
+        run_command(aoc, args.part, args.input)
+    else:
+        aoc.console.print(parser.format_usage())
+        aoc.console.print(
+            f'Unknown command "{args.command}", try "./aoc.py --help" for more info.',
+        )
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass
+    except Exception:
+        rich.get_console().print_exception()
