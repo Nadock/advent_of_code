@@ -71,7 +71,7 @@ def init_argparse() -> argparse.ArgumentParser:
     )
     init.add_argument(
         "--no-wait",
-        dest="wait_for_puzzle",
+        dest="do_puzzle_wait",
         default=True,
         action="store_false",
         help="Disable the automatic wait for the puzzle to become available.",
@@ -463,7 +463,7 @@ def init_command(
     *,
     do_day_download: bool = True,
     do_day_files: bool = True,
-    wait_for_puzzle: bool = True,
+    do_puzzle_wait: bool = True,
     do_git_checkout: bool = True,
 ) -> list[str]:
     """Initialise the solution files and inputs for the supplied AOC puzzle."""
@@ -489,7 +489,7 @@ def init_command(
             "[italic white]Skipped[/italic white]",
         )
 
-    if wait_for_puzzle:
+    if do_puzzle_wait:
         aoc.wait_for_puzzle()
 
     if do_day_download:
@@ -605,7 +605,7 @@ def main(console: console.Console) -> list[str]:
             aoc,
             do_day_download=args.do_day_download,
             do_day_files=args.do_day_files,
-            wait_for_puzzle=args.wait_for_puzzle,
+            do_puzzle_wait=args.do_puzzle_wait,
         )
 
     if args.command == "run":
