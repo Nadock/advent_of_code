@@ -8,6 +8,7 @@ import pathlib
 import subprocess
 import sys
 import time
+import webbrowser
 from typing import Any, Literal, assert_never
 
 import bs4
@@ -71,7 +72,7 @@ def init_argparse() -> argparse.ArgumentParser:
     )
     init.add_argument(
         "--no-wait",
-        dest="wait_for_puzzle",
+        dest="do_puzzle_wait",
         default=True,
         action="store_false",
         help="Disable the automatic wait for the puzzle to become available.",
@@ -82,6 +83,13 @@ def init_argparse() -> argparse.ArgumentParser:
         default=True,
         action="store_false",
         help="Disable automatic git branch creation and commit of generated files.",
+    )
+    init.add_argument(
+        "--no-browser",
+        dest="do_open_browser",
+        default=True,
+        action="store_false",
+        help="Disable automatic opening the puzzle in the default browser.",
     )
 
     run = commands.add_parser("run", help="Run the puzzle solution for a day.")
@@ -206,18 +214,14 @@ class AOC:
                 delta = self.timedelta_to_puzzle()
                 spin.update(msg.format(delta))
 
-    def get_example_input(self, *, wait: bool = True) -> str:
+    def get_example_input(self) -> str:
         """Attempt to parse the puzzle HTML page for the example input."""
-        if wait:
-            self.wait_for_puzzle()
         response = self.aoc_http_get(f"{self.year}/day/{self.day}")
         soup = bs4.BeautifulSoup(response.text, features="html.parser")
         return soup.find("pre").find("code").text  # type: ignore[union-attr]
 
-    def get_puzzle_input(self, *, wait: bool = True) -> str:
+    def get_puzzle_input(self) -> str:
         """Retrieve the test input for the current puzzle."""
-        if wait:
-            self.wait_for_puzzle()
         return self.aoc_http_get(f"{self.year}/day/{self.day}/input").text
 
     def get_puzzle_folder(self) -> pathlib.Path:
@@ -271,12 +275,12 @@ class AOC:
             )
         return day_py
 
-    def scaffold_example_input(self, *, wait: bool = True) -> pathlib.Path:
+    def scaffold_example_input(self) -> pathlib.Path:
         """
         Download the current puzzle's example input and write it to the example input
         file.
         """
-        example = self.get_example_input(wait=wait)
+        example = self.get_example_input()
         path = self.get_puzzle_folder() / "example.txt"
 
         folder = self.get_puzzle_folder()
@@ -285,11 +289,11 @@ class AOC:
         path.write_text(example, encoding="utf-8")
         return path
 
-    def scaffold_puzzle_input(self, *, wait: bool = True) -> pathlib.Path:
+    def scaffold_puzzle_input(self) -> pathlib.Path:
         """
         Download the current puzzle's test input and write it to the test input file.
         """
-        puzzle = self.get_puzzle_input(wait=wait)
+        puzzle = self.get_puzzle_input()
         path = self.get_puzzle_folder() / "puzzle.txt"
 
         folder = self.get_puzzle_folder()
@@ -467,8 +471,9 @@ def init_command(
     *,
     do_day_download: bool = True,
     do_day_files: bool = True,
-    wait_for_puzzle: bool = True,
+    do_puzzle_wait: bool = True,
     do_git_checkout: bool = True,
+    do_open_browser: bool = True,
 ) -> list[str]:
     """Initialise the solution files and inputs for the supplied AOC puzzle."""
     t = table.Table(
@@ -493,14 +498,31 @@ def init_command(
             "[italic white]Skipped[/italic white]",
         )
 
+    if do_puzzle_wait:
+        aoc.wait_for_puzzle()
+
+    if do_open_browser:
+        url = f"https://adventofcode.com/{aoc.year}/day/{aoc.day}"
+        webbrowser.open(url, new=2, autoraise=True)
+        t.add_row(
+            "[italic cyan]Open puzzle in browser[/italic cyan]",
+            colour_by_type(url),
+        )
+    else:
+        t.add_row(
+            "[italic cyan]Open puzzle in browser[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
+
     if do_day_download:
-        path = aoc.scaffold_puzzle_input(wait=wait_for_puzzle)
+        path = aoc.scaffold_puzzle_input()
         t.add_row(
             "[italic cyan]Scaffold puzzle input[/italic cyan]",
             colour_by_type(path),
         )
         lines.append(str(path))
-        path = aoc.scaffold_example_input(wait=wait_for_puzzle)
+
+        path = aoc.scaffold_example_input()
         t.add_row(
             "[italic cyan]Scaffold example input[/italic cyan]",
             colour_by_type(path),
@@ -527,6 +549,11 @@ def init_command(
                 "[italic cyan]Add new files to git[/italic cyan]",
                 f"[bold red]{ex}[/bold red]",
             )
+    else:
+        t.add_row(
+            "[italic cyan]Add new files to git[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
 
     aoc.console.print(t)
     return lines
@@ -605,7 +632,9 @@ def main(console: console.Console) -> list[str]:
             aoc,
             do_day_download=args.do_day_download,
             do_day_files=args.do_day_files,
-            wait_for_puzzle=args.wait_for_puzzle,
+            do_puzzle_wait=args.do_puzzle_wait,
+            do_git_checkout=args.do_git_checkout,
+            do_open_browser=args.do_open_browser,
         )
 
     if args.command == "run":
