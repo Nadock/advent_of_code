@@ -606,6 +606,7 @@ def main(console: console.Console) -> list[str]:
             do_day_download=args.do_day_download,
             do_day_files=args.do_day_files,
             do_puzzle_wait=args.do_puzzle_wait,
+            do_git_checkout=args.do_git_checkout,
         )
 
     if args.command == "run":
