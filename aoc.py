@@ -8,6 +8,7 @@ import pathlib
 import subprocess
 import sys
 import time
+import webbrowser
 from typing import Any, Literal, assert_never
 
 import bs4
@@ -82,6 +83,13 @@ def init_argparse() -> argparse.ArgumentParser:
         default=True,
         action="store_false",
         help="Disable automatic git branch creation and commit of generated files.",
+    )
+    init.add_argument(
+        "--no-browser",
+        dest="do_open_browser",
+        default=True,
+        action="store_false",
+        help="Disable automatic opening the puzzle in the default browser.",
     )
 
     run = commands.add_parser("run", help="Run the puzzle solution for a day.")
@@ -465,6 +473,7 @@ def init_command(
     do_day_files: bool = True,
     do_puzzle_wait: bool = True,
     do_git_checkout: bool = True,
+    do_open_browser: bool = True,
 ) -> list[str]:
     """Initialise the solution files and inputs for the supplied AOC puzzle."""
     t = table.Table(
@@ -491,6 +500,19 @@ def init_command(
 
     if do_puzzle_wait:
         aoc.wait_for_puzzle()
+
+    if do_open_browser:
+        url = f"https://adventofcode.com/{aoc.year}/day/{aoc.day}"
+        webbrowser.open(url, new=2, autoraise=True)
+        t.add_row(
+            "[italic cyan]Open puzzle in browser[/italic cyan]",
+            colour_by_type(url),
+        )
+    else:
+        t.add_row(
+            "[italic cyan]Open puzzle in browser[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
 
     if do_day_download:
         path = aoc.scaffold_puzzle_input()
@@ -527,6 +549,11 @@ def init_command(
                 "[italic cyan]Add new files to git[/italic cyan]",
                 f"[bold red]{ex}[/bold red]",
             )
+    else:
+        t.add_row(
+            "[italic cyan]Add new files to git[/italic cyan]",
+            "[italic white]Skipped[/italic white]",
+        )
 
     aoc.console.print(t)
     return lines
@@ -607,6 +634,7 @@ def main(console: console.Console) -> list[str]:
             do_day_files=args.do_day_files,
             do_puzzle_wait=args.do_puzzle_wait,
             do_git_checkout=args.do_git_checkout,
+            do_open_browser=args.do_open_browser,
         )
 
     if args.command == "run":
