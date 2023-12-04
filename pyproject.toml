@@ -35,6 +35,7 @@ ignore = [
     # AoC Specific
     "FBT001", # boolean-type-hint-positional-argument
     "FBT002", # boolean-default-value-positional-argument
+    "C901",   # complex-structure
 ]
 
 
