@@ -31,6 +31,10 @@ ignore = [
     # Meta
     "FIX002", # line-contains-todo
     "TD003",  # missing-todo-link
+
+    # AoC Specific
+    "FBT001", # boolean-type-hint-positional-argument
+    "FBT002", # boolean-default-value-positional-argument
 ]
 
 
