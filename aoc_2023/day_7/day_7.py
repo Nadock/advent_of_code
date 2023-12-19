@@ -85,7 +85,7 @@ def part_2(puzzle: str) -> int | str | float | bool:
         reverse=True,
     )
 
-g    sum = 0
+    sum = 0
     for idx, game in enumerate(games):
         sum += (idx + 1) * game[1]
     return sum
