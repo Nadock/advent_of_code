@@ -26,9 +26,12 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras --dev
 
-      - name: PR Checks
+      - name: Code quality checks
         run: |
           task --output group \
                 --output-group-begin "::group::{{.TASK}}{{if .NAME}}:{{.NAME}}{{end}}" \
                 --output-group-end "::endgroup::" \
                 ci
+
+      - name: Recheck previous puzzle solutions
+        run: uv run ./aoc.py test
