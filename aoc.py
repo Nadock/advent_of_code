@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import importlib
+import json
 import math
 import os
 import pathlib
@@ -30,6 +31,15 @@ def init_argparse() -> argparse.ArgumentParser:
         help=(
             "The path to a file containing your AOC session cookie, to authenticate "
             "when automatically downloading puzzle inputs. (default: ./cookie.txt)"
+        ),
+    )
+    parser.add_argument(
+        "--results",
+        type=pathlib.Path,
+        default=pathlib.Path("results.json"),
+        help=(
+            "A JSON file containing the results of previous runs. Update when using "
+            "the 'run' command and used reference in the 'test' command."
         ),
     )
 
@@ -145,12 +155,14 @@ class AOC:
         day: int,
         cookie: pathlib.Path,
         console: console.Console | None = None,
+        results: pathlib.Path,
     ) -> None:
         self.year = year
         self.day = day
         self.cookie = cookie
         self._cookie: str | None = None
         self.console = console or rich.get_console()
+        self.results = results
 
     def __str__(self) -> str:
         return f"AOC<{format_aoc_id(self)}>"
@@ -356,9 +368,11 @@ class AOC:
 
         if not isinstance(result, int | str | float | bool):
             raise TypeError(
-                "Expected puzzle solution to a string or integer, "
+                "Expected puzzle solution to be a int, str, float, or bool - "
                 f"not {type(result)}",
             )
+
+        self.update_results_file(part, input, result)
         return result
 
     def add_to_git(self) -> str:
@@ -391,6 +405,26 @@ class AOC:
         )
 
         return branch
+
+    def update_results_file(
+        self,
+        part: Literal[1, 2],
+        input: Literal["example", "puzzle"],
+        result: str | float | bool,
+    ) -> None:
+        """Update the results file with the output of a run."""
+        results: dict[str, dict[str, dict[str, dict[str, str | float | bool]]]] = {}
+        if self.results.is_file():
+            results = json.loads(self.results.read_text("utf-8"))
+
+        year, day, _part = str(self.year), str(self.day), str(part)
+
+        results.setdefault(year, {})
+        results[year].setdefault(day, {})
+        results[year][day].setdefault(_part, {})
+        results[year][day][_part][input] = result
+
+        self.results.write_text(json.dumps(results))
 
 
 def colour_by_type(value: Any) -> str:  # noqa: ANN401
@@ -625,6 +659,7 @@ def main(console: console.Console) -> list[str]:
         day=args.day,
         cookie=args.session,
         console=console,
+        results=args.results,
     )
 
     if args.command == "init":
