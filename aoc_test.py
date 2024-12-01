@@ -38,28 +38,28 @@ def test_format_ns_time(time: int, formatted: str) -> None:
         (2023, 1, None, None, "AOC.2023.1"),
         (2023, None, None, None, "AOC.2023"),
         (
-            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=pathlib.Path()),
+            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=None),
             None,
             None,
             None,
             "AOC.2023.1",
         ),
         (
-            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=pathlib.Path()),
+            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=None),
             2,
             None,
             None,
             "AOC.2023.2",
         ),
         (
-            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=pathlib.Path()),
+            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=None),
             None,
             2,
             None,
             "AOC.2023.1.2",
         ),
         (
-            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=pathlib.Path()),
+            aoc.AOC(year=2023, day=1, cookie=pathlib.Path(), results=None),
             None,
             2,
             "example",
@@ -93,7 +93,7 @@ def test_aoc__timedelta_to_puzzle(
     day: int,
     delta: datetime.timedelta | None,
 ) -> None:
-    _aoc = aoc.AOC(year=year, day=day, cookie=pathlib.Path(), results=pathlib.Path())
+    _aoc = aoc.AOC(year=year, day=day, cookie=pathlib.Path(), results=None)
 
     result = _aoc.timedelta_to_puzzle()
 

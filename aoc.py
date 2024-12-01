@@ -142,6 +142,39 @@ def init_argparse() -> argparse.ArgumentParser:
         ),
     )
 
+    test = commands.add_parser(
+        "test", help="Test the puzzle solution against previously recorded results."
+    )
+    test.add_argument(
+        "-y",
+        "--year",
+        type=int,
+        default=None,
+        help="The year of the puzzles to test. (default: all years)",
+    )
+    test.add_argument(
+        "-d",
+        "--day",
+        type=int,
+        default=None,
+        help="The day of the puzzles to test. (default: all days)",
+    )
+    test.add_argument(
+        "-p",
+        "--part",
+        type=int,
+        default=None,
+        choices=[1, 2],
+        help="The parts of the puzzles to test. (default: both parts)",
+    )
+    test.add_argument(
+        "-i",
+        "--input",
+        default=None,
+        choices=["example", "puzzle"],
+        help="The puzzle input to supply to the puzzles. (default: both inputs)",
+    )
+
     return parser
 
 
@@ -155,7 +188,7 @@ class AOC:
         day: int,
         cookie: pathlib.Path,
         console: console.Console | None = None,
-        results: pathlib.Path,
+        results: pathlib.Path | None,
     ) -> None:
         self.year = year
         self.day = day
@@ -413,6 +446,9 @@ class AOC:
         result: str | float | bool,
     ) -> None:
         """Update the results file with the output of a run."""
+        if not self.results:
+            return
+
         results: dict[str, dict[str, dict[str, dict[str, str | float | bool]]]] = {}
         if self.results.is_file():
             results = json.loads(self.results.read_text("utf-8"))
@@ -649,10 +685,95 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> list[str]:
     return lines
 
 
+def test_command(  # noqa: PLR0912
+    results_path: pathlib.Path,
+    year: int | None,
+    day: int | None,
+    part: int | None,
+    input: Literal["example", "puzzle"] | None,
+) -> list[str]:
+    """Re-run each previously recorded puzzle to ensure they still work."""
+    results: dict[str, dict[str, dict[str, dict[str, str | float | bool]]]] = {}
+    results = json.loads(results_path.read_text("utf-8"))
+
+    t = table.Table(
+        "[bold cyan]ID[/bold cyan]",
+        "[bold cyan]Duration[/bold cyan]",
+        table.Column("[bold cyan]Pass / Fail[/bold cyan]", justify="center"),
+        table.Column("[bold cyan]Expected[/bold cyan]", justify="center"),
+        table.Column("[bold cyan]Got[/bold cyan]", justify="center"),
+        title=("[italic bold cyan]AoC Test Results[/italic bold cyan]"),
+    )
+
+    fails = 0
+
+    for _year, days in results.items():
+        if year is not None and _year != year:
+            continue
+
+        for _day, parts in days.items():
+            if day is not None and _day != day:
+                continue
+
+            aoc = AOC(
+                year=int(_year), day=int(_day), cookie=pathlib.Path(), results=None
+            )
+
+            for _part, inputs in parts.items():
+                if part is not None and _part != part:
+                    continue
+
+                for _input, expected in inputs.items():
+                    if input is not None and _input != input:
+                        continue
+
+                    if int(_part) not in (1, 2):
+                        raise ValueError(
+                            f"Unknown puzzle part in results file: {_part}"
+                        )
+
+                    if _input not in ("example", "puzzle"):
+                        raise ValueError(
+                            f"Unknown puzzle input in results file: {_input}"
+                        )
+
+                    start = time.time_ns()
+                    actual = aoc.run_part(int(_part), _input)  # type: ignore[arg-type]
+                    end = time.time_ns()
+
+                    duration = format_ns_time(end - start)
+
+                    pass_fail = "✅" if expected == actual else "❌"
+                    if expected != actual:
+                        fails += 1
+
+                    if actual is None:
+                        actual = "[bold red]Error, see traceback above.[/bold red]"
+                    else:
+                        actual = colour_by_type(actual)
+
+                    t.add_row(
+                        format_aoc_id(int(_year), int(_day), int(_part), _input),
+                        duration,
+                        pass_fail,
+                        colour_by_type(expected),
+                        actual,
+                    )
+
+    rich.get_console().print(t)
+
+    if fails != 0:
+        raise ValueError(f"{fails} AoC test runs failed!")
+    return []
+
+
 def main(console: console.Console) -> list[str]:
     """AOC CLI main function."""
     parser = init_argparse()
     args = parser.parse_args()
+
+    if args.command == "test":
+        return test_command(args.results, args.year, args.day, args.part, args.input)
 
     aoc = AOC(
         year=args.year,
