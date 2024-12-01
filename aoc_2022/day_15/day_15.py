@@ -1,36 +1,36 @@
-"""AOC Day 15 started at 2022-12-15T15:30:03.100645+10:30"""
+"""AOC Day 15 started at 2022-12-15T15:30:03.100645+10:30"""  # noqa: D415
 
 
-class Grid:
+class Grid:  # noqa: D101
     def __init__(self) -> None:
         self.grid = {}
         self.min = (0, 0)
         self.max = (0, 0)
 
-    def set(self, x, y, value):
+    def set(self, x, y, value):  # noqa: ANN001, ANN201, D102
         self.grid.setdefault(x, {})
         self.grid[x][y] = value
         self.min = (min(self.min[0], x), min(self.min[1], y))
         self.max = (max(self.max[0], x), max(self.max[1], y))
 
-    def get(self, x, y):
+    def get(self, x, y):  # noqa: ANN001, ANN201, D102
         self.grid.setdefault(x, {})
         return self.grid[x].get(y)
 
-    def rows(self) -> list[list]:
+    def rows(self) -> list[list]:  # noqa: D102
         rows = []
         for y in range(self.min[1], self.max[1] + 1):
-            rows.append(self.row(y))
+            rows.append(self.row(y))  # noqa: PERF401
         return rows
 
-    def row(self, y: int) -> list:
+    def row(self, y: int) -> list:  # noqa: D102
         row = []
         for x in range(self.min[0], self.max[0] + 1):
-            row.append(self.get(x, y))
+            row.append(self.get(x, y))  # noqa: PERF401
         return row
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 15's first part."""
     grid = Grid()
 
@@ -54,18 +54,18 @@ def part_1(puzzle: str):
 
         for x in range(sensor[0] - dist, sensor[0] + dist + 1):
             for y in range(2000000, 2000001):
-                if manhattan_distance((x, y), sensor) <= dist:
+                if manhattan_distance((x, y), sensor) <= dist:  # noqa: SIM102
                     if grid.get(x, y) is None:
                         grid.set(x, y, "#")
 
     return len([v for v in grid.row(2000000) if v == "#"])
 
 
-def manhattan_distance(p1: tuple[int, int], p2: tuple[int, int]) -> int:
+def manhattan_distance(p1: tuple[int, int], p2: tuple[int, int]) -> int:  # noqa: D103
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 15's second part."""
     grid = Grid()
 
@@ -102,7 +102,7 @@ def part_2(puzzle: str):
             blocked[sensor[1] + offset].append(r)
             blocked[sensor[1] - offset].append(r)
 
-    for y in range(4_000_001):
+    for y in range(4_000_001):  # noqa: RET503
         blocked[y] = sorted(blocked[y], key=lambda b: b[0])
 
         if blocked[y][0][0] != 0:
@@ -110,7 +110,7 @@ def part_2(puzzle: str):
 
         end = blocked[y][0][1]
         for blocker in blocked[y]:
-            if end > 4_000_000:
+            if end > 4_000_000:  # noqa: PLR2004
                 break
             if end < blocker[0]:
                 return (end * 4_000_000) + y

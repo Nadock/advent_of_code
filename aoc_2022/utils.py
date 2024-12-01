@@ -1,5 +1,4 @@
-import pathlib
-from typing import Callable
+from collections.abc import Callable
 
 
 def read_list_of_lists(puzzle: str) -> list[list]:
@@ -16,9 +15,9 @@ def read_list_of_lists(puzzle: str) -> list[list]:
     ```
 
     Would result in the output `[["1", "2"], ["3"]]`.
-    """
+    """  # noqa: E501
     lists = []
-    curr_list = []
+    curr_list: list[str] = []
 
     for line in puzzle.split("\n"):
         if not line:

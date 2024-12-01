@@ -2,11 +2,6 @@
 version: '3'
 
 
-vars:
-  PY_PREFIX:
-    sh: if [[ ${PIPENV_ACTIVE:-} != "1" ]]; then echo "pipenv run"; fi
-
-
 tasks:
   ci:
     desc: Run all tasks required to merge code into the main branch
@@ -18,25 +13,25 @@ tasks:
   ruff:check:
     desc: Check linting and formatting of Python sources with `astral-sh/ruff`.
     cmds:
-      - "{{.PY_PREFIX}} ruff check {{.CLI_ARGS}} aoc.py"
-      - "{{.PY_PREFIX}} ruff format --check {{.CLI_ARGS}} aoc.py"
+      - uv run ruff check {{.CLI_ARGS}} aoc.py aoc_*
+      - uv run ruff format --check {{.CLI_ARGS}} aoc.py aoc_*
 
   ruff:fix:
     desc: Fix linting errors in Python sources with `astral-sh/ruff`.
     cmds:
-      - "{{.PY_PREFIX}} ruff check --fix {{.CLI_ARGS}} aoc.py"
+      - uv run ruff check --fix {{.CLI_ARGS}} aoc.py aoc_*
 
   ruff:format:
     desc: Fix formatting of Python sources with `astral-sh/ruff`.
     cmds:
-      - "{{.PY_PREFIX}} ruff format {{.CLI_ARGS}} aoc.py"
+      - uv run ruff format {{.CLI_ARGS}} aoc.py aoc_*
 
   mypy:
     desc: Check Python type annotations with `python/mypy`.
     cmds:
-      - "{{.PY_PREFIX}} mypy {{.CLI_ARGS}} aoc.py"
+      - uv run mypy {{.CLI_ARGS}} aoc.py aoc_2024
 
   pytest:
     desc: Run Python unit tests via `pytest-dev/pytest`
     cmds:
-      - "{{.PY_PREFIX}} pytest {{.CLI_ARGS}} aoc_test.py"
+      - uv run pytest {{.CLI_ARGS}} aoc_test.py

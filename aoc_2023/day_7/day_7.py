@@ -22,7 +22,7 @@ card_rank_1 = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
 card_rank_2 = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"]
 
 
-def compare_hands_1(a: str, b: str) -> int:
+def compare_hands_1(a: str, b: str) -> int:  # noqa: D103
     type_a, type_b = hand_type_1(a), hand_type_1(b)
 
     if type_a > type_b:
@@ -41,36 +41,36 @@ def compare_hands_1(a: str, b: str) -> int:
     return 0
 
 
-def hand_type_1(hand: str) -> int:
+def hand_type_1(hand: str) -> int:  # noqa: D103, PLR0911
     cards = list(hand)
 
     counts_dict: dict[str, int] = collections.defaultdict(lambda: 0)
     for card in cards:
         counts_dict[card] += 1
     counts_list = list(counts_dict.values())
-    if len(cards) != 5 or sum(counts_list) != 5:
+    if len(cards) != 5 or sum(counts_list) != 5:  # noqa: PLR2004
         raise ValueError(f"unknown hand type: {hand=}, {cards=}, {counts_dict=}")
 
     # Five of a kind
     if len(counts_list) == 1:
         return 6
     # Four of a kind
-    if len(counts_list) == 2 and 4 in counts_list:
+    if len(counts_list) == 2 and 4 in counts_list:  # noqa: PLR2004
         return 5
     # Full house
-    if len(counts_list) == 2 and 3 in counts_list and 2 in counts_list:
+    if len(counts_list) == 2 and 3 in counts_list and 2 in counts_list:  # noqa: PLR2004
         return 4
     # Three of a kind
-    if len(counts_list) == 3 and 3 in counts_list and 1 in counts_list:
+    if len(counts_list) == 3 and 3 in counts_list and 1 in counts_list:  # noqa: PLR2004
         return 3
     # Two pair
-    if len(counts_list) == 3 and 2 in counts_list and 1 in counts_list:
+    if len(counts_list) == 3 and 2 in counts_list and 1 in counts_list:  # noqa: PLR2004
         return 2
     # One pair
-    if len(counts_list) == 4 and 2 in counts_list and 1 in counts_list:
+    if len(counts_list) == 4 and 2 in counts_list and 1 in counts_list:  # noqa: PLR2004
         return 1
     # High card
-    if len(counts_list) == 5:
+    if len(counts_list) == 5:  # noqa: PLR2004
         return 0
 
     raise ValueError(f"unknown hand type: {hand=}, {cards=}, {counts_dict=}")
@@ -91,7 +91,7 @@ def part_2(puzzle: str) -> int | str | float | bool:
     return sum
 
 
-def hand_type_2(hand: str) -> int:
+def hand_type_2(hand: str) -> int:  # noqa: D103
     h_type = hand_type_1(hand)
 
     if "J" not in hand:
@@ -103,7 +103,7 @@ def hand_type_2(hand: str) -> int:
     return h_type
 
 
-def compare_hands_2(a: str, b: str) -> int:
+def compare_hands_2(a: str, b: str) -> int:  # noqa: D103
     type_a, type_b = hand_type_2(a), hand_type_2(b)
 
     if type_a > type_b:

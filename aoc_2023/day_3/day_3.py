@@ -78,7 +78,7 @@ def part_2(puzzle: str) -> int | str | float | bool:
                 start, end = None, None
 
     for ratios in gears.values():
-        if len(ratios) == 2:
+        if len(ratios) == 2:  # noqa: PLR2004
             sum += ratios[0] * ratios[1]
 
     return sum

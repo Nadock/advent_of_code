@@ -1,17 +1,16 @@
-"""AOC Day 13 started at 2022-12-13T15:32:27.551688+10:30"""
+"""AOC Day 13 started at 2022-12-13T15:32:27.551688+10:30"""  # noqa: D415
 # pylint: disable=eval-used
 
 import functools
-from typing import Optional, Union
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 13's first part."""
     count = []
     for idx, pairs in enumerate(puzzle.split("\n\n")):
-        assert len(pairs.splitlines()) == 2
+        assert len(pairs.splitlines()) == 2  # noqa: S101, PLR2004
 
-        pair = (eval(pairs.splitlines()[0]), eval(pairs.splitlines()[1]))
+        pair = (eval(pairs.splitlines()[0]), eval(pairs.splitlines()[1]))  # noqa: S307
         result = compare(pair[0], pair[1])
 
         if result:
@@ -20,10 +19,10 @@ def part_1(puzzle: str):
     return sum(count)
 
 
-def compare(
-    left: Union[int, list[int]],
-    right: Union[int, list[int]],
-) -> Optional[bool]:
+def compare(  # noqa: D103, PLR0911
+    left: int | list[int],
+    right: int | list[int],
+) -> bool | None:
     if isinstance(left, int) and isinstance(right, int):
         if left == right:
             return None
@@ -53,15 +52,15 @@ def compare(
     return None
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 13's second part."""
     packets = [[[2]], [[6]]]
     for line in puzzle.splitlines():
         if not line:
             continue
-        packets.append(eval(line))
+        packets.append(eval(line))  # noqa: S307
 
-    def sort_compare(left, right) -> int:
+    def sort_compare(left, right) -> int:  # noqa: ANN001
         result = compare(left, right)
         if result:
             return -1

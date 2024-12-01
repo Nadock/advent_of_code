@@ -37,7 +37,7 @@ def part_1(puzzle: str) -> int | str | float | bool:
     return min
 
 
-def convert_via_map(map: list[tuple[int, int, int]], value: int) -> int:
+def convert_via_map(map: list[tuple[int, int, int]], value: int) -> int:  # noqa: D103
     for dest, source, width in map:
         if value >= source and value <= source + width:
             offset = value - source
@@ -45,7 +45,7 @@ def convert_via_map(map: list[tuple[int, int, int]], value: int) -> int:
     return value
 
 
-def convert(maps: list[list[tuple[int, int, int]]], value: int) -> int:
+def convert(maps: list[list[tuple[int, int, int]]], value: int) -> int:  # noqa: D103
     for map in maps:
         value = convert_via_map(map, value)
     return value
@@ -89,7 +89,7 @@ def part_2(puzzle: str) -> int | str | float | bool:
     return s_min
 
 
-def merge_ranges(ranges: list[tuple[int, int]]) -> tuple[int, int]:
+def merge_ranges(ranges: list[tuple[int, int]]) -> tuple[int, int]:  # noqa: D103
     ranges.sort(key=lambda r: r[0])
     a = ranges[0]
     for b in ranges[1:]:
@@ -97,7 +97,7 @@ def merge_ranges(ranges: list[tuple[int, int]]) -> tuple[int, int]:
     return a
 
 
-def merge_range(a: tuple[int, int], b: tuple[int, int]) -> tuple[int, int]:
+def merge_range(a: tuple[int, int], b: tuple[int, int]) -> tuple[int, int]:  # noqa: D103
     # a    a
     #   b    b
     if a[0] <= b[0] and b[1] >= a[1]:

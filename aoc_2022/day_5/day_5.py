@@ -1,9 +1,9 @@
-"""AOC Day 5 started at 2022-12-05T15:30:00.934665+10:30"""
+"""AOC Day 5 started at 2022-12-05T15:30:00.934665+10:30"""  # noqa: D415
 
 
-class Stack:
+class Stack:  # noqa: D101
     def __init__(self) -> None:
-        self._contents = []
+        self._contents: list[str] = []
 
     def __str__(self) -> str:
         return f"Stack<{self._contents}>"
@@ -11,17 +11,17 @@ class Stack:
     def __repr__(self) -> str:
         return str(self)
 
-    def push(self, item):
+    def push(self, item):  # noqa: ANN001, ANN201, D102
         self._contents.append(item)
 
-    def pop(self):
+    def pop(self):  # noqa: ANN201, D102
         return self._contents.pop(-1)
 
-    def peak(self):
+    def peak(self):  # noqa: ANN201, D102
         return self._contents[-1]
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 5's first part."""
     crates: list[str] = []
     moves: list[str] = []
@@ -55,7 +55,7 @@ def part_1(puzzle: str):
     return "".join([s.peak() for s in stacks.values()])
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 5's second part."""
     crates: list[str] = []
     moves: list[str] = []

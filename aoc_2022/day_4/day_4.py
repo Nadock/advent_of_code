@@ -1,4 +1,4 @@
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 4's first part."""
     count = 0
 
@@ -12,13 +12,13 @@ def part_1(puzzle: str):
     return count
 
 
-def range_full_overlap(range1: list[int], range2: list[int]) -> bool:
-    if range1[0] >= range2[0] and range1[1] <= range2[1]:
+def range_full_overlap(range1: list[int], range2: list[int]) -> bool:  # noqa: D103
+    if range1[0] >= range2[0] and range1[1] <= range2[1]:  # noqa: SIM103
         return True
     return False
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 4's second part."""
     count = 0
 
@@ -32,7 +32,7 @@ def part_2(puzzle: str):
     return count
 
 
-def range_partial_overlap(range1: list[int], range2: list[int]) -> bool:
+def range_partial_overlap(range1: list[int], range2: list[int]) -> bool:  # noqa: D103
     # Big time cheat here IMO but my brain could not be arsed
     return bool(
         set(range(range1[0], range1[1] + 1)).intersection(

@@ -1,15 +1,15 @@
-"""AOC Day 10 started at 2022-12-11T12:12:33.927897+10:30"""
+"""AOC Day 10 started at 2022-12-11T12:12:33.927897+10:30"""  # noqa: D415
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 10's first part."""
     reg_x = 1
     cycle = 1
 
     samples = []
 
-    def check_reg_x():
-        if cycle == 20 or (cycle - 20) % 40 == 0:
+    def check_reg_x():  # noqa: ANN202
+        if cycle == 20 or (cycle - 20) % 40 == 0:  # noqa: PLR2004
             samples.append(reg_x * cycle)
 
     for line in puzzle.strip().splitlines():
@@ -29,13 +29,13 @@ def part_1(puzzle: str):
     return sum(samples)
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 10's second part."""
     sprite_pos = 1  # AKA "register X"
     cycle = 1
     pixels = [[" " for _ in range(40)] for _ in range(6)]
 
-    def check_reg_x():
+    def check_reg_x():  # noqa: ANN202
         row = cycle // 40
         col = (cycle - 1) % 40
         if col in [sprite_pos - 1, sprite_pos, sprite_pos + 1]:

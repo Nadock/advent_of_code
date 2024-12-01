@@ -1,11 +1,10 @@
-"""AOC Day 11 started at 2022-12-11T19:03:18.796530+10:30"""
-
+"""AOC Day 11 started at 2022-12-11T19:03:18.796530+10:30"""  # noqa: D415
 
 import dataclasses
 
 
 @dataclasses.dataclass
-class Monkey:
+class Monkey:  # noqa: D101
     operation: str
     test: str
     if_true: str
@@ -14,18 +13,18 @@ class Monkey:
 
     inspections = 0
 
-    def do_operation(self, item: int) -> int:
+    def do_operation(self, item: int) -> int:  # noqa: D102
         self.inspections += 1
 
         arg_a = self.operation.split(" ")[2]
         op = self.operation.split(" ")[3]
         arg_b = self.operation.split(" ")[4]
 
-        if arg_a == "old":
+        if arg_a == "old":  # noqa: SIM108
             arg_a = item
         else:
             arg_a = int(arg_a)
-        if arg_b == "old":
+        if arg_b == "old":  # noqa: SIM108
             arg_b = item
         else:
             arg_b = int(arg_b)
@@ -36,24 +35,24 @@ class Monkey:
             return arg_a * arg_b
         raise ValueError(f"unknown op in monkey operation: {self.operation}")
 
-    def do_test(self, item: int) -> bool:
+    def do_test(self, item: int) -> bool:  # noqa: D102
         op = self.test.split(" ")[0]
         arg = self.test.split(" ")[2]
         if op == "divisible":
             return item % int(arg) == 0
         raise ValueError(f"unknown op in monkey test: {self.test}")
 
-    def test_number(self) -> int:
+    def test_number(self) -> int:  # noqa: D102
         return int(self.test.split(" ")[2])
 
-    def if_true_monkey(self) -> int:
+    def if_true_monkey(self) -> int:  # noqa: D102
         return int(self.if_true.replace("throw to monkey ", ""))
 
-    def if_false_monkey(self) -> int:
+    def if_false_monkey(self) -> int:  # noqa: D102
         return int(self.if_false.replace("throw to monkey ", ""))
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 11's first part."""
     monkeys: dict[int, Monkey] = {}
     for monkey in puzzle.strip().split("\n\n"):
@@ -74,8 +73,8 @@ def part_1(puzzle: str):
             monkey.items = []
 
             for item in items:
-                item = monkey.do_operation(item)
-                item //= 3
+                item = monkey.do_operation(item)  # noqa: PLW2901
+                item //= 3  # noqa: PLW2901
                 if monkey.do_test(item):
                     monkeys[monkey.if_true_monkey()].items.append(item)
                 else:
@@ -83,13 +82,13 @@ def part_1(puzzle: str):
 
     inspections = []
     for monkey in monkeys.values():
-        inspections.append(monkey.inspections)
+        inspections.append(monkey.inspections)  # noqa: PERF401
 
     inspections.sort(reverse=True)
     return inspections[0] * inspections[1]
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 11's second part."""
     monkeys: dict[int, Monkey] = {}
     for monkey in puzzle.strip().split("\n\n"):
@@ -114,8 +113,8 @@ def part_2(puzzle: str):
             monkey.items = []
 
             for item in items:
-                item = monkey.do_operation(item)
-                item %= mod_value
+                item = monkey.do_operation(item)  # noqa: PLW2901
+                item %= mod_value  # noqa: PLW2901
                 if monkey.do_test(item):
                     monkeys[monkey.if_true_monkey()].items.append(item)
                 else:
@@ -123,7 +122,7 @@ def part_2(puzzle: str):
 
     inspections = []
     for monkey in monkeys.values():
-        inspections.append(monkey.inspections)
+        inspections.append(monkey.inspections)  # noqa: PERF401
 
     inspections.sort(reverse=True)
     return inspections[0] * inspections[1]

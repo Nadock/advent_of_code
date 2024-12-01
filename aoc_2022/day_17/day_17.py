@@ -1,6 +1,4 @@
-"""AOC Day 17 started at 2022-12-17T17:34:33.479071+10:30"""
-
-from typing import Optional
+"""AOC Day 17 started at 2022-12-17T17:34:33.479071+10:30"""  # noqa: D415
 
 PIECES = [
     # Minus
@@ -32,7 +30,7 @@ PIECES = [
 ]
 
 
-def blocked(
+def blocked(  # noqa: D103
     board: list[list[str]],
     shape: list[list[str]],
     position: tuple[int, int],
@@ -44,14 +42,14 @@ def blocked(
     return False
 
 
-def set_pieces_height(board: list[list[str]]) -> int:
+def set_pieces_height(board: list[list[str]]) -> int:  # noqa: D103
     for y, row in enumerate(board[::-1]):
         if "#" in row:
             return len(board) - y
     return 0
 
 
-def set_piece(
+def set_piece(  # noqa: ANN201, D103
     board: list[list[str]],
     shape: list[list[str]],
     position: tuple[int, int],
@@ -62,7 +60,7 @@ def set_piece(
                 board[y + position[1]][x + position[0]] = cell
 
 
-def move_down(
+def move_down(  # noqa: ANN201, D103
     board: list[list[str]],
     shape: list[list[str]],
     position: tuple[int, int],
@@ -73,17 +71,17 @@ def move_down(
     return new_pos
 
 
-def print_board(
+def print_board(  # noqa: D103
     board: list[list[str]],
-    shape: Optional[list[list[str]]] = None,
-    position: Optional[tuple[int, int]] = None,
+    shape: list[list[str]] | None = None,
+    position: tuple[int, int] | None = None,
 ) -> str:
     lines = []
 
     for row in board:
         row_strs = []
         for cell in row:
-            row_strs.append(cell)
+            row_strs.append(cell)  # noqa: PERF402
         lines.append(row_strs)
 
     if shape is not None and position is not None:
@@ -95,11 +93,11 @@ def print_board(
     return "\n".join(["".join(line) for line in lines[::-1]])
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 17's first part."""
     movements = list(puzzle.strip())
     movement_idx = 0
-    board = []
+    board: list[list[str]] = []
     for p in range(2022):
         piece = PIECES[p % len(PIECES)]
         size = (max(len(l) for l in piece), len(piece))
@@ -111,7 +109,7 @@ def part_1(puzzle: str):
         while True:
             if movements[movement_idx % len(movements)] == ">":
                 new_pos = (min(6, position[0] + 1), position[1])
-                if new_pos[0] + size[0] > 6:
+                if new_pos[0] + size[0] > 6:  # noqa: PLR2004
                     new_pos = (6 - size[0] + 1, new_pos[1])
                 if not blocked(board, piece, new_pos):
                     position = new_pos
@@ -130,11 +128,11 @@ def part_1(puzzle: str):
     return set_pieces_height(board)
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 17's second part."""
     movements = list(puzzle.strip())
     movement_idx = 0
-    board = []
+    board: list[list[str]] = []
 
     last_p, last_idx, last_height, skip_height = 0, 0, 0, 0
 
@@ -147,19 +145,19 @@ def part_2(puzzle: str):
             board.append(["_" for _ in range(7)])
 
         while True:
-            if p > 10_000 and movement_idx % len(movements) == 0:
+            if p > 10_000 and movement_idx % len(movements) == 0:  # noqa: PLR2004
                 # print(print_board(board, piece, position))
                 # print(
-                #     f"{p=} (+{p-last_p}), {movement_idx=} (+{movement_idx-last_idx}), "
-                #     f"{set_pieces_height(board)=} (+{set_pieces_height(board)-last_height})"
+                #     f"{p=} (+{p-last_p}), {movement_idx=} (+{movement_idx-last_idx}), "  # noqa: E501
+                #     f"{set_pieces_height(board)=} (+{set_pieces_height(board)-last_height})"  # noqa: E501
                 # )
 
-                # After this point, height increases in intervals of 10, 9, 8, 14, 12, 10
-                #                                                     7, 7, 6,  8, 7,   7
+                # After this point, height increases in intervals of 10, 9, 8, 14, 12, 10  # noqa: E501
+                #                                                     7, 7, 6,  8, 7,   7  # noqa: E501
                 # every len(movements)
                 if last_p != 0:
                     # print(
-                    #     f"from here every {p-last_p} pieces increased hight by {set_pieces_height(board)-last_height}"
+                    #     f"from here every {p-last_p} pieces increased hight by {set_pieces_height(board)-last_height}"  # noqa: E501
                     # )
                     remain = 1_000_000_000_000 - p
                     # print(f"{remain} pieces remaining -> x{remain/(p-last_p)} times")
@@ -169,13 +167,13 @@ def part_2(puzzle: str):
                         times * (set_pieces_height(board) - last_height)
                     )
                     # print(
-                    #     f"after {times} more groups of {p-last_p} pieces the new height would be {skip_height}"
+                    #     f"after {times} more groups of {p-last_p} pieces the new height would be {skip_height}"  # noqa: E501
                     # )
 
                     # left_over = remain - (times * (p - last_p))
                     # print(f"need to simulate {left_over} more pieces")
 
-                last_p, last_idx, last_height = (
+                last_p, last_idx, last_height = (  # noqa: F841
                     p,
                     movement_idx,
                     set_pieces_height(board),
@@ -185,7 +183,7 @@ def part_2(puzzle: str):
 
             if movements[movement_idx % len(movements)] == ">":
                 new_pos = (min(6, position[0] + 1), position[1])
-                if new_pos[0] + size[0] > 6:
+                if new_pos[0] + size[0] > 6:  # noqa: PLR2004
                     new_pos = (6 - size[0] + 1, new_pos[1])
                 if not blocked(board, piece, new_pos):
                     position = new_pos
@@ -203,6 +201,6 @@ def part_2(puzzle: str):
 
     current_height = set_pieces_height(board)
     # print(
-    #     f"{last_height=}, {current_height=}, delta={current_height-last_height}, {skip_height=}"
+    #     f"{last_height=}, {current_height=}, delta={current_height-last_height}, {skip_height=}"  # noqa: E501
     # )
     return skip_height + (current_height - last_height)

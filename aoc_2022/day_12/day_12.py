@@ -1,21 +1,21 @@
-"""AOC Day 12 started at 2022-12-12T16:40:48.912598+10:30"""
+"""AOC Day 12 started at 2022-12-12T16:40:48.912598+10:30"""  # noqa: D415
+
 from __future__ import annotations
 
 import dataclasses
-from typing import Optional
 
 
 @dataclasses.dataclass
-class Node:
+class Node:  # noqa: D101
     height: int
     end: bool = False
     children: list[Node] = dataclasses.field(default_factory=list)
 
-    parent: Optional[Node] = None
+    parent: Node | None = None
     seen: bool = False
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 12's first part."""
     # Convert input into graph nodes
     grid: list[list[Node]] = []
@@ -62,7 +62,7 @@ def part_1(puzzle: str):
     return len(path)
 
 
-def bfs(start: Node) -> Node:
+def bfs(start: Node) -> Node:  # noqa: D103
     queue = [start]
     start.seen = True
 
@@ -80,7 +80,7 @@ def bfs(start: Node) -> Node:
     raise ValueError("no path to end node")
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201, PLR0912
     """Calculates the solution to day 12's second part."""
     # Convert input into graph nodes
     grid: list[list[Node]] = []
@@ -133,7 +133,7 @@ def part_2(puzzle: str):
             min_path = count
 
         for row in grid:
-            for node in row:
+            for node in row:  # noqa: PLW2901
                 node.parent = None
                 node.seen = False
 

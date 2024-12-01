@@ -1,21 +1,18 @@
 name: PR Checks
 
-on: push
+on: pull_request
 
 jobs:
   pr_checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Read Python Version
-        run: echo "PYTHON_VERSION=$(cat .python-version)" >> $GITHUB_ENV
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: .python-version
 
       - name: Setup go-task/task
         uses: arduino/setup-task@v1
@@ -23,14 +20,18 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: |
-          pip install pipenv
-          pipenv install --system --dev --deploy
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
 
-      - name: PR Checks
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: Code quality checks
         run: |
           task --output group \
                 --output-group-begin "::group::{{.TASK}}{{if .NAME}}:{{.NAME}}{{end}}" \
                 --output-group-end "::endgroup::" \
                 ci
+
+      - name: Recheck previous puzzle solutions
+        run: uv run ./aoc.py test
