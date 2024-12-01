@@ -1,8 +1,9 @@
-"""AOC Day 18 started at 2022-12-18T15:30:07.767578+10:30"""
+"""AOC Day 18 started at 2022-12-18T15:30:07.767578+10:30"""  # noqa: D415
+
 import functools
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 18's first part."""
     scan_grid: dict[tuple[int, int, int], bool] = {}
     for line in puzzle.strip().splitlines():
@@ -14,7 +15,7 @@ def part_1(puzzle: str):
     return count_exposed_faces(scan_grid)
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 18's second part."""
     scan_grid: dict[tuple[int, int, int], bool] = {}
     grid_min, grid_max = (0, 0, 0), (0, 0, 0)
@@ -31,7 +32,7 @@ def part_2(puzzle: str):
     return count_external_faces(scan_grid, grid_min, grid_max)
 
 
-def count_exposed_faces(grid: dict[tuple[int, int, int], bool]) -> int:
+def count_exposed_faces(grid: dict[tuple[int, int, int], bool]) -> int:  # noqa: D103
     exposed_faces = 0
 
     for (x, y, z), is_filled in grid.items():
@@ -54,9 +55,9 @@ def count_exposed_faces(grid: dict[tuple[int, int, int], bool]) -> int:
     return exposed_faces
 
 
-def count_external_faces(grid: dict[tuple[int, int, int], bool], g_min, g_max) -> int:
+def count_external_faces(grid: dict[tuple[int, int, int], bool], g_min, g_max) -> int:  # noqa: ANN001, D103
     @functools.lru_cache
-    def dfs_edge_search(x, y, z):
+    def dfs_edge_search(x, y, z):  # noqa: ANN001, ANN202
         stack = [(x, y, z)]
         seen = set()
         while stack:
@@ -84,7 +85,7 @@ def count_external_faces(grid: dict[tuple[int, int, int], bool], g_min, g_max) -
         return False
 
     exposed = 0
-    for x, y, z in grid.keys():
+    for x, y, z in grid:
         faces = [
             (x + 1, y, z),
             (x - 1, y, z),

@@ -12,7 +12,7 @@ def part_1(puzzle: str) -> int | str | float | bool:
     return count
 
 
-def reduce_history(history: list[int]) -> list[list[int]]:
+def reduce_history(history: list[int]) -> list[list[int]]:  # noqa: D103
     reduced_history = [history]
     while not all(h == 0 for h in history):
         history = [b - a for a, b in itertools.pairwise(history)]
@@ -20,7 +20,7 @@ def reduce_history(history: list[int]) -> list[list[int]]:
     return reduced_history
 
 
-def extrapolate_forward(history: list[int]) -> int:
+def extrapolate_forward(history: list[int]) -> int:  # noqa: D103
     reduced_history = reduce_history(history)
     last_values = [h[-1] for h in reduced_history]
 
@@ -31,7 +31,7 @@ def extrapolate_forward(history: list[int]) -> int:
     return next
 
 
-def extrapolate_backwards(history: list[int]) -> int:
+def extrapolate_backwards(history: list[int]) -> int:  # noqa: D103
     reduced_history = reduce_history(history)
     first_values = [h[0] for h in reduced_history]
 

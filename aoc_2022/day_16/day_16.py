@@ -4,25 +4,24 @@ AOC Day 16 started at 2022-12-16T15:30:03.729946+10:30
 Full transparency this puzzle got me good, had to research how others were doing it.
 This is basically a direct recreation of the solution described here:
 https://old.reddit.com/r/adventofcode/comments/zn6k1l/2022_day_16_solutions/j0ftnif/
-"""
-
+"""  # noqa: D415
 
 import collections
 
 
-class IDMap:
+class IDMap:  # noqa: D101
     def __init__(self) -> None:
         self.max = 0
         self.map = {}
 
-    def add(self, value) -> int:
+    def add(self, value) -> int:  # noqa: ANN001, D102
         if value not in self.map:
             self.map[value] = self.max
             self.max += 1
         return self.map[value]
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 16's first part."""
     valves = []
     valve_ids = IDMap()
@@ -59,13 +58,13 @@ def part_1(puzzle: str):
             for k in range(valve_ids.max):
                 graph[j][k] = min(graph[j][k], graph[j][i] + graph[i][k])
 
-    def simulate(time):
+    def simulate(time):  # noqa: ANN001, ANN202
         queue = collections.deque()
         best = collections.defaultdict(lambda: -1)
 
         aa = pos_rate_valves.index(valve_ids.map["AA"])
 
-        def add(i, added, v, t):
+        def add(i, added, v, t):  # noqa: ANN001, ANN202
             if t >= 0 and (best[(i, added, t)] < v):
                 best[(i, added, t)] = v
                 queue.append((i, t, added, v))
@@ -88,7 +87,7 @@ def part_1(puzzle: str):
     return max(best.values())
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 16's second part."""
     valves = []
     valve_ids = IDMap()
@@ -125,13 +124,13 @@ def part_2(puzzle: str):
             for k in range(valve_ids.max):
                 graph[j][k] = min(graph[j][k], graph[j][i] + graph[i][k])
 
-    def simulate(time):
+    def simulate(time):  # noqa: ANN001, ANN202
         queue = collections.deque()
         best = collections.defaultdict(lambda: -1)
 
         aa = pos_rate_valves.index(valve_ids.map["AA"])
 
-        def add(i, added, v, t):
+        def add(i, added, v, t):  # noqa: ANN001, ANN202
             if t >= 0 and (best[(i, added, t)] < v):
                 best[(i, added, t)] = v
                 queue.append((i, t, added, v))
@@ -153,7 +152,7 @@ def part_2(puzzle: str):
     best = simulate(26)
     # best => (end_node, mask_turned, time_left) => max_flow
     table = [0] * (1 << len(pos_rate_valves))
-    for (i, added, t), vmax in best.items():
+    for (i, added, t), vmax in best.items():  # noqa: B007
         table[added] = max(table[added], vmax)
 
     result = 0

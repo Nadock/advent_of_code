@@ -1,8 +1,8 @@
-"""AOC Day 7 started at 2022-12-07T15:30:05.691237+10:30"""
+"""AOC Day 7 started at 2022-12-07T15:30:05.691237+10:30"""  # noqa: D415
+
 from __future__ import annotations
 
 import dataclasses
-from typing import Optional
 
 MAX_DIR_SIZE = 100_000
 FS_MAX_SIZE = 70_000_000
@@ -10,13 +10,13 @@ UPDATE_SIZE = 30_000_000
 
 
 @dataclasses.dataclass
-class Directory:
+class Directory:  # noqa: D101
     name: str
-    parent: Optional[Directory]
+    parent: Directory | None
     children: dict[str, Directory] = dataclasses.field(default_factory=dict)
     files: dict[str, int] = dataclasses.field(default_factory=dict)
 
-    def cd(self, path) -> Directory:
+    def cd(self, path) -> Directory:  # noqa: ANN001, D102
         if path == "/":
             raise ValueError("cannot cd to root")
 
@@ -27,7 +27,7 @@ class Directory:
 
         return self.children[path]
 
-    def size(self) -> int:
+    def size(self) -> int:  # noqa: D102
         size = 0
         for child in self.children.values():
             size += child.size()
@@ -35,14 +35,14 @@ class Directory:
             size += file
         return size
 
-    def iter_dirs(self):
+    def iter_dirs(self):  # noqa: ANN201, D102
         for child in self.children.values():
-            for child_dir in child.iter_dirs():
+            for child_dir in child.iter_dirs():  # noqa: UP028
                 yield child_dir
             yield child
 
 
-def parse_cmds(root: Directory, lines: list[str]):
+def parse_cmds(root: Directory, lines: list[str]):  # noqa: ANN201, D103
     pwd = root
 
     for idx, line in enumerate(lines):
@@ -52,7 +52,7 @@ def parse_cmds(root: Directory, lines: list[str]):
 
         if args[1] == "cd":
             path = args[2]
-            if path == "/":
+            if path == "/":  # noqa: SIM108
                 pwd = root
             else:
                 pwd = pwd.cd(path)
@@ -69,7 +69,7 @@ def parse_cmds(root: Directory, lines: list[str]):
                     pwd.files[name] = int(size_or_dir)
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 7's first part."""
     lines = puzzle.strip().splitlines()
     root = Directory(name="/", parent=None)
@@ -83,7 +83,7 @@ def part_1(puzzle: str):
     return s
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 7's second part."""
     lines = puzzle.strip().splitlines()
     root = Directory(name="/", parent=None)

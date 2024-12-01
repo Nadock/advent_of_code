@@ -50,6 +50,7 @@ lint.ignore = [
     # Meta
     "FIX002", # line-contains-todo
     "TD003",  # missing-todo-link
+    "E741",   # ambiguous-variable-name
 
     # Formatter conflicts
     "ISC001", # single-line-implicit-string-concatenation

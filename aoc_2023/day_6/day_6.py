@@ -19,7 +19,7 @@ def part_1(puzzle: str) -> int | str | float | bool:
     return multi
 
 
-def iter_v_t(time: int) -> Generator[tuple[int, int], None, None]:
+def iter_v_t(time: int) -> Generator[tuple[int, int], None, None]:  # noqa: D103
     for i in range(time):
         v = time - i
         t = time - v

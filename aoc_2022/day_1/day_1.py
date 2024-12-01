@@ -1,7 +1,7 @@
 from aoc_2022 import utils
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201, D103
     elves = utils.aggregate_list_of_lists(
         utils.map_list_of_lists(
             utils.read_list_of_lists(puzzle),
@@ -12,7 +12,7 @@ def part_1(puzzle: str):
     return elves[utils.find_max(elves)]
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201, D103
     elves = utils.aggregate_list_of_lists(
         utils.map_list_of_lists(
             utils.read_list_of_lists(puzzle),

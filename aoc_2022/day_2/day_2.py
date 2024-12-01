@@ -1,5 +1,3 @@
-from typing import Optional
-
 # Convert encoded instructions to RPS
 _rps_syntax = {
     "A": "rock",
@@ -43,7 +41,7 @@ def _score_rps(us: str, them: str) -> int:
     return score
 
 
-def _win_rps(us: str, them: str) -> Optional[bool]:
+def _win_rps(us: str, them: str) -> bool | None:
     """Return true if `a` beats `b` in RPS, or `None` if tied."""
     if (
         (us == "rock" and them == "scissors")
@@ -62,7 +60,7 @@ def _win_rps(us: str, them: str) -> Optional[bool]:
     return None
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 2's first part."""
     score = 0
     for line in puzzle.split("\n"):
@@ -73,7 +71,7 @@ def part_1(puzzle: str):
     return score
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 2's second part."""
     score = 0
     for line in puzzle.split("\n"):

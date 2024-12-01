@@ -1,11 +1,11 @@
-"""AOC Day 8 started at 2022-12-08T20:28:51.652941+10:30"""
+"""AOC Day 8 started at 2022-12-08T20:28:51.652941+10:30"""  # noqa: D415
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 8's first part."""
     grid = []
     for line in puzzle.splitlines():
-        grid.append([int(c) for c in line])
+        grid.append([int(c) for c in line])  # noqa: PERF401
 
     visible_trees = 0
 
@@ -21,25 +21,25 @@ def part_1(puzzle: str):
                     visible.append(True)
                     break
             for i in range(col):
-                if grid[row][i] >= tree:
+                if r[i] >= tree:
                     visible.append(True)
                     break
-            for i in range(col + 1, len(grid[row])):
-                if grid[row][i] >= tree:
+            for i in range(col + 1, len(r)):
+                if r[i] >= tree:
                     visible.append(True)
                     break
 
-            if len(visible) != 4:
+            if len(visible) != 4:  # noqa: PLR2004
                 visible_trees += 1
 
     return visible_trees
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 8's second part."""
     grid = []
     for line in puzzle.splitlines():
-        grid.append([int(c) for c in line])
+        grid.append([int(c) for c in line])  # noqa: PERF401
 
     s_max = 0
 
@@ -52,13 +52,12 @@ def part_2(puzzle: str):
                 * len(right(grid, row, col, tree))
             )
 
-            if s_sore > s_max:
-                s_max = s_sore
+            s_max = max(s_sore, s_max)
 
     return s_max
 
 
-def up(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
+def up(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:  # noqa: D103
     l = []
     for r in range(row - 1, -1, -1):
         l.append(grid[r][col])
@@ -67,7 +66,7 @@ def up(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
     return l
 
 
-def down(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
+def down(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:  # noqa: D103
     l = []
     for r in range(row + 1, len(grid)):
         l.append(grid[r][col])
@@ -76,7 +75,7 @@ def down(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
     return l
 
 
-def left(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
+def left(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:  # noqa: D103
     l = []
     for c in range(col - 1, -1, -1):
         l.append(grid[row][c])
@@ -85,7 +84,7 @@ def left(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
     return l
 
 
-def right(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:
+def right(grid: list[list[int]], row: int, col: int, limit: int) -> list[int]:  # noqa: D103
     l = []
     for c in range(col + 1, len(grid[row])):
         l.append(grid[row][c])

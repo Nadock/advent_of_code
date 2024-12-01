@@ -1,28 +1,29 @@
-"""AOC Day 9 started at 2022-12-09T21:26:52.784894+10:30"""
+"""AOC Day 9 started at 2022-12-09T21:26:52.784894+10:30"""  # noqa: D415
+
 from __future__ import annotations
 
 import dataclasses
 
 
 @dataclasses.dataclass
-class Point:
+class Point:  # noqa: D101
     x: int
     y: int
 
     history: list[tuple[int, int]] = dataclasses.field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self):  # noqa: ANN204
         self.history.append((self.x, self.y))
 
-    def adjacent(self, p2: Point) -> bool:
+    def adjacent(self, p2: Point) -> bool:  # noqa: D102
         dx = abs(self.x - p2.x)
         dy = abs(self.y - p2.y)
 
-        if dx in [0, 1] and dy in [0, 1]:
+        if dx in [0, 1] and dy in [0, 1]:  # noqa: SIM103
             return True
         return False
 
-    def move(self, direction: str):
+    def move(self, direction: str):  # noqa: ANN201, D102
         if direction == "U":
             self.y += 1
         elif direction == "D":
@@ -34,7 +35,7 @@ class Point:
         else:
             raise ValueError(f"unknown direction {direction}")
 
-    def move_towards(self, p2: Point):
+    def move_towards(self, p2: Point):  # noqa: ANN201, D102
         if self.x < p2.x:
             self.move("R")
         elif self.x > p2.x:
@@ -47,7 +48,7 @@ class Point:
         self.history.append((self.x, self.y))
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 9's first part."""
     head = Point(0, 0)
     tail = Point(0, 0)
@@ -64,7 +65,7 @@ def part_1(puzzle: str):
     return len(set(tail.history))
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 9's second part."""
     rope = [Point(0, 0) for _ in range(10)]
 

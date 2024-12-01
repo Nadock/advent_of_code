@@ -1,16 +1,13 @@
-"""AOC Day 14 started at 2022-12-14T15:30:01.842295+10:30"""
+"""AOC Day 14 started at 2022-12-14T15:30:01.842295+10:30"""  # noqa: D415
 
 
-from typing import Optional
-
-
-class Grid:
+class Grid:  # noqa: D101
     def __init__(self) -> None:
-        self.grid: list[list[Optional[str]]] = []
+        self.grid: list[list[str | None]] = []
         self._max_y = 0
         self._max_x = 0
 
-    def set(self, x: int, y: int, value: str):
+    def set(self, x: int, y: int, value: str):  # noqa: ANN201, D102
         while len(self.grid) <= y:
             self.grid.append([])
         while len(self.grid[y]) <= x:
@@ -19,17 +16,17 @@ class Grid:
         self._max_y = max(self._max_y, y)
         self._max_x = max(self._max_x, x)
 
-    def get(self, x: int, y: int) -> Optional[str]:
+    def get(self, x: int, y: int) -> str | None:  # noqa: D102
         try:
             return self.grid[y][x]
         except IndexError:
             return None
 
-    def set_line(self, x1: int, y1: int, x2: int, y2: int, value: str):
+    def set_line(self, x1: int, y1: int, x2: int, y2: int, value: str):  # noqa: ANN201, D102
         if x1 != x2 and y1 != y2:
             # Diagonal
             raise ValueError("diagonal lines not supported")
-        elif x1 == x2:
+        if x1 == x2:
             # Vertical
             step = 1 if y1 < y2 + 1 else -1
             for y in range(y1, y2 + step, step):
@@ -40,7 +37,7 @@ class Grid:
             for x in range(x1, x2 + step, step):
                 self.set(x, y1, value)
 
-    def sand(self, x: int, y: int, value: str) -> tuple[int, int]:
+    def sand(self, x: int, y: int, value: str) -> tuple[int, int]:  # noqa: D102
         if y > self._max_y:
             raise ValueError(f"cannot place sand below {self._max_y=}")
 
@@ -69,7 +66,7 @@ class Grid:
                 lines.append(line)
         return "\n".join(lines)
 
-    def set_floor(self):
+    def set_floor(self):  # noqa: ANN201, D102
         mx = self._max_x
         my = self._max_y + 2
         for x in range(mx * 2):
@@ -78,7 +75,7 @@ class Grid:
         self._max_y = my
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 14's first part."""
     grid = Grid()
 
@@ -103,7 +100,7 @@ def part_1(puzzle: str):
             return count
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 14's second part."""
     grid = Grid()
 

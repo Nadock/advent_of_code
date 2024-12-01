@@ -1,13 +1,13 @@
 import string
 
-_priorities = dict(zip(string.ascii_letters, range(1, 53)))
+_priorities = dict(zip(string.ascii_letters, range(1, 53), strict=False))
 
 
-def item_priority(item: str) -> int:
+def item_priority(item: str) -> int:  # noqa: D103
     return _priorities[item]
 
 
-def part_1(puzzle: str):
+def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 3's first part."""
     count = 0
 
@@ -21,7 +21,7 @@ def part_1(puzzle: str):
     return count
 
 
-def part_2(puzzle: str):
+def part_2(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 3's second part."""
     lines = puzzle.strip().split("\n")
     count = 0
@@ -32,7 +32,7 @@ def part_2(puzzle: str):
             .intersection(set(lines[idx + 1]))
             .intersection(set(lines[idx + 2]))
         )
-        assert len(dupe) == 1
-        count += item_priority(list(dupe)[0])
+        assert len(dupe) == 1  # noqa: S101
+        count += item_priority(list(dupe)[0])  # noqa: RUF015
 
     return count
