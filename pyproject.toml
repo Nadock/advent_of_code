@@ -1,7 +1,30 @@
+[project]
+name = "advent-of-code"
+version = "0.1.0"
+description = "My Advent of Code solutions"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "pytz>=2024.2",
+    "requests>=2.32.3",
+    "rich>=13.9.4",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "mypy>=1.13.0",
+    "pytest>=8.3.3",
+    "pytest-freezer>=0.4.8",
+    "ruff>=0.8.1",
+    "types-beautifulsoup4>=4.12.0.20241020",
+    "types-requests>=2.32.0.20241016",
+]
+
 [tool.ruff]
 target-version = "py312"
-select = ["ALL"]
-ignore = [
+lint.select = ["ALL"]
+lint.ignore = [
     # Docstrings
     "D100", # undocumented-public-module
     "D104", # undocumented-public-package
@@ -10,10 +33,6 @@ ignore = [
     "D205", # blank-line-after-summary
     "D212", # multi-line-summary-first-line
     "D105", # undocumented-magic-method
-
-    # Type annotations
-    "ANN101", # missing-type-self
-    "ANN102", # missing-type-cls
 
     # Code design
     "PLR0913", # too-many-arguments
@@ -32,6 +51,10 @@ ignore = [
     "FIX002", # line-contains-todo
     "TD003",  # missing-todo-link
 
+    # Formatter conflicts
+    "ISC001", # single-line-implicit-string-concatenation
+    "COM812", # missing-trailing-comma
+
     # AoC Specific
     "FBT001", # boolean-type-hint-positional-argument
     "FBT002", # boolean-default-value-positional-argument
@@ -46,7 +69,7 @@ ignore = [
     "FBT001", # boolean-type-hint-positional-argument
 ]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.mypy]

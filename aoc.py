@@ -590,10 +590,10 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> list[str]:
         title=(f"[italic bold cyan]{format_aoc_id(aoc)} Results[/italic bold cyan]"),
     )
     lines = []
-    for part in parts:
-        for input in inputs:
+    for p in parts:
+        for i in inputs:
             start = time.time_ns()
-            result = aoc.run_part(part, input)
+            result = aoc.run_part(p, i)
             end = time.time_ns()
 
             duration = format_ns_time(end - start)
@@ -604,7 +604,7 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> list[str]:
                 _result = colour_by_type(result)
 
             t.add_row(
-                format_aoc_id(aoc, part=part, input=input),
+                format_aoc_id(aoc, part=p, input=i),
                 duration,
                 _result,
             )
