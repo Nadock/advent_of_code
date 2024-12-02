@@ -29,7 +29,7 @@ def part_1(puzzle: str):  # noqa: ANN201
                     visible.append(True)
                     break
 
-            if len(visible) != 4:  # noqa: PLR2004
+            if len(visible) != 4:
                 visible_trees += 1
 
     return visible_trees

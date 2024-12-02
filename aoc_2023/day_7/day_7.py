@@ -48,29 +48,29 @@ def hand_type_1(hand: str) -> int:  # noqa: D103, PLR0911
     for card in cards:
         counts_dict[card] += 1
     counts_list = list(counts_dict.values())
-    if len(cards) != 5 or sum(counts_list) != 5:  # noqa: PLR2004
+    if len(cards) != 5 or sum(counts_list) != 5:
         raise ValueError(f"unknown hand type: {hand=}, {cards=}, {counts_dict=}")
 
     # Five of a kind
     if len(counts_list) == 1:
         return 6
     # Four of a kind
-    if len(counts_list) == 2 and 4 in counts_list:  # noqa: PLR2004
+    if len(counts_list) == 2 and 4 in counts_list:
         return 5
     # Full house
-    if len(counts_list) == 2 and 3 in counts_list and 2 in counts_list:  # noqa: PLR2004
+    if len(counts_list) == 2 and 3 in counts_list and 2 in counts_list:
         return 4
     # Three of a kind
-    if len(counts_list) == 3 and 3 in counts_list and 1 in counts_list:  # noqa: PLR2004
+    if len(counts_list) == 3 and 3 in counts_list and 1 in counts_list:
         return 3
     # Two pair
-    if len(counts_list) == 3 and 2 in counts_list and 1 in counts_list:  # noqa: PLR2004
+    if len(counts_list) == 3 and 2 in counts_list and 1 in counts_list:
         return 2
     # One pair
-    if len(counts_list) == 4 and 2 in counts_list and 1 in counts_list:  # noqa: PLR2004
+    if len(counts_list) == 4 and 2 in counts_list and 1 in counts_list:
         return 1
     # High card
-    if len(counts_list) == 5:  # noqa: PLR2004
+    if len(counts_list) == 5:
         return 0
 
     raise ValueError(f"unknown hand type: {hand=}, {cards=}, {counts_dict=}")

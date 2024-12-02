@@ -109,7 +109,7 @@ def part_1(puzzle: str):  # noqa: ANN201
         while True:
             if movements[movement_idx % len(movements)] == ">":
                 new_pos = (min(6, position[0] + 1), position[1])
-                if new_pos[0] + size[0] > 6:  # noqa: PLR2004
+                if new_pos[0] + size[0] > 6:
                     new_pos = (6 - size[0] + 1, new_pos[1])
                 if not blocked(board, piece, new_pos):
                     position = new_pos
@@ -145,7 +145,7 @@ def part_2(puzzle: str):  # noqa: ANN201
             board.append(["_" for _ in range(7)])
 
         while True:
-            if p > 10_000 and movement_idx % len(movements) == 0:  # noqa: PLR2004
+            if p > 10_000 and movement_idx % len(movements) == 0:
                 # print(print_board(board, piece, position))
                 # print(
                 #     f"{p=} (+{p-last_p}), {movement_idx=} (+{movement_idx-last_idx}), "  # noqa: E501
@@ -183,7 +183,7 @@ def part_2(puzzle: str):  # noqa: ANN201
 
             if movements[movement_idx % len(movements)] == ">":
                 new_pos = (min(6, position[0] + 1), position[1])
-                if new_pos[0] + size[0] > 6:  # noqa: PLR2004
+                if new_pos[0] + size[0] > 6:
                     new_pos = (6 - size[0] + 1, new_pos[1])
                 if not blocked(board, piece, new_pos):
                     position = new_pos

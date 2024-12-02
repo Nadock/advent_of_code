@@ -8,7 +8,7 @@ def part_1(puzzle: str):  # noqa: ANN201
     start = -1
     for idx in range(len(buf)):
         window = buf[idx : idx + 4]
-        if len(set(window)) == 4:  # noqa: PLR2004
+        if len(set(window)) == 4:
             start = idx + 4
             break
 
@@ -22,7 +22,7 @@ def part_2(puzzle: str):  # noqa: ANN201
     start = -1
     for idx in range(len(buf)):
         window = buf[idx : idx + 14]
-        if len(set(window)) == 14:  # noqa: PLR2004
+        if len(set(window)) == 14:
             start = idx + 14
             break
 
