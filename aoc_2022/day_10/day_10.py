@@ -9,7 +9,7 @@ def part_1(puzzle: str):  # noqa: ANN201
     samples = []
 
     def check_reg_x():  # noqa: ANN202
-        if cycle == 20 or (cycle - 20) % 40 == 0:  # noqa: PLR2004
+        if cycle == 20 or (cycle - 20) % 40 == 0:
             samples.append(reg_x * cycle)
 
     for line in puzzle.strip().splitlines():

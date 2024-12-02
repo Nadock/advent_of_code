@@ -1,6 +1,7 @@
 name: PR Checks
 
-on: pull_request
+# Only on push here as we often push straight to main to upload puzzle results.
+on: push
 
 jobs:
   pr_checks:

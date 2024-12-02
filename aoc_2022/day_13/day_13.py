@@ -8,7 +8,7 @@ def part_1(puzzle: str):  # noqa: ANN201
     """Calculates the solution to day 13's first part."""
     count = []
     for idx, pairs in enumerate(puzzle.split("\n\n")):
-        assert len(pairs.splitlines()) == 2  # noqa: S101, PLR2004
+        assert len(pairs.splitlines()) == 2  # noqa: S101
 
         pair = (eval(pairs.splitlines()[0]), eval(pairs.splitlines()[1]))  # noqa: S307
         result = compare(pair[0], pair[1])

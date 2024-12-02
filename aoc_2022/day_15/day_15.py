@@ -110,7 +110,7 @@ def part_2(puzzle: str):  # noqa: ANN201
 
         end = blocked[y][0][1]
         for blocker in blocked[y]:
-            if end > 4_000_000:  # noqa: PLR2004
+            if end > 4_000_000:
                 break
             if end < blocker[0]:
                 return (end * 4_000_000) + y

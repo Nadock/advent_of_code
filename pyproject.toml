@@ -57,9 +57,10 @@ lint.ignore = [
     "COM812", # missing-trailing-comma
 
     # AoC Specific
-    "FBT001", # boolean-type-hint-positional-argument
-    "FBT002", # boolean-default-value-positional-argument
-    "C901",   # complex-structure
+    "FBT001",  # boolean-type-hint-positional-argument
+    "FBT002",  # boolean-default-value-positional-argument
+    "C901",    # complex-structure
+    "PLR2004", # magic-value-comparison
 ]
 
 

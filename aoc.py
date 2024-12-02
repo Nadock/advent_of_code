@@ -636,7 +636,7 @@ def run_command(aoc: AOC, part: int | None, input: str | None) -> list[str]:
         parts = [1, 2]
     elif part == 1:
         parts = [1]
-    elif part == 2:  # noqa: PLR2004
+    elif part == 2:
         parts = [2]
     else:
         raise ValueError(f'Unknown value for part "{part}", expected "1" or "2"')
