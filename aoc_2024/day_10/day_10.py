@@ -57,24 +57,21 @@ class Map2D:
     """A simple 2D grid style map."""
 
     def __init__(self, puzzle: str) -> None:
-        self.grid = []
+        self.grid: list[list[int]] = []
 
         lines = puzzle.splitlines()
         for column in range(len(lines[0])):
-            col = []
-            for line in lines:
-                if line[column] != ".":
-                    col.append(int(line[column]))
-                else:
-                    col.append(-1)
-            self.grid.append(col)
+            self.grid.append(
+                [int(line[column]) for line in lines if column < len(line)]
+            )
 
     def __str__(self) -> str:
-        s = ""
+        lines = []
         for row in range(len(self.grid)):
-            s += "".join([str(col[row]) for col in self.grid])
-            s += "\n"
-        return s
+            line = "".join([str(col[row]) for col in self.grid if row < len(col)])
+            if line:
+                lines.append(line)
+        return "\n".join(lines)
 
     def at(self, p: tuple[int, int]) -> int | None:
         """
