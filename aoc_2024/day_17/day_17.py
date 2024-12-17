@@ -35,6 +35,8 @@ def part_2(puzzle: str) -> int | str | float | bool:
 
 
 class CPU:
+    """A CPU implementation according to the puzzle rules."""
+
     def __init__(self, a: int, b: int, c: int) -> None:
         self.reg_a = a
         self.reg_b = b
@@ -45,29 +47,18 @@ class CPU:
         self.output: list[int] = []
 
     def execute(self, prog: list[int]) -> None:
-        # print(prog)
-
+        """Execute a program."""
         c = 0
         while self.ptr < len(prog):
             c += 1
             instr, op = prog[self.ptr], prog[self.ptr + 1]
-            # print(
-            #     f"BEFORE: {self.ptr=} -> {instr=} {op=} -> {self.reg_a} {self.reg_b} {self.reg_c}"
-            # )
             self.dispatch(instr, op)
 
-            # self.ptr += 2
-            # print(
-            #     f"AFTER: {self.ptr=} -> {instr=} {op=} -> {self.reg_a} {self.reg_b} {self.reg_c}",
-            #     "\n   ",
-            # )
-
-            # if self.ptr == 4:
-            #     break
-            # if c > 10:
-            #     break
-
     def dispatch(self, instr: int, op: int) -> None:
+        """
+        Dispatch to the correct instruction implementation and advance the instruction
+        pointer.
+        """
         if instr == 0:
             self.adv(op)
             self.ptr += 2
@@ -78,6 +69,7 @@ class CPU:
             self.bst(op)
             self.ptr += 2
         elif instr == 3:
+            # Only increment instruction pointer if JNZ instruction did not jump
             if not self.jnz(op):
                 self.ptr += 2
         elif instr == 4:
@@ -96,23 +88,16 @@ class CPU:
             raise ValueError(f"Unknown instruction {instr}")
 
     def combo_operand(self, op: int) -> int:
-        match op:
-            case 0:
-                return 0
-            case 1:
-                return 1
-            case 2:
-                return 2
-            case 3:
-                return 3
-            case 4:
-                return self.reg_a
-            case 5:
-                return self.reg_b
-            case 6:
-                return self.reg_c
-            case _:
-                raise ValueError(f"Unknown combo operand {op}")
+        """Get the literal value for a combo operand."""
+        if op in [0, 1, 2, 3]:
+            return op
+        if op == 4:
+            return self.reg_a
+        if op == 5:
+            return self.reg_b
+        if op == 6:
+            return self.reg_c
+        raise ValueError(f"Unknown combo operand {op}")
 
     def adv(self, op: int) -> None:
         """
@@ -124,7 +109,6 @@ class CPU:
         """
         num = self.reg_a
         den = 2 ** self.combo_operand(op)
-        # print(f"  adv({op}): reg_a={num} // {den} == {num//den}")
         self.reg_a = num // den
 
     def bxl(self, op: int) -> None:
@@ -149,7 +133,6 @@ class CPU:
         value of its literal operand; if this instruction jumps, the instruction pointer
         is not increased by 2 after this instruction.
         """
-        # print(f"  jnz({op})")
         if self.reg_a != 0:
             self.ptr = op
             return True
@@ -170,7 +153,6 @@ class CPU:
         8, then outputs that value. (If a program outputs multiple values, they are
         separated by commas).
         """
-        # print(f"  out({op}) -> {self.combo_operand(op) % 8}")
         self.output.append(self.combo_operand(op) % 8)
 
     def bdv(self, op: int) -> None:
