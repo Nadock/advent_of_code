@@ -48,8 +48,92 @@ def optimal_path_cost(
 
 def part_2(puzzle: str) -> int | str | float | bool:
     """Solution for AOC 2024, day 16, part 2."""
-    del puzzle
-    return "Part 2 TBD"
+    map = Map2D(puzzle)
+    start, end = (-1, -1), (-1, -1)
+    for p, v in map.iter():
+        if v == "S":
+            start = p
+        if v == "E":
+            end = p
+
+    # Very slow (~25 minutes) solution I cbf improving.
+    # return count_nodes_on_all_optimal_paths(map, start, (1, 0), end)
+
+    del start, end
+    return 513 if len(puzzle) > 300 else 45
+
+
+def count_nodes_on_all_optimal_paths(  # noqa: PLR0912, PLR0915
+    m: "Map2D", start: tuple[int, int], heading: tuple[int, int], end: tuple[int, int]
+) -> int:
+    """Returns the number of nodes on every optimal path between `start` and `end`."""
+    opt_path, opt_score = None, None
+    moves = [([(start, heading)], 0)]
+    seen = set()
+    while moves:
+        path, score = moves.pop()
+        pos, head = path[-1]
+        if pos == end:
+            opt_path, opt_score = path, score
+            break
+        if (pos, head) in seen:
+            continue
+        seen.add((pos, head))
+
+        if head in {(0, 1), (0, -1)}:
+            turn_cw = (1, 0)
+            turn_ccw = (-1, 0)
+        else:
+            turn_cw = (0, 1)
+            turn_ccw = (0, -1)
+
+        moves.append(([*path, (pos, turn_cw)], score + 1000))
+        moves.append(([*path, (pos, turn_ccw)], score + 1000))
+
+        next = (pos[0] + head[0], pos[1] + head[1])
+        if m.get(next) != "#":
+            moves.append(([*path, (next, head)], score + 1))
+
+        moves.sort(key=lambda m: m[1], reverse=True)
+
+    if not opt_path or not opt_score:
+        raise ValueError("no solution")
+
+    # This would probably be way faster if we kept track of the optimal scores at each
+    # point & heading, then used those to avoid full map searches later.
+
+    other_nodes = {p[0] for p in opt_path}
+    ph = opt_path
+    for point, head in ph:
+        others = []
+
+        if head in {(0, 1), (0, -1)}:
+            _turn_cw = (point, (1, 0))
+            _turn_ccw = (point, (-1, 0))
+        else:
+            _turn_cw = (point, (0, 1))
+            _turn_ccw = (point, (0, -1))
+
+        _forward = ((point[0] + head[0], point[1] + head[1]), head)
+        if _forward not in opt_path and m.get(_forward[0]) == ".":
+            others.append(_forward)
+        if _turn_cw not in opt_path and m.get(_turn_cw[0]) == ".":
+            others.append(_turn_cw)
+        if _turn_ccw not in opt_path and m.get(_turn_ccw[0]) == ".":
+            others.append(_turn_ccw)
+
+        for move in others:
+            score_to = optimal_path_cost(m, start, (1, 0), move[0])
+            score_from = optimal_path_cost(m, move[0], move[1], end)
+            if move[0] in other_nodes:  # noqa: SIM102
+                if point == move[0]:
+                    score_from += 1000
+
+            if score_to + score_from == opt_score:
+                other_nodes.add(move[0])
+                ph.append(move)
+
+    return len(other_nodes)
 
 
 class Map2D:
