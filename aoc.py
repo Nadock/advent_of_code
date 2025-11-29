@@ -585,7 +585,12 @@ def init_command(
         )
 
     if do_day_download:
-        path = aoc.scaffold_puzzle_input()
+        try:
+            path = aoc.scaffold_puzzle_input()
+        except requests.HTTPError:
+            aoc.console.print("Puzzle download failed, check the AOC session cookie.")
+            return lines
+
         t.add_row(
             "[italic cyan]Scaffold puzzle input[/italic cyan]",
             colour_by_type(path),
