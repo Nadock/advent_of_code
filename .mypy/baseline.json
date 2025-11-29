@@ -1,0 +1,563 @@
+{
+  "files": {
+    "aoc.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 200,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc.AOC.__str__"
+      },
+      {
+        "code": "no-untyped-call",
+        "column": 24,
+        "message": "Call to incomplete function cookiejar_from_dict in typed context",
+        "offset": 24,
+        "src": "cookies=utils.cookiejar_from_dict(",
+        "target": "aoc.AOC.aoc_http_get"
+      },
+      {
+        "code": "no-untyped-call",
+        "column": 24,
+        "message": "Type is \"def (cookie_dict: Untyped, cookiejar: Untyped =, overwrite: bool =) -> None\"",
+        "offset": 0,
+        "src": "cookies=utils.cookiejar_from_dict(",
+        "target": "aoc.AOC.aoc_http_get"
+      },
+      {
+        "code": "no-untyped-call",
+        "column": 24,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-no-untyped-call for more info",
+        "offset": 0,
+        "src": "cookies=utils.cookiejar_from_dict(",
+        "target": null
+      },
+      {
+        "code": "func-returns-value",
+        "column": 24,
+        "message": "Function does not return a value (it only ever returns None)",
+        "offset": 0,
+        "src": "cookies=utils.cookiejar_from_dict(",
+        "target": "aoc.AOC.aoc_http_get"
+      },
+      {
+        "code": "func-returns-value",
+        "column": 24,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-func-returns-value for more info",
+        "offset": 0,
+        "src": "cookies=utils.cookiejar_from_dict(",
+        "target": null
+      },
+      {
+        "code": "any",
+        "column": 20,
+        "message": "Expression type contains \"Any\" (has type \"dict[Any (unannotated), Any (unannotated)]\")",
+        "offset": 1,
+        "src": "{\"session\": self.get_session_cookie()},",
+        "target": "aoc.AOC.aoc_http_get"
+      },
+      {
+        "code": "any",
+        "column": 20,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-any for more info",
+        "offset": 0,
+        "src": "{\"session\": self.get_session_cookie()},",
+        "target": null
+      },
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "Condition is always true",
+        "offset": 140,
+        "src": "elif input == \"puzzle\":",
+        "target": "aoc.AOC.run_part"
+      },
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-redundant-expr for more info",
+        "offset": 0,
+        "src": "elif input == \"puzzle\":",
+        "target": null
+      },
+      {
+        "code": "operator",
+        "column": 25,
+        "message": "\"object\" not callable",
+        "offset": 12,
+        "src": "result = solution(puzzle_input)",
+        "target": "aoc.AOC.run_part"
+      },
+      {
+        "code": "operator",
+        "column": 25,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-operator for more info",
+        "offset": 0,
+        "src": "result = solution(puzzle_input)",
+        "target": null
+      },
+      {
+        "code": "assignment",
+        "column": 22,
+        "message": "Incompatible types in assignment (expression has type \"dict[str, _JsonType] | list[_JsonType] | float | int | str | None\", variable has type \"dict[str, dict[str, dict[str, dict[str, str | float | bool]]]]\")",
+        "offset": 77,
+        "src": "results = json.loads(self.results.read_text(\"utf-8\"))",
+        "target": "aoc.AOC.update_results_file"
+      },
+      {
+        "code": "explicit-any",
+        "column": 0,
+        "message": "Explicit \"Any\" is not allowed",
+        "offset": 12,
+        "src": "def colour_by_type(value: Any) -> str:  # noqa: ANN401",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "explicit-any",
+        "column": 0,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-explicit-any for more info",
+        "offset": 0,
+        "src": "def colour_by_type(value: Any) -> str:  # noqa: ANN401",
+        "target": null
+      },
+      {
+        "code": "any",
+        "column": 18,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "if isinstance(value, str):",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "any",
+        "column": 18,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "if isinstance(value, (int | float)):",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "any",
+        "column": 18,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "if isinstance(value, bool):",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "any",
+        "column": 18,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "if isinstance(value, pathlib.Path):",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "any",
+        "column": 15,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "return str(value)",
+        "target": "aoc.colour_by_type"
+      },
+      {
+        "code": "assignment",
+        "column": 14,
+        "message": "Incompatible types in assignment (expression has type \"dict[str, _JsonType] | list[_JsonType] | float | int | str | None\", variable has type \"dict[str, dict[str, dict[str, dict[str, str | float | bool]]]]\")",
+        "offset": 226,
+        "src": "results = json.loads(results_path.read_text(\"utf-8\"))",
+        "target": "aoc.test_command"
+      },
+      {
+        "code": "comparison-overlap",
+        "column": 32,
+        "message": "Non-overlapping equality check (left operand type: \"str\", right operand type: \"int\")",
+        "offset": 14,
+        "src": "if year is not None and _year != year:",
+        "target": "aoc.test_command"
+      },
+      {
+        "code": "comparison-overlap",
+        "column": 32,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-comparison-overlap for more info",
+        "offset": 0,
+        "src": "if year is not None and _year != year:",
+        "target": null
+      },
+      {
+        "code": "comparison-overlap",
+        "column": 35,
+        "message": "Non-overlapping equality check (left operand type: \"str\", right operand type: \"int\")",
+        "offset": 4,
+        "src": "if day is not None and _day != day:",
+        "target": "aoc.test_command"
+      },
+      {
+        "code": "comparison-overlap",
+        "column": 40,
+        "message": "Non-overlapping equality check (left operand type: \"str\", right operand type: \"int\")",
+        "offset": 8,
+        "src": "if part is not None and _part != part:",
+        "target": "aoc.test_command"
+      },
+      {
+        "code": "any",
+        "column": 7,
+        "message": "Expression has type \"Any\"",
+        "offset": 52,
+        "src": "if args.command == \"test\":",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "return test_command(args.results, args.year, args.day, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 42,
+        "message": "Expression has type \"Any\"",
+        "offset": 0,
+        "src": "return test_command(args.results, args.year, args.day, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 53,
+        "message": "Expression has type \"Any\"",
+        "offset": 0,
+        "src": "return test_command(args.results, args.year, args.day, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 63,
+        "message": "Expression has type \"Any\"",
+        "offset": 0,
+        "src": "return test_command(args.results, args.year, args.day, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 74,
+        "message": "Expression has type \"Any\"",
+        "offset": 0,
+        "src": "return test_command(args.results, args.year, args.day, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 13,
+        "message": "Expression has type \"Any\"",
+        "offset": 3,
+        "src": "year=args.year,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 12,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "day=args.day,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 15,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "cookie=args.session,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 16,
+        "message": "Expression has type \"Any\"",
+        "offset": 2,
+        "src": "results=args.results,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 7,
+        "message": "Expression has type \"Any\"",
+        "offset": 3,
+        "src": "if args.command == \"init\":",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 3,
+        "src": "do_day_download=args.do_day_download,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 25,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "do_day_files=args.do_day_files,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 27,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "do_puzzle_wait=args.do_puzzle_wait,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "do_git_checkout=args.do_git_checkout,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "do_open_browser=args.do_open_browser,",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 7,
+        "message": "Expression has type \"Any\"",
+        "offset": 3,
+        "src": "if args.command == \"run\":",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 32,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "return run_command(aoc, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 43,
+        "message": "Expression has type \"Any\"",
+        "offset": 0,
+        "src": "return run_command(aoc, args.part, args.input)",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 27,
+        "message": "Expression has type \"Any\"",
+        "offset": 4,
+        "src": "f'Unknown command \"{args.command}\", try \"./aoc.py --help\" for more info.',",
+        "target": "aoc.main"
+      },
+      {
+        "code": "any",
+        "column": 19,
+        "message": "Expression type contains \"Any\" (has type \"bool | Any\")",
+        "offset": 6,
+        "src": "file = None if sys.stdout.isatty() else open(os.devnull, \"w\")  # noqa: SIM115, PTH123",
+        "target": "aoc"
+      },
+      {
+        "code": "any",
+        "column": 15,
+        "message": "Expression type contains \"Any\" (has type \"bool | Any\")",
+        "offset": 5,
+        "src": "if not sys.stdout.isatty():",
+        "target": "aoc"
+      }
+    ],
+    "aoc_2024/day_10/day_10.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 68,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_10.day_10.Map2D.__str__"
+      }
+    ],
+    "aoc_2024/day_12/day_12.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 185,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_12.day_12.Map2D.__str__"
+      }
+    ],
+    "aoc_2024/day_15/day_15.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 83,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_15.day_15.Map2D.__str__"
+      }
+    ],
+    "aoc_2024/day_16/day_16.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 149,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_16.day_16.Map2D.__str__"
+      }
+    ],
+    "aoc_2024/day_17/day_17.py": [
+      {
+        "code": "any",
+        "column": 14,
+        "message": "Expression has type \"Any\"",
+        "offset": 111,
+        "src": "den = 2 ** self.combo_operand(op)",
+        "target": "aoc_2024.day_17.day_17.CPU.adv"
+      },
+      {
+        "code": "any",
+        "column": 14,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-any for more info",
+        "offset": 0,
+        "src": "den = 2 ** self.combo_operand(op)",
+        "target": null
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "self.reg_a = num // den",
+        "target": "aoc_2024.day_17.day_17.CPU.adv"
+      },
+      {
+        "code": "any",
+        "column": 14,
+        "message": "Expression has type \"Any\"",
+        "offset": 53,
+        "src": "den = 2 ** self.combo_operand(op)",
+        "target": "aoc_2024.day_17.day_17.CPU.bdv"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "self.reg_b = num // den",
+        "target": "aoc_2024.day_17.day_17.CPU.bdv"
+      },
+      {
+        "code": "any",
+        "column": 14,
+        "message": "Expression has type \"Any\"",
+        "offset": 9,
+        "src": "den = 2 ** self.combo_operand(op)",
+        "target": "aoc_2024.day_17.day_17.CPU.cdv"
+      },
+      {
+        "code": "any",
+        "column": 28,
+        "message": "Expression has type \"Any\"",
+        "offset": 1,
+        "src": "self.reg_c = num // den",
+        "target": "aoc_2024.day_17.day_17.CPU.cdv"
+      }
+    ],
+    "aoc_2024/day_18/day_18.py": [
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 79,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_18.day_18.Map2D.__str__"
+      },
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-explicit-override for more info",
+        "offset": 0,
+        "src": "def __str__(self) -> str:",
+        "target": null
+      }
+    ],
+    "aoc_2024/day_20/day_20.py": [
+      {
+        "code": "unreachable",
+        "column": 4,
+        "message": "Statement is unreachable",
+        "offset": 72,
+        "src": "return 0",
+        "target": "aoc_2024.day_20.day_20.part_1"
+      },
+      {
+        "code": "unreachable",
+        "column": 4,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-unreachable for more info",
+        "offset": 0,
+        "src": "return 0",
+        "target": null
+      },
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 43,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_20.day_20.Map2D.__str__"
+      },
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-explicit-override for more info",
+        "offset": 0,
+        "src": "def __str__(self) -> str:",
+        "target": null
+      }
+    ],
+    "aoc_2024/day_7/day_7.py": [
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "Condition is always true",
+        "offset": 32,
+        "src": "elif next_op == \"*\":",
+        "target": "aoc_2024.day_7.day_7.can_produce_target_part_1"
+      },
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-redundant-expr for more info",
+        "offset": 0,
+        "src": "elif next_op == \"*\":",
+        "target": null
+      },
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "Condition is always true",
+        "offset": 44,
+        "src": "elif next_op == \"||\":",
+        "target": "aoc_2024.day_7.day_7.can_produce_target_part_2"
+      }
+    ]
+  },
+  "format": "1.7",
+  "targets": [
+    "file:aoc.py",
+    "file:aoc_2024"
+  ]
+}

@@ -29,9 +29,29 @@ tasks:
   mypy:
     desc: Check Python type annotations with `python/mypy`.
     cmds:
-      - uv run mypy {{.CLI_ARGS}} aoc.py aoc_2024
+      - uv run mypy --no-auto-baseline {{.CLI_ARGS}} aoc.py aoc_2024
 
   pytest:
     desc: Run Python unit tests via `pytest-dev/pytest`
     cmds:
       - uv run pytest {{.CLI_ARGS}} aoc_test.py
+
+  aoc:
+    desc: Run the AOC.py script
+    cmds:
+      - uv run aoc.py {{.CLI_ARGS}}
+
+  aoc:init:
+    desc: Run the AOC.py init command
+    cmds:
+      - uv run aoc.py init {{.CLI_ARGS}}
+
+  aoc:run:
+    desc: Run the AOC.py run command
+    cmds:
+      - uv run aoc.py run {{.CLI_ARGS}}
+
+  aoc:test:
+    desc: Run the AOC.py test command
+    cmds:
+      - uv run aoc.py test {{.CLI_ARGS}}

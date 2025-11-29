@@ -82,7 +82,7 @@ def part_2(puzzle: str) -> int | str | float | bool:
     with multiprocessing.Pool() as p:
         for r in ranges:
             _r = list(range(r[0], r[1]))
-            print(f"{r=} => {r[1]-r[0]}, {s_min=}")
+            print(f"{r=} => {r[1] - r[0]}, {s_min=}")
             values = p.map(functools.partial(convert, maps), _r)
             s_min = min(values) if s_min is None else min(s_min, *values)
 

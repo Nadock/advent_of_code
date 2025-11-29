@@ -3,7 +3,7 @@ name = "advent-of-code"
 version = "0.1.0"
 description = "My Advent of Code solutions"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
     "beautifulsoup4>=4.12.3",
     "pytz>=2024.2",
@@ -11,9 +11,9 @@ dependencies = [
     "rich>=13.9.4",
 ]
 
-[tool.uv]
-dev-dependencies = [
-    "mypy>=1.13.0",
+[dependency-groups]
+dev = [
+    "basedmypy>=2.10.0",
     "pytest>=8.3.3",
     "pytest-freezer>=0.4.8",
     "ruff>=0.8.1",
@@ -77,3 +77,4 @@ convention = "google"
 [tool.mypy]
 show_error_codes = true
 pretty = true
+strict = true

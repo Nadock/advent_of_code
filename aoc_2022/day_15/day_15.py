@@ -65,7 +65,7 @@ def manhattan_distance(p1: tuple[int, int], p2: tuple[int, int]) -> int:  # noqa
     return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
 
-def part_2(puzzle: str):  # noqa: ANN201
+def part_2(puzzle: str):  # noqa: ANN201, RET503
     """Calculates the solution to day 15's second part."""
     grid = Grid()
 
@@ -102,7 +102,7 @@ def part_2(puzzle: str):  # noqa: ANN201
             blocked[sensor[1] + offset].append(r)
             blocked[sensor[1] - offset].append(r)
 
-    for y in range(4_000_001):  # noqa: RET503
+    for y in range(4_000_001):
         blocked[y] = sorted(blocked[y], key=lambda b: b[0])
 
         if blocked[y][0][0] != 0:
