@@ -31,7 +31,7 @@ def part_1(puzzle: str) -> int | str | float | bool:
         # end_cost = path.index(cheat[-1])
         # cheat_cost = len(cheat) - 2
         # print(
-        #     f"{cheat=} goes from cost {start_cost} to {end_cost}, skipping {end_cost-start_cost-cheat_cost}"
+        #     f"{cheat=} goes from cost {start_cost} to {end_cost}, skipping {end_cost-start_cost-cheat_cost}"  # noqa: E501
         # )
         saving = path.index(cheat[-1]) - (path.index(cheat[0]) + 1) - (len(cheat) - 2)
         # print(f"{cheat=}, {saving=}")
@@ -146,7 +146,7 @@ class Map2D:
             for y in range(len(self.grid[x])):
                 yield (x, y), self.grid[x][y]
 
-    def cached_search(
+    def cached_search(  # noqa: D102
         self, s: tuple[int, int], e: tuple[int, int]
     ) -> list[tuple[int, int]]:
         moves = [([s], 0)]
@@ -174,7 +174,7 @@ class Map2D:
             ]
             for move in next:
                 if self.get(move) != "#":
-                    moves.append(([*path, move], score + 1))
+                    moves.append(([*path, move], score + 1))  # noqa: PERF401
 
             moves.sort(key=lambda m: m[1], reverse=True)
 
@@ -185,8 +185,10 @@ class Map2D:
             self._solution_cache[p] = solution[idx:]
         return solution
 
-    def cheat_search(
-        self, p: tuple[int, int], max_depth=2
+    def cheat_search(  # noqa: D102
+        self,
+        p: tuple[int, int],
+        max_depth=2,  # noqa: ANN001
     ) -> builtins.set[tuple[int, int]]:
         moves = [(p, 0)]
         seen = set()
@@ -238,14 +240,14 @@ def path_search(
         ]
         for move in next:
             if m.get(move) != "#":
-                moves.append(([*path, move], score + 1))
+                moves.append(([*path, move], score + 1))  # noqa: PERF401
 
         moves.sort(key=lambda m: m[1], reverse=True)
 
     return None
 
 
-def find_cheat_points(
+def find_cheat_points(  # noqa: D103
     map: Map2D, path: list[tuple[int, int]]
 ) -> list[list[tuple[int, int]]]:
     cheats: list[list[tuple[int, int]]] = []
