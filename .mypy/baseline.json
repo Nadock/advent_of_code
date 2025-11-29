@@ -58,12 +58,28 @@
         "target": "aoc.AOC.aoc_http_get"
       },
       {
+        "code": "any",
+        "column": 20,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-any for more info",
+        "offset": 0,
+        "src": "{\"session\": self.get_session_cookie()},",
+        "target": null
+      },
+      {
         "code": "redundant-expr",
         "column": 13,
         "message": "Condition is always true",
         "offset": 140,
         "src": "elif input == \"puzzle\":",
         "target": "aoc.AOC.run_part"
+      },
+      {
+        "code": "redundant-expr",
+        "column": 13,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-redundant-expr for more info",
+        "offset": 0,
+        "src": "elif input == \"puzzle\":",
+        "target": null
       },
       {
         "code": "operator",
@@ -149,7 +165,7 @@
         "code": "assignment",
         "column": 14,
         "message": "Incompatible types in assignment (expression has type \"dict[str, _JsonType] | list[_JsonType] | float | int | str | None\", variable has type \"dict[str, dict[str, dict[str, dict[str, str | float | bool]]]]\")",
-        "offset": 221,
+        "offset": 226,
         "src": "results = json.loads(results_path.read_text(\"utf-8\"))",
         "target": "aoc.test_command"
       },
@@ -468,6 +484,40 @@
         "offset": 79,
         "src": "def __str__(self) -> str:",
         "target": "aoc_2024.day_18.day_18.Map2D.__str__"
+      },
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-explicit-override for more info",
+        "offset": 0,
+        "src": "def __str__(self) -> str:",
+        "target": null
+      }
+    ],
+    "aoc_2024/day_20/day_20.py": [
+      {
+        "code": "unreachable",
+        "column": 4,
+        "message": "Statement is unreachable",
+        "offset": 72,
+        "src": "return 0",
+        "target": "aoc_2024.day_20.day_20.part_1"
+      },
+      {
+        "code": "unreachable",
+        "column": 4,
+        "message": "See https://kotlinisland.github.io/basedmypy/_refs.html#code-unreachable for more info",
+        "offset": 0,
+        "src": "return 0",
+        "target": null
+      },
+      {
+        "code": "explicit-override",
+        "column": 4,
+        "message": "Method \"__str__\" is not using @override but is overriding a method in class \"builtins.object\"",
+        "offset": 43,
+        "src": "def __str__(self) -> str:",
+        "target": "aoc_2024.day_20.day_20.Map2D.__str__"
       },
       {
         "code": "explicit-override",
