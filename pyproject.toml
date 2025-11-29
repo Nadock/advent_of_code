@@ -13,7 +13,7 @@ dependencies = [
 
 [tool.uv]
 dev-dependencies = [
-    "mypy>=1.13.0",
+    "basedmypy>=2.10.0",
     "pytest>=8.3.3",
     "pytest-freezer>=0.4.8",
     "ruff>=0.8.1",
@@ -77,3 +77,4 @@ convention = "google"
 [tool.mypy]
 show_error_codes = true
 pretty = true
+strict = true
