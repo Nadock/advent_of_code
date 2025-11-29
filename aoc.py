@@ -382,7 +382,7 @@ class AOC:
                 + format_aoc_id(self, part=part, input=input, clean=True)
                 + ".[/bold red]\n",
             )
-            return None
+            raise
 
         except Exception:
             # Suppress frames from aoc.py manually
