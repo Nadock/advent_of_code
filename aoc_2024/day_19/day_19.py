@@ -29,7 +29,7 @@ def find_towel_pattern(towels: list[str], target: str) -> list[str] | None:
             if remaining.startswith(towel):
                 options.append([*option, towel])  # noqa: PERF401
 
-        options.sort(key=lambda o: len(o), reverse=True)
+        options.sort(key=lambda o: len(o), reverse=True)  # noqa: PLW0108
 
     return None
 
