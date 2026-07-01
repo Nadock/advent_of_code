@@ -5,7 +5,7 @@ description = "My Advent of Code solutions"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "beautifulsoup4>=4.12.3",
+    "beautifulsoup4>=4.15.0",
     "pytz>=2026.2",
     "requests>=2.34.2",
     "rich>=15.0.0",
