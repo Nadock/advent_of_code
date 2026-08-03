@@ -26,13 +26,14 @@ target-version = "py312"
 lint.select = ["ALL"]
 lint.ignore = [
     # Docstrings
-    "D100", # undocumented-public-module
-    "D104", # undocumented-public-package
-    "D107", # undocumented-public-init
-    "D200", # fits-on-one-line
-    "D205", # blank-line-after-summary
-    "D212", # multi-line-summary-first-line
-    "D105", # undocumented-magic-method
+    "CPY001", # missing-copyright-notice
+    "D100",   # undocumented-public-module
+    "D104",   # undocumented-public-package
+    "D107",   # undocumented-public-init
+    "D200",   # fits-on-one-line
+    "D205",   # blank-line-after-summary
+    "D212",   # multi-line-summary-first-line
+    "D105",   # undocumented-magic-method
 
     # Code design
     "PLR0913", # too-many-arguments
