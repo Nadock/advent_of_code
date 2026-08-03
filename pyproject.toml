@@ -16,7 +16,7 @@ dev = [
     "basedmypy>=2.10.0",
     "pytest>=9.1.1",
     "pytest-freezer>=0.4.8",
-    "ruff>=0.15.20",
+    "ruff>=0.16.0",
     "types-beautifulsoup4>=4.12.0.20241020",
     "types-requests>=2.33.0.20260712",
 ]
@@ -26,13 +26,14 @@ target-version = "py312"
 lint.select = ["ALL"]
 lint.ignore = [
     # Docstrings
-    "D100", # undocumented-public-module
-    "D104", # undocumented-public-package
-    "D107", # undocumented-public-init
-    "D200", # fits-on-one-line
-    "D205", # blank-line-after-summary
-    "D212", # multi-line-summary-first-line
-    "D105", # undocumented-magic-method
+    "CPY001", # missing-copyright-notice
+    "D100",   # undocumented-public-module
+    "D104",   # undocumented-public-package
+    "D107",   # undocumented-public-init
+    "D200",   # fits-on-one-line
+    "D205",   # blank-line-after-summary
+    "D212",   # multi-line-summary-first-line
+    "D105",   # undocumented-magic-method
 
     # Code design
     "PLR0913", # too-many-arguments
