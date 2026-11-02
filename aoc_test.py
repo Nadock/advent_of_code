@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 import pathlib
 
 import freezegun
@@ -84,14 +84,14 @@ def test_format_aoc_id(
     [
         (2023, 1, None),  # Puzzle before now
         (2023, 3, None),  # Puzzle exactly now
-        (2023, 4, datetime.timedelta(days=1)),  # Puzzle +1 day
-        (2024, 3, datetime.timedelta(days=366)),  # Puzzle +1 year
+        (2023, 4, dt.timedelta(days=1)),  # Puzzle +1 day
+        (2024, 3, dt.timedelta(days=366)),  # Puzzle +1 year
     ],
 )
 def test_aoc__timedelta_to_puzzle(
     year: int,
     day: int,
-    delta: datetime.timedelta | None,
+    delta: dt.timedelta | None,
 ) -> None:
     _aoc = aoc.AOC(year=year, day=day, cookie=pathlib.Path(), results=None)
 

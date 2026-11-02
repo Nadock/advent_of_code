@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-import datetime
+import datetime as dt
 import importlib
 import json
 import math
@@ -21,7 +21,7 @@ from rich import console, table, traceback
 
 def init_argparse() -> argparse.ArgumentParser:
     """Create an argument parser for `aoc.py` CLI usage."""
-    today = datetime.datetime.now().astimezone()
+    today = dt.datetime.now().astimezone()
 
     parser = argparse.ArgumentParser(prog="aoc.py")
     parser.add_argument(
@@ -230,7 +230,7 @@ class AOC:
         response.raise_for_status()
         return response
 
-    def timedelta_to_puzzle(self) -> datetime.timedelta | None:
+    def timedelta_to_puzzle(self) -> dt.timedelta | None:
         """
         Calculate the timedelta between now and when a the current puzzle will be
         available.
@@ -238,8 +238,8 @@ class AOC:
         Returns `None` if the puzzle is already available.
         """
         # Puzzle's are related at Midnight EST (UTC-5) each day in December
-        puzzle = datetime.datetime(self.year, 12, self.day, 5, 0, 0, 0, datetime.UTC)
-        now = datetime.datetime.now(datetime.UTC)
+        puzzle = dt.datetime(self.year, 12, self.day, 5, 0, 0, 0, dt.UTC)
+        now = dt.datetime.now(dt.UTC)
 
         if now >= puzzle:
             return None
